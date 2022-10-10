@@ -35,5 +35,8 @@ Route::post('/admin/register',[RegisterController::class,'createAdmin'])->name('
 Route::get('/admin/dashboard',function(){
     return view('admin.admin');
 })->middleware('auth:admin');
+Route::group(['middleware'=>'auth:admin,web'],function (){
+    Route::get('product',[\App\Http\Controllers\ProdcutController::class,'index']);
+});
 
-Route::get('/{page}', [\App\Http\Controllers\AdminController::class,'index']);
+Route::get('/{page}', [\App\Http\Controllers\AdminController::class,'index'])->middleware('auth:admin,web');
