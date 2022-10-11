@@ -41,8 +41,14 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::post('product/store',[\App\Http\Controllers\ProdcutController::class,'store'])->name('product.store');
     Route::post('product/edit',[\App\Http\Controllers\ProdcutController::class,'edit'])->name('product.edit');
     Route::post('product/destroy',[\App\Http\Controllers\ProdcutController::class,'destroy'])->name('product.destroy');
-
     //end product
+    //start inventory
+    Route::get('inventory',[\App\Http\Controllers\InventoryController::class,'index'])->name('inventory.index');
+    Route::post('inventory/store',[\App\Http\Controllers\InventoryController::class,'store'])->name('inventory.store');
+    Route::post('inventory/edit',[\App\Http\Controllers\InventoryController::class,'edit'])->name('inventory.edit');
+    Route::post('inventory/destroy',[\App\Http\Controllers\InventoryController::class,'destroy'])->name('inventory.destroy');
+
+    //end inventory
 });
 
 Route::get('/{page}', [\App\Http\Controllers\AdminController::class,'index'])->middleware('auth:admin,web');

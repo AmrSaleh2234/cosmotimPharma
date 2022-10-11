@@ -13,12 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('prodcuts', function (Blueprint $table) {
+        Schema::create('inventories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->integer('com_code')->default(1);
+            $table->integer('quantity');
+            $table->decimal('price_before');
+            $table->decimal('price_after');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->integer('com_code');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -30,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prodcuts');
+        Schema::dropIfExists('inventories');
     }
 };
