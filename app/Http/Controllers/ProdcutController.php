@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProduct;
 use App\Models\prodcut;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class ProdcutController extends Controller
      */
     public function index()
     {
-        return view('product.index');
+        $product=prodcut::where('com_code',auth()->user()->com_code)->get();
+        return view('product.index',compact('product'));
     }
 
     /**
@@ -33,9 +35,15 @@ class ProdcutController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProduct $request)
     {
-        //
+       $request->validated();
+        prodcut::create([
+            'name' => $request->product_name,
+            'com_code'=>auth()->user()->com_code,
+            'created_by' => auth()->user()->name
+        ]);
+        return redirect()->back()->with('success','تم اضافة المنتج بجاح ');
     }
 
     /**
@@ -55,9 +63,12 @@ class ProdcutController extends Controller
      * @param  \App\Models\prodcut  $prodcut
      * @return \Illuminate\Http\Response
      */
-    public function edit(prodcut $prodcut)
+    public function edit(StoreProduct $request)
     {
-        //
+        $request->validated();
+        prodcut::where('id', $request->id)->update(['name'=>$request->product_name,'updated_by'=>auth()->user()->name]);
+
+        return redirect()->back()->with('success','تم التعديل بنجاح ');
     }
 
     /**
@@ -78,8 +89,9 @@ class ProdcutController extends Controller
      * @param  \App\Models\prodcut  $prodcut
      * @return \Illuminate\Http\Response
      */
-    public function destroy(prodcut $prodcut)
+    public function destroy(Request $prodcut)
     {
-        //
+        prodcut::find($prodcut->id)->delete();
+        return redirect()->back()->with('success','تم الحذف بنجاح ');
     }
 }

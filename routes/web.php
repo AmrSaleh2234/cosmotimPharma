@@ -36,7 +36,13 @@ Route::get('/admin/dashboard',function(){
     return view('admin.admin');
 })->middleware('auth:admin');
 Route::group(['middleware'=>'auth:admin,web'],function (){
+    //start product
     Route::get('product',[\App\Http\Controllers\ProdcutController::class,'index']);
+    Route::post('product/store',[\App\Http\Controllers\ProdcutController::class,'store'])->name('product.store');
+    Route::post('product/edit',[\App\Http\Controllers\ProdcutController::class,'edit'])->name('product.edit');
+    Route::post('product/destroy',[\App\Http\Controllers\ProdcutController::class,'destroy'])->name('product.destroy');
+
+    //end product
 });
 
 Route::get('/{page}', [\App\Http\Controllers\AdminController::class,'index'])->middleware('auth:admin,web');
