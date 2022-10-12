@@ -47,8 +47,15 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::post('inventory/store',[\App\Http\Controllers\InventoryController::class,'store'])->name('inventory.store');
     Route::post('inventory/edit',[\App\Http\Controllers\InventoryController::class,'edit'])->name('inventory.edit');
     Route::post('inventory/destroy',[\App\Http\Controllers\InventoryController::class,'destroy'])->name('inventory.destroy');
-
     //end inventory
+    //start account
+    Route::get('account',[\App\Http\Controllers\AccountController::class,'index'])->name('account.index');
+    Route::get('customer',[\App\Http\Controllers\AccountController::class,'customersView'])->name('customer.index');
+    Route::get('account/create',[\App\Http\Controllers\AccountController::class,'create'])->name('account.create');
+    Route::post('account/store',[\App\Http\Controllers\AccountController::class,'store'])->name('account.store');
+    Route::post('account/edit',[\App\Http\Controllers\AccountController::class,'edit'])->name('account.edit');
+    Route::post('account/destroy',[\App\Http\Controllers\AccountController::class,'destroy'])->name('account.destroy');
+    //end account
 });
 
 Route::get('/{page}', [\App\Http\Controllers\AdminController::class,'index'])->middleware('auth:admin,web');

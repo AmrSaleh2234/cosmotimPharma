@@ -66,7 +66,8 @@ class ProdcutController extends Controller
     public function edit(StoreProduct $request)
     {
         $request->validated();
-        prodcut::where('id', $request->id)->update(['name'=>$request->product_name,'updated_by'=>auth()->user()->name]);
+        prodcut::where('id', $request->id)->where('com_code',auth()->user()->com_code)->update(['name'=>$request->product_name,'updated_by'=>auth()->user()->name]);
+
 
         return redirect()->back()->with('success','تم التعديل بنجاح ');
     }

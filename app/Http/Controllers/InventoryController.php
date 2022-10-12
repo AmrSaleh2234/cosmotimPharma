@@ -20,6 +20,7 @@ class InventoryController extends Controller
         $products = prodcut::where('com_code',auth()->user()->com_code)->get();
         return view('inventory.index',compact('inventory','products'));
 
+
     }
 
     /**
@@ -103,7 +104,7 @@ class InventoryController extends Controller
      */
     public function destroy(Request $inventory)
     {
-        inventory::find($inventory->id)->delete();
+        inventory::find($inventory->id)->forceDelete();
         return redirect()->back()->with('success','تم الحذف بنجاح ');
     }
 }

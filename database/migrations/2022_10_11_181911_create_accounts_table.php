@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('inventories', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('product_id');
-            $table->integer('com_code')->default(1);
-            $table->integer('quantity');
-            $table->decimal('price_before');
-            $table->decimal('price_after');
-            $table->string('created_by')->nullable();
-            $table->string('updated_by')->nullable();
+            $table->string('name');
+            $table->integer('account_type');//1=> customer 2=> supplier 3=>
+            $table->integer('balance_status');//1=> would get 2=>done 3=> must pay
+            $table->decimal('balance');
+            $table->integer('com_code');
+
             $table->softDeletes();
             $table->timestamps();
         });
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inventories');
+        Schema::dropIfExists('accounts');
     }
 };
