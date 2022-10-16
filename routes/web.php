@@ -40,7 +40,7 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::get('product',[\App\Http\Controllers\ProdcutController::class,'index']);
     Route::post('product/store',[\App\Http\Controllers\ProdcutController::class,'store'])->name('product.store');
     Route::post('product/edit',[\App\Http\Controllers\ProdcutController::class,'edit'])->name('product.edit');
-    Route::post('product/destroy',[\App\Http\Controllers\ProdcutController::class,'destroy'])->name('product.destroy');
+    Route::post('product/activate',[\App\Http\Controllers\ProdcutController::class,'activate'])->name('product.activate');
     //end product
     //start inventory
     Route::get('inventory',[\App\Http\Controllers\InventoryController::class,'index'])->name('inventory.index');
@@ -56,6 +56,12 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::post('account/edit',[\App\Http\Controllers\AccountController::class,'edit'])->name('account.edit');
     Route::post('account/destroy',[\App\Http\Controllers\AccountController::class,'destroy'])->name('account.destroy');
     //end account
+    //start customer invoice
+    Route::get('customer_invoice/{account}',[\App\Http\Controllers\InvoiceCustomerController::class,'create'])->name('invoice_customer.create');
+    Route::post('customer_invoice/{account}',[\App\Http\Controllers\InvoiceCustomerController::class,'store'])->name('invoice_customer.store');
+
+
+    //end customer invoice
 });
 
 Route::get('/{page}', [\App\Http\Controllers\AdminController::class,'index'])->middleware('auth:admin,web');

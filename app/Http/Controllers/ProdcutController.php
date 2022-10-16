@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProduct;
-use App\Models\prodcut;
+use App\Models\product;
 use Illuminate\Http\Request;
 
 class ProdcutController extends Controller
@@ -15,7 +15,7 @@ class ProdcutController extends Controller
      */
     public function index()
     {
-        $product=prodcut::where('com_code',auth()->user()->com_code)->get();
+        $product=product::where('com_code',auth()->user()->com_code)->get();
         return view('product.index',compact('product'));
     }
 
@@ -38,10 +38,12 @@ class ProdcutController extends Controller
     public function store(StoreProduct $request)
     {
        $request->validated();
-        prodcut::create([
+        product::create([
             'name' => $request->product_name,
             'com_code'=>auth()->user()->com_code,
-            'created_by' => auth()->user()->name
+            'created_by' => auth()->user()->name,
+            'price_after'=>$request->price_after,
+            'active'=>1
         ]);
         return redirect()->back()->with('success','تم اضافة المنتج بجاح ');
     }
@@ -49,10 +51,10 @@ class ProdcutController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\prodcut  $prodcut
+     * @param  \App\Models\product  $prodcut
      * @return \Illuminate\Http\Response
      */
-    public function show(prodcut $prodcut)
+    public function show(product $prodcut)
     {
         //
     }
@@ -60,13 +62,13 @@ class ProdcutController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\prodcut  $prodcut
+     * @param  \App\Models\product  $prodcut
      * @return \Illuminate\Http\Response
      */
     public function edit(StoreProduct $request)
     {
         $request->validated();
-        prodcut::where('id', $request->id)->where('com_code',auth()->user()->com_code)->update(['name'=>$request->product_name,'updated_by'=>auth()->user()->name]);
+        product::where('id', $request->id)->where('com_code',auth()->user()->com_code)->update(['name'=>$request->product_name,'price_after'=>$request->price_after,'updated_by'=>auth()->user()->name]);
 
 
         return redirect()->back()->with('success','تم التعديل بنجاح ');
@@ -76,10 +78,10 @@ class ProdcutController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\prodcut  $prodcut
+     * @param  \App\Models\product  $prodcut
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, prodcut $prodcut)
+    public function update(Request $request, product $prodcut)
     {
         //
     }
@@ -87,12 +89,24 @@ class ProdcutController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\prodcut  $prodcut
+     * @param  \App\Models\product  $prodcut
      * @return \Illuminate\Http\Response
      */
+    public function activate(Request $request)
+    {
+        $product=product::where('id',$request->id)->where('com_code',auth()->user()->com_code)->first();
+        if ($product->active == 1)
+        {
+            $product->update(['active'=>0]);
+            return redirect()->back()->with('success','تم التعطيل بنجاح ');
+        }
+        $product->update(['active'=>1]);
+        return redirect()->back()->with('success','تم التفعيل بنجاح ');
+
+    }
     public function destroy(Request $prodcut)
     {
-        prodcut::find($prodcut->id)->delete();
+        product::find($prodcut->id)->delete();
         return redirect()->back()->with('success','تم الحذف بنجاح ');
     }
 }

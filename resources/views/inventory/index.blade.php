@@ -53,6 +53,7 @@
                                             <label>اختر المنتج</label>
                                             <select class="form-control" name="product_id">
                                                 @foreach($products as $product)
+
                                                     <option value="{{$product->id}}">{{$product->name}}</option>
                                                 @endforeach
                                             </select>
@@ -65,10 +66,7 @@
                                             <div>السعر قبل البيع</div>
                                             <input class="w-100" type="text" name="price_before">
                                         </div>
-                                        <div class="form-group">
-                                            <div>السعر بعد البيع</div>
-                                            <input class="w-100" type="text" name="price_after">
-                                        </div>
+
 
                                     </div>
                                     <div class="modal-footer">
@@ -102,21 +100,22 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($inventory as $item)
+                            @foreach($products as $product)
+                                @foreach($product->inventory as $item)
                                 <tr>
                                     <td>{{++$i}}</td>
-                                    <td>{{$item->product->name}}</td>
+                                    <td>{{$product->name}}</td>
                                     <td>{{$item->quantity}}</td>
                                     <td>{{$item->price_before}}</td>
-                                    <td>{{$item->price_after}}</td>
+                                    <td>{{$product->price_after}}</td>
 
                                     <td>
 
                                         <a class="modal-effect btn btn-primary mb-1" data-effect="effect-flip-vertical"
                                            data-toggle="modal" href="#modaldemo1" data-id="{{$item->id}}"
-                                           data-product_id="{{$item->product->id}}" data-quantity="{{$item->quantity}}"
+                                           data-product_id="{{$product->id}}" data-quantity="{{$item->quantity}}"
                                            data-price_before="{{$item->price_before}}"
-                                           data-price_after="{{$item->price_after}}" style="width: 100px">تعديل</a>
+                                            style="width: 100px">تعديل</a>
                                         <a class="modal-effect btn btn-danger" data-effect="effect-flip-vertical"
                                            data-toggle="modal" href="#modaldemo2" data-id="{{$item->id}}"
                                            data-name="{{$item->name}}"  style="width: 100px">حذف</a>
@@ -156,11 +155,7 @@
                                                                 <input class="w-100" type="text" name="price_before"
                                                                        id="price_before">
                                                             </div>
-                                                            <div class="form-group">
-                                                                <div>السعر بعد البيع</div>
-                                                                <input class="w-100" type="text" name="price_after"
-                                                                       id="price_after">
-                                                            </div>
+
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -215,6 +210,7 @@
 
                                     </td>
                                 </tr>
+                                @endforeach
                             @endforeach
 
 
@@ -260,13 +256,12 @@
             var product_id = button.data('product_id')
             var quantity = button.data('quantity')
             var price_before = button.data('price_before')
-            var price_after = button.data('price_after')
             var modal = $(this)
             modal.find('.modal-body #id').val(id);
             modal.find('.modal-body #product_id').val(product_id);
             modal.find('.modal-body #quantity').val(quantity);
             modal.find('.modal-body #price_before').val(price_before);
-            modal.find('.modal-body #price_after').val(price_after);
+
         })
     </script>
     <script>

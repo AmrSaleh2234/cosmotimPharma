@@ -31,22 +31,33 @@
                     <button aria-label="Close" class="close" data-dismiss="alert" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                {{$errors->first()}}
+                    {{$errors->first()}}
 
-            @endif
+                    @endif
 
-            @if(\Session::has('success'))
+                    @if(\Session::has('success'))
 
-                    <div class="alert alert-success" role="alert">
-                        <button aria-label="Close" class="close" data-dismiss="alert" type="button">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    {!! \Session::get('success') !!}
+                        <div class="alert alert-success" role="alert">
+                            <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {!! \Session::get('success') !!}
+                        </div>
+
+
+                    @endif
+                    @if(\Session::has('error'))
+
+                        <div class="alert alert-danger" role="alert">
+                            <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {!! \Session::get('error') !!}
+                        </div>
+
+
+                    @endif
                 </div>
-
-
-            @endif
-        </div>
 @yield('content')
 @include('layouts.sidebar')
 @include('layouts.models')

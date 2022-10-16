@@ -10,11 +10,11 @@ class inventory extends Model
 {
     use HasFactory,softDeletes;
     protected $fillable=[
-        'id','product_id','com_code','quantity','price_before','price_after','created_by','updated_by',
+        'id','product_id','com_code','quantity','price_before','created_by','updated_by','account_id'
     ];
     public function product()
     {
-        return $this->belongsTo(prodcut::class)->withTrashed();
+        return $this->belongsTo(product::class)->withTrashed();
     }
 
 }

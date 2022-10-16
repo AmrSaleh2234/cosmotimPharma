@@ -27,7 +27,6 @@ class inventoryRequest extends FormRequest
             'product_id' =>'required',
             'quantity' =>'required|integer',
             'price_before' =>'required|numeric',
-            'price_after' =>'required|numeric'
         ];
     }
 }

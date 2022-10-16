@@ -4,7 +4,7 @@
 Project        :   VALEX - HTML5 Bootstrap Admin Template
 Version        :   V.1
 Create Date    :   09/05/20
-Copyright      :   Spruko Technologies Private Limited 
+Copyright      :   Spruko Technologies Private Limited
 Author         :   SprukoSoft
 Author URL     :   https://themeforest.net/user/sprukosoft
 Support	       :   support@spruko.com
@@ -10175,6 +10175,10 @@ a.close.disabled {
 /* ###### 6.3 Global  ###### */
 body {
   font-family: "Roboto", sans-serif; }
+*::-webkit-scrollbar {
+    height: 4px;
+    transition: .3s background;
+}
 
 .main-body, .main-dashboard {
   min-height: 100vh;

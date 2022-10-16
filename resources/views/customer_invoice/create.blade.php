@@ -1,0 +1,205 @@
+@extends('layouts.master')
+@section('title')
+    انشاء فاتورة مبيعات
+@endsection
+@section('css')
+@endsection
+@section('page-header')
+    <!-- breadcrumb -->
+    <div class="breadcrumb-header justify-content-between">
+        <div class="my-auto">
+            <div class="d-flex">
+                <h4 class="content-title mb-0 my-auto">العميل : {{$account->name}}</h4><span
+                    class="text-muted mt-1 tx-13 mr-2 mb-0">/ انشاء فاتورة</span>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb -->
+@endsection
+@section('content')
+    <!-- row -->
+    <div class="row d-flex flex-wrap">
+        <div class="col-lg-6 col-sm-12">
+            <div class="card" style="border-top:3px solid cadetblue">
+                <div class="card-header pb-0">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="card-title mg-b-0">المنتجات</h3>
+                        <i class="mdi mdi-dots-horizontal text-gray"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            @php
+                                $i=0
+                            @endphp
+                            <table class="table mg-b-0 text-md-nowrap">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم المنتج</th>
+                                    <th>السعر</th>
+                                    <th>اضافة</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($data as $item)
+                                    <tr>
+                                        <th scope="row">{{++$i}}</th>
+                                        <td>{{$item->product->name}}</td>
+                                        <td>{{$item->price_after}}</td>
+                                        <td>
+                                            <a>
+                                                <button class="btn btn-success btn-icon add-product-btn"
+                                                        data-name="{{$item->product->name}}"
+                                                        data-price="{{$item->price_after}}"
+                                                        data-id="{{$item->id}}" id="product-{{$item->id}}"><i
+                                                        class="typcn typcn-document-add "></i></button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+            <div class="card" style="border-top:3px solid cadetblue">
+                <div class="card-header pb-0">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="card-title mg-b-0">الفاتورة</h3>
+                        <i class="mdi mdi-dots-horizontal text-gray"></i>
+                    </div>
+                    <form action="{{route('invoice_customer.store',$account)}}" method="post" >
+                        @csrf
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table mg-b-0 text-md-nowrap">
+                                    <thead>
+                                    <tr>
+
+                                        <th>اسم المنتج</th>
+                                        <th>الكمية</th>
+                                        <th>خصم</th>
+                                        <th>السعر</th>
+                                        <th>حذف</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbody">
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <hr>
+
+                            <div class="mt-4 d-flex justify-content-center" >
+                                <label class="ml-3">خصم علي الفاتورة ككل</label>
+                               <input class="enableByJs" type="number" disabled name ="invoice_discount" >
+                            </div>
+                            <div class="mt-3" >
+                                <span>المجموع: </span> <span id="total">0</span>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit"  disabled class ="btn btn-primary mt-3  enableByJs" id="order_customer" style="width: 32%">
+                                    احفظ
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- row closed -->
+    </div>
+    <!-- Container closed -->
+    </div>
+    <!-- main-content closed -->
+@endsection
+@section('js')
+    <script>
+        $(document).ready(function () {
+            $('.add-product-btn').on('click', function (e) {
+                e.preventDefault();
+                var button = $(this)
+                var name = button.data('name');
+                var id = button.data('id');
+                var price = button.data('price');
+                var html='<tr> <td>'+ name+'</td><td class="quantity">'+ '<input type="hidden" name="products_id[]" value= "'+id+'"> '+ '<input class="input-sm quantity_input" value="1" data-price="'+price+'" type="number" name="quantities[]" data-price ="'+price+'"style="width:60px">'+'</td><td class="discount"><input type ="number" max="100" style="width:49px" class="discount_input" name="discount[]" ></td><td class="product_price" >'+ price+'</td><td><button class="btn btn-danger btn-icon btn-delete-product" data-id = "'+id+'"><i class="typcn typcn-document-delete "></i></button></td> </tr>';
+                $('.enableByJs').prop('disabled',false)
+                $('#tbody').append(html);
+                calculateTotal();
+                button.addClass('disabled ');
+            });
+            $('body').on('click','.btn-delete-product',function(e)
+            {
+                e.preventDefault();
+                var button = $(this)
+                var id = button.data('id');
+                $('#product-'+id).removeClass('disabled');
+                button.closest('tr').remove();
+                if($("#tbody").length<=1) {
+                    $('.enableByJs').prop('disabled',true)
+                    alert($("#tbody").length)
+                }
+                calculateTotal();
+            });
+            $('body').on('keyup change','.quantity_input', function(e)
+            {
+
+                // var val=Number(productPrice.data('price'));
+                var quantity=$(this).val();
+                var  price=$(this).data('price');
+                var  val=quantity*price
+                var discount=Number($(this).closest('tr').find('.discount input').val());
+                discount/=100;
+                discount=val*discount;
+                $(this).closest('tr').find('.product_price').html(val-discount);
+                calculateTotal()
+
+            })
+            $('body').on('keyup change','.discount_input', function(e)
+            {
+
+                var quantity=$(this).closest('tr').find('.quantity .quantity_input');
+                var discount=$(this).val();
+                var  price=quantity.data('price');
+
+                var  val=Number(quantity.val())*price
+
+
+                discount/=100;
+                discount=val*discount;
+                $(this).closest('tr').find('.product_price').html(val-discount);
+                calculateTotal()
+
+            })
+        });
+
+
+
+
+        function calculateTotal()
+        {
+            var price =0;
+            $('#tbody .product_price' ).each(function (index)
+            {
+                price += Number($(this).html());
+            })
+            $('#total').html(price)
+        }
+    </script>
+
+@endsection

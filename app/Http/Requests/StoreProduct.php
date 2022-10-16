@@ -24,13 +24,15 @@ class StoreProduct extends FormRequest
     public function rules()
     {
         return [
-            'product_name' =>'required|max:255'
+            'product_name' =>'required|max:255',
+            'price_after' =>'required|numeric',
         ];
     }
     public function messages()
     {
         return [
-            'product_name.required' =>'من فضلك ادخل اسم المنتج '
+            'product_name.required' =>'من فضلك ادخل اسم المنتج ',
+            'price_after.required' =>'من فضلك ادخل اسم المنتج '
         ];
     }
 }

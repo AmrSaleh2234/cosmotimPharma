@@ -17,7 +17,7 @@
 @endsection
 @section('content')
     <!-- row -->
-    <div class="row">
+    <div class="row ">
         <div class="col-xl-12">
             <div class="card" style="border-top:3px solid cadetblue">
                 <div class="card-header pb-0">

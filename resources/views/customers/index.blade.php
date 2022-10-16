@@ -34,7 +34,8 @@
                         <h3 class="card-title mg-b-0">جدول العملاء </h3>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
-                    <a class=" btn btn-outline-primary btn-block"  style="width: 300px;margin-top: 20px" href="{{route('account.create')}}">اضافة حساب
+                    <a class=" btn btn-outline-primary btn-block" style="width: 300px;margin-top: 20px"
+                       href="{{route('account.create')}}">اضافة عميل
                     </a>
 
                 </div>
@@ -47,11 +48,11 @@
                             @endphp
                             <thead>
                             <tr>
-                                <th class="wd-15p border-bottom-0 " >#</th>
-                                <th class="wd-15p border-bottom-0">اسم الحساب</th>
-                                <th class="wd-15p border-bottom-0">نوع الحساب</th>
+                                <th class="wd-15p border-bottom-0 ">#</th>
+                                <th class="wd-15p border-bottom-0">اسم العميل</th>
+
                                 <th class="wd-15p border-bottom-0">حالة الحساب</th>
-                                <th class="wd-10p border-bottom-0" >العمليات</th>
+                                <th class="wd-10p border-bottom-0">العمليات</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -59,37 +60,31 @@
                                 <tr>
                                     <td>{{++$i}}</td>
                                     <td>{{$item->name}}</td>
-                                    @if($item->account_type==1)
-                                        <td>راس مال</td>
-                                    @elseif($item->account_type==2)
-                                        <td>موردين</td>
-                                    @elseif($item->account_type==3)
-                                        <td>العملاء</td>
-                                    @elseif($item->account_type==4)
-                                        <td>موظفين</td>
-                                    @elseif($item->account_type==5)
-                                        <td>مصروفات</td>
-                                    @endif
+
 
                                     @if($item->balance_status ==1 )
-                                        <td><span> مدين وعليه مبلغ  {{$item->balance}}</span> </td>                                    @elseif($item->balance_status ==2)
+                                        <td><span> مدين وعليه مبلغ  {{$item->balance}}</span>
+                                        </td>                                    @elseif($item->balance_status ==2)
                                         <td> متزن</td>
                                     @elseif($item->balance_status ==3)
-                                        <td><span> دائن ويستحق له مبلغ  {{$item->balance}}</span> </td>
+                                        <td><span> دائن ويستحق له مبلغ  {{$item->balance}}</span></td>
 
                                     @endif
 
 
                                     <td>
+                                        <button data-toggle="dropdown" class="btn btn-outline-primary ">
+                                            العمليات <i
+                                                class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
+                                        <div class="dropdown-menu">
+                                            <a href="{{route('invoice_customer.create',$item)}}" class="dropdown-item">انشاء فاتورة </a>
+                                            <a href="" class="dropdown-item">عرض</a>
+                                            <a href="" class="dropdown-item">تعديل</a>
+                                            <a href="#modaldemo2" class="dropdown-item" data-toggle="modal"
+                                               href="#modaldemo2"
+                                               data-id="{{$item->id}}" style="color: red">حذف</a>
 
-                                        <a class=" btn btn-primary mb-1" style="width: 100px" href="">تعديل</a>
-                                        <a class="modal-effect btn btn-danger" data-effect="effect-flip-vertical"
-                                           data-toggle="modal" href="#modaldemo2" data-id="{{$item->id}}"
-                                           data-name="{{$item->name}}"  style="width: 100px">حذف</a>
-
-
-
-
+                                        </div><!-- dropdown-menu -->
                                         <div class="modal" id="modaldemo2">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content modal-content-demo">
@@ -122,6 +117,11 @@
 
                                             </div>
                                         </div>
+
+                                        {{--                                                            <a class=" btn btn-primary mb-1" style="width: 100px" href="">تعديل</a>--}}
+                                        {{--                                                            <a class="modal-effect btn btn-danger" data-effect="effect-flip-vertical"--}}
+                                        {{--                                                               data-toggle="modal" href="#modaldemo2" data-id="{{$item->id}}"--}}
+                                        {{--                                                               data-name="{{$item->name}}"  style="width: 100px">حذف</a>--}}
 
 
                                     </td>

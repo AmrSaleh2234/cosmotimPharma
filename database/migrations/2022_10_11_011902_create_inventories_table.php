@@ -19,9 +19,9 @@ return new class extends Migration
             $table->integer('com_code')->default(1);
             $table->integer('quantity');
             $table->decimal('price_before');
-            $table->decimal('price_after');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->bigInteger('account_id'); // we use it for check can edit or not
             $table->softDeletes();
             $table->timestamps();
         });

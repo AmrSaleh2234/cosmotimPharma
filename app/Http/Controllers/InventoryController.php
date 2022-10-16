@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\inventoryRequest;
 use App\Models\inventory;
-use App\Models\prodcut;
+use App\Models\product;
 use Illuminate\Http\Request;
 
 class InventoryController extends Controller
@@ -16,9 +16,8 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        $inventory =inventory::where('com_code',auth()->user()->com_code)->get();
-        $products = prodcut::where('com_code',auth()->user()->com_code)->get();
-        return view('inventory.index',compact('inventory','products'));
+        $products = product::where('com_code',auth()->user()->com_code)->get();
+        return view('inventory.index',compact('products'));
 
 
     }
@@ -46,9 +45,14 @@ class InventoryController extends Controller
             'product_id' => $request->product_id,
             'quantity' => $request->quantity,
             'price_before' => $request->price_before,
-            'price_after' => $request->price_after,
 
             ]);
+        $product=product::where('id',$request->product_id)->first();
+
+        if ($request->price_before >= $product->price_after )
+        {
+            return redirect()->back()->with('error','سعر المنتج قبل البيع يجب ان يكون اقل من بعد البيع ');
+        }
         return redirect()->back()->with('success','لقد تم اضافة المنتج في المخزن');
     }
 
@@ -76,7 +80,6 @@ class InventoryController extends Controller
             'product_id' => $request->product_id,
             'quantity' => $request->quantity,
             'price_before' => $request->price_before,
-            'price_after' => $request->price_after,
             'updated_by'=>auth()->user()->name
         ]);
 
