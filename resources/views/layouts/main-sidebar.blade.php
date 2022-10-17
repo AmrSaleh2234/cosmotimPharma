@@ -59,9 +59,9 @@
 						<ul class="slide-menu">
 							<li><a class="slide-item" href="{{ url('/' . $page='product') }}">قائمة منتجات</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='inventory') }}">قائمة المخزن</a></li>
-							<li><a class="slide-item" href="{{ url('/' . $page='account') }}">قائمة الحسابات</a></li>
+                            <li><a class="slide-item" href="{{ url('/' . $page='customer') }}">قائمة العملاء</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='editprofile') }}">قائمة موردين</a></li>
-							<li><a class="slide-item" href="{{ url('/' . $page='customer') }}">قائمة العملاء</a></li>
+
 
 
 						</ul>

@@ -37,19 +37,22 @@
                                     <th>#</th>
                                     <th>اسم المنتج</th>
                                     <th>السعر</th>
+                                    <th>الكمية </th>
                                     <th>اضافة</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($data as $item)
                                     <tr>
                                         <th scope="row">{{++$i}}</th>
-                                        <td>{{$item->product->name}}</td>
+                                        <td>{{$item->name}}</td>
                                         <td>{{$item->price_after}}</td>
+                                        <td>{{$item->total_quantity}}</td>
                                         <td>
                                             <a>
                                                 <button class="btn btn-success btn-icon add-product-btn"
-                                                        data-name="{{$item->product->name}}"
+                                                        data-name="{{$item->name}}"
                                                         data-price="{{$item->price_after}}"
                                                         data-id="{{$item->id}}" id="product-{{$item->id}}"><i
                                                         class="typcn typcn-document-add "></i></button>
@@ -101,7 +104,7 @@
 
                             <div class="mt-4 d-flex justify-content-center" >
                                 <label class="ml-3">خصم علي الفاتورة ككل</label>
-                               <input class="enableByJs" type="number" disabled name ="invoice_discount" >
+                            <input class="enableByJs" type="number" value="0" min="0" max="100" disabled name ="invoice_discount" id="discount_invoice">
                             </div>
                             <div class="mt-3" >
                                 <span>المجموع: </span> <span id="total">0</span>
@@ -137,9 +140,10 @@
                 var name = button.data('name');
                 var id = button.data('id');
                 var price = button.data('price');
-                var html='<tr> <td>'+ name+'</td><td class="quantity">'+ '<input type="hidden" name="products_id[]" value= "'+id+'"> '+ '<input class="input-sm quantity_input" value="1" data-price="'+price+'" type="number" name="quantities[]" data-price ="'+price+'"style="width:60px">'+'</td><td class="discount"><input type ="number" max="100" style="width:49px" class="discount_input" name="discount[]" ></td><td class="product_price" >'+ price+'</td><td><button class="btn btn-danger btn-icon btn-delete-product" data-id = "'+id+'"><i class="typcn typcn-document-delete "></i></button></td> </tr>';
+                var html='<tr> <td>'+ name+'</td><td class="quantity">'+ '<input type="hidden" name="products_id[]" value= "'+id+'"> '+ '<input class="input-sm quantity_input" value="1" data-price="'+price+'" type="number" min ="1"  name="quantities[]" data-price ="'+price+'"style="width:60px">'+'</td><td class="discount"><input type ="number" min="0" max="100" style="width:49px" value ="{{$account->discount}}" class="discount_input" name="discount[]" ></td><td class="product_price" >'+ price+'</td><td><button class="btn btn-danger btn-icon btn-delete-product" data-id = "'+id+'"><i class="typcn typcn-document-delete "></i></button></td> </tr>';
                 $('.enableByJs').prop('disabled',false)
                 $('#tbody').append(html);
+                calculateDiscount()
                 calculateTotal();
                 button.addClass('disabled ');
             });
@@ -179,18 +183,38 @@
 
                 var  val=Number(quantity.val())*price
 
-
                 discount/=100;
                 discount=val*discount;
                 $(this).closest('tr').find('.product_price').html(val-discount);
                 calculateTotal()
 
+            });
+            $('body').on('keyup change','#discount_invoice', function(e)
+            {
+                calculateTotal()
             })
         });
 
 
 
+        function calculateDiscount()
+        {
+            $('#tbody .discount_input' ).each(function (index)
+            {
 
+                var quantity=$(this).closest('tr').find('.quantity .quantity_input');
+                var discount=$(this).val();
+                var  price=quantity.data('price');
+
+                var  val=Number(quantity.val())*price
+
+                discount/=100;
+                discount=val*discount;
+                $(this).closest('tr').find('.product_price').html(val-discount);
+
+
+            })
+        }
         function calculateTotal()
         {
             var price =0;
@@ -198,6 +222,9 @@
             {
                 price += Number($(this).html());
             })
+
+            var discount=$('#discount_invoice').val()/100;
+           price-= price*discount;
             $('#total').html(price)
         }
     </script>

@@ -108,6 +108,10 @@ body {
   color: #031b4e;
   text-align: right;
   background-color: #ecf0fa; }
+.card_top
+{
+border-top:3px solid cadetblue !important;
+}
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }

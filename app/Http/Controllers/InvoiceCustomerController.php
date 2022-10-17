@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\account;
+use App\Models\customer;
 use App\Models\invoice_customer;
 use App\Models\product;
 use Illuminate\Http\Request;
@@ -24,14 +24,21 @@ class InvoiceCustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(account $account)
+    public function create(customer $account)
     {
         $products = product::where('com_code', auth()->user()->com_code)->get();
         $data = [];
         foreach ($products as $product) {
 
             if (count($product->inventory)>0) {
-                array_push($data, $product->inventory[0]);
+                $sum=0;
+                foreach ($product->inventory as $inv)
+                {
+                    $sum+=$inv->quantity;
+                }
+                $product->total_quantity=$sum;
+
+                array_push($data, $product);
             }
 
 
@@ -47,7 +54,7 @@ class InvoiceCustomerController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,account $account)
+    public function store(Request $request, customer $account)
     {
         return $request;
     }

@@ -67307,7 +67307,7 @@ var PiecewiseModel = VisualMapModel.extend({
         // }
         // where no inRange/outOfRange set but only pieces. So we should make
         // default inRange/outOfRange for this case, otherwise visuals that only
-        // appear in `pieces` will not be taken into account in visual encoding.
+        // appear in `pieces` will not be taken into customer in visual encoding.
 
         var option = this.option;
         var visualTypesInPieces = {};
@@ -72426,7 +72426,7 @@ if (!env$1.canvasSupported) {
         if (hasRotation) {
             // If filters are necessary (rotation exists), create them
             // filters are bog-slow, so only create them if abbsolutely necessary
-            // The following check doesn't account for skews (which don't exist
+            // The following check doesn't customer for skews (which don't exist
             // in the canvas spec (yet) anyway.
             // From excanvas
             var p0 = [x, y];

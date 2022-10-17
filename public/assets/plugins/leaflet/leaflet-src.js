@@ -5844,7 +5844,7 @@ var Draggable = Evented.extend({
 		if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) { return; }
 
 		// We assume that the parent container's position, border and scale do not change for the duration of the drag.
-		// Therefore there is no need to account for the position and border (they are eliminated by the subtraction)
+		// Therefore there is no need to customer for the position and border (they are eliminated by the subtraction)
 		// and we can use the cached value for the scale.
 		offset.x /= this._parentScale.x;
 		offset.y /= this._parentScale.y;
@@ -6275,7 +6275,7 @@ var LonLat = {
  * @namespace Projection
  * @projection L.Projection.Mercator
  *
- * Elliptical Mercator projection — more complex than Spherical Mercator. Takes into account that Earth is a geoid, not a perfect sphere. Used by the EPSG:3395 CRS.
+ * Elliptical Mercator projection — more complex than Spherical Mercator. Takes into customer that Earth is a geoid, not a perfect sphere. Used by the EPSG:3395 CRS.
  */
 
 var Mercator = {

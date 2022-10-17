@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    العملاء
+    الحسابات
 @endsection
 @section('css')
     <!-- Internal Data table css -->
@@ -28,15 +28,14 @@
     <!-- row -->
     <div class="row">
         <div class="col-xl-12">
-            <div class="card">
+            <div class="card card_top" >
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
                         <h3 class="card-title mg-b-0">جدول العملاء </h3>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
-                    <a class=" btn btn-outline-primary btn-block" style="width: 300px;margin-top: 20px"
-                       href="{{route('account.create')}}">اضافة عميل
-                    </a>
+                    <a class=" btn btn-outline-primary btn-block"  style="width: 300px;margin-top: 20px" href="{{route('customer.create')}}">اضافة عميل
+                         </a>
 
                 </div>
                 <div class="card-body">
@@ -48,11 +47,14 @@
                             @endphp
                             <thead>
                             <tr>
-                                <th class="wd-15p border-bottom-0 ">#</th>
-                                <th class="wd-15p border-bottom-0">اسم العميل</th>
+                                <th class="wd-5p border-bottom-0 " >#</th>
+                                <th class="wd-15p border-bottom-0">اسم الحساب</th>
+                                <th class="wd-15p border-bottom-0">رقم الهاتف</th>
+                                <th class="wd-15p border-bottom-0">العنوان</th>
+                                <th class="wd-10p border-bottom-0">حالة الحساب</th>
 
-                                <th class="wd-15p border-bottom-0">حالة الحساب</th>
-                                <th class="wd-10p border-bottom-0">العمليات</th>
+                                <th class="wd-15p border-bottom-0">الرصيد الكلي</th>
+                                <th class="wd-15p border-bottom-0" style="width: 69px">العمليات</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -60,31 +62,37 @@
                                 <tr>
                                     <td>{{++$i}}</td>
                                     <td>{{$item->name}}</td>
-
+                                    <td>{{$item->phone}}</td>
+                                    <td>{{$item->address}}</td>
 
                                     @if($item->balance_status ==1 )
-                                        <td><span> مدين وعليه مبلغ  {{$item->balance}}</span>
-                                        </td>                                    @elseif($item->balance_status ==2)
+                                        <td><span> مدين وعليه مبلغ  {{$item->balance}}</span> </td>                                    @elseif($item->balance_status ==2)
                                         <td> متزن</td>
                                     @elseif($item->balance_status ==3)
-                                        <td><span> دائن ويستحق له مبلغ  {{$item->balance}}</span></td>
+                                        <td><span> دائن ويستحق له مبلغ  {{$item->balance}}</span> </td>
 
                                     @endif
-
+                                    <td>{{$item->balance+$item->start_balance}}</td>
 
                                     <td>
-                                        <button data-toggle="dropdown" class="btn btn-outline-primary ">
-                                            العمليات <i
-                                                class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
+                                        <button data-toggle="dropdown" class="btn btn-primary btn-block " style="width: 150px">العمليات <i class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
                                         <div class="dropdown-menu">
-                                            <a href="{{route('invoice_customer.create',$item)}}" class="dropdown-item">انشاء فاتورة </a>
-                                            <a href="" class="dropdown-item">عرض</a>
                                             <a href="" class="dropdown-item">تعديل</a>
-                                            <a href="#modaldemo2" class="dropdown-item" data-toggle="modal"
-                                               href="#modaldemo2"
-                                               data-id="{{$item->id}}" style="color: red">حذف</a>
+
+                                            <a  class="dropdown-item text-danger" data-effect="effect-flip-vertical"
+                                               data-toggle="modal" href="#modaldemo2" data-id="{{$item->id}}"
+                                               data-name="{{$item->name}}">حذف</a>
+
+                                            <a href="{{route('invoice_customer.create',$item)}}" class="dropdown-item"> انشاء فاتورة</a>
 
                                         </div><!-- dropdown-menu -->
+
+
+
+
+
+
+
                                         <div class="modal" id="modaldemo2">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content modal-content-demo">
@@ -95,7 +103,7 @@
                                                             <span aria-hidden="true">&times;</span></button>
                                                     </div>
                                                     <h4>هل انت متأكد من عمليه الحذف</h4>
-                                                    <form action="{{route('account.destroy')}}" method="post">
+                                                    <form action="{{route('customer.destroy')}}" method="post">
                                                         <div class="modal-body">
 
                                                             @csrf
@@ -117,11 +125,6 @@
 
                                             </div>
                                         </div>
-
-                                        {{--                                                            <a class=" btn btn-primary mb-1" style="width: 100px" href="">تعديل</a>--}}
-                                        {{--                                                            <a class="modal-effect btn btn-danger" data-effect="effect-flip-vertical"--}}
-                                        {{--                                                               data-toggle="modal" href="#modaldemo2" data-id="{{$item->id}}"--}}
-                                        {{--                                                               data-name="{{$item->name}}"  style="width: 100px">حذف</a>--}}
 
 
                                     </td>

@@ -48,14 +48,13 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::post('inventory/edit',[\App\Http\Controllers\InventoryController::class,'edit'])->name('inventory.edit');
     Route::post('inventory/destroy',[\App\Http\Controllers\InventoryController::class,'destroy'])->name('inventory.destroy');
     //end inventory
-    //start account
-    Route::get('account',[\App\Http\Controllers\AccountController::class,'index'])->name('account.index');
-    Route::get('customer',[\App\Http\Controllers\AccountController::class,'customersView'])->name('customer.index');
-    Route::get('account/create',[\App\Http\Controllers\AccountController::class,'create'])->name('account.create');
-    Route::post('account/store',[\App\Http\Controllers\AccountController::class,'store'])->name('account.store');
-    Route::post('account/edit',[\App\Http\Controllers\AccountController::class,'edit'])->name('account.edit');
-    Route::post('account/destroy',[\App\Http\Controllers\AccountController::class,'destroy'])->name('account.destroy');
-    //end account
+    //start customer
+    Route::get('customer',[\App\Http\Controllers\CustomerController::class,'index'])->name('customer.index');
+    Route::get('customer/create',[\App\Http\Controllers\CustomerController::class,'create'])->name('customer.create');
+    Route::post('customer/store',[\App\Http\Controllers\CustomerController::class,'store'])->name('customer.store');
+    Route::post('customer/edit',[\App\Http\Controllers\CustomerController::class,'edit'])->name('customer.edit');
+    Route::post('customer/destroy',[\App\Http\Controllers\CustomerController::class,'destroy'])->name('customer.destroy');
+    //end customer
     //start customer invoice
     Route::get('customer_invoice/{account}',[\App\Http\Controllers\InvoiceCustomerController::class,'create'])->name('invoice_customer.create');
     Route::post('customer_invoice/{account}',[\App\Http\Controllers\InvoiceCustomerController::class,'store'])->name('invoice_customer.store');
