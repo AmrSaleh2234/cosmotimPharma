@@ -16,9 +16,13 @@ return new class extends Migration
         Schema::create('order_customers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('invoice_customer_id');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('inventory_id');
             $table->integer('quantity');
-            $table->decimal('price');
+            $table->decimal('price_before_discount');
+            $table->integer('discount');
+            $table->decimal('price_after_discount');
+
+
             $table->timestamps();
         });
     }

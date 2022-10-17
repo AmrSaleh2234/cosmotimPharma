@@ -154,9 +154,8 @@
                 var id = button.data('id');
                 $('#product-'+id).removeClass('disabled');
                 button.closest('tr').remove();
-                if($("#tbody").length<=1) {
+                if($("#tbody").children().length ==0) {
                     $('.enableByJs').prop('disabled',true)
-                    alert($("#tbody").length)
                 }
                 calculateTotal();
             });

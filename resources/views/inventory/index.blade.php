@@ -104,7 +104,7 @@
                                 @foreach($product->inventory as $item)
                                 <tr>
                                     <td>{{++$i}}</td>
-                                    <td>{{$product->name}}</td>
+                                    <td>{{$item->product->name}}</td>
                                     <td>{{$item->quantity}}</td>
                                     <td>{{$item->price_before}}</td>
                                     <td>{{$product->price_after}}</td>
@@ -118,7 +118,7 @@
                                             style="width: 100px">تعديل</a>
                                         <a class="modal-effect btn btn-danger" data-effect="effect-flip-vertical"
                                            data-toggle="modal" href="#modaldemo2" data-id="{{$item->id}}"
-                                           data-name="{{$item->name}}"  style="width: 100px">حذف</a>
+                                           data-name="{{$item->product->name}}"  style="width: 100px">حذف</a>
 
 
                                         <div class="modal" id="modaldemo1">

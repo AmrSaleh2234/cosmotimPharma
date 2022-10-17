@@ -12108,9 +12108,9 @@ pre {
   line-height: 33px; }
 
 *::-webkit-scrollbar {
-  width: 4px;
+  width: 1px;
   height: 4px;
-  transition: .3s background; }
+   }
 
 ::-webkit-scrollbar-thumb {
   background: #e1e6f1; }
