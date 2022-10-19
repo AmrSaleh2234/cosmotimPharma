@@ -19,6 +19,10 @@ return new class extends Migration
             $table->integer('discount');
             $table->decimal('total_before');
             $table->decimal('total_after');
+            $table->string('created_by')->nullable();
+            $table->string('created_by')->nullable();
+            $table->decimal('profit');
+            $table->decimal('payed')->default('0');
             $table->timestamps();
         });
     }

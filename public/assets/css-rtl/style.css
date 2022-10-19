@@ -3072,8 +3072,15 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
 .btn, .sp-container button {
   border-width: 0;
   line-height: 1.538;
-  padding: 9px 20px;
-  transition: none; }
+  padding: 6px 20px;
+  transition: none;
+
+}
+
+.btn-fixed
+{
+    padding:4px 10px;
+}
 
 .btn:active, .sp-container button:active, .btn:focus, .sp-container button:focus {
   box-shadow: none; }

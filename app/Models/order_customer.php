@@ -12,6 +12,10 @@ class order_customer extends Model
 
     public function customer()
     {
-        return $this->belongsTo(customer::class);
+        return $this->belongsTo(invoice_customer::class);
+    }
+    public function inventory()
+    {
+        return $this->belongsTo(inventory::class)->withTrashed();
     }
 }

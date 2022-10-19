@@ -56,8 +56,13 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::post('customer/destroy',[\App\Http\Controllers\CustomerController::class,'destroy'])->name('customer.destroy');
     //end customer
     //start customer invoice
+    Route::get('customer_invoice/',[\App\Http\Controllers\InvoiceCustomerController::class,'index'])->name('invoice_customer.index');
+    Route::get('customer_invoice/details/{invoice}',[\App\Http\Controllers\InvoiceCustomerController::class,'orderDetails'])->name('invoice_customer.orderDetails');
     Route::get('customer_invoice/{account}',[\App\Http\Controllers\InvoiceCustomerController::class,'create'])->name('invoice_customer.create');
     Route::post('customer_invoice/{account}',[\App\Http\Controllers\InvoiceCustomerController::class,'store'])->name('invoice_customer.store');
+    Route::get('customer_invoice/edit/{invoice}',[\App\Http\Controllers\InvoiceCustomerController::class,'edit'])->name('invoice_customer.edit');
+    Route::post('customer_invoice/edit/{invoice}',[\App\Http\Controllers\InvoiceCustomerController::class,'update'])->name('invoice_customer.update');
+    Route::post('customer_invoice/delete/{invoice}',[\App\Http\Controllers\InvoiceCustomerController::class,'destroy'])->name('invoice_customer.destroy');
 
 
     //end customer invoice
