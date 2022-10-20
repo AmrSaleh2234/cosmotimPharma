@@ -131,11 +131,9 @@ class SupplierControler extends Controller
         
         $supplier->update([
             'name'=>$request->name,
-            'balance_status'=>"2",
             'address'=>$request->address,
             'phone'=>$request->phone,
             'com_code'=>auth()->user()->com_code,
-            'balance'=>"0",
             'start_balance'=>$request->balance,
             'start_balance_status'=>$request->balance_status,
 

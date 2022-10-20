@@ -80,6 +80,14 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::post('capital/update/{capital}',[\App\Http\Controllers\CapitalController::class,'update'])->name('capital.update');
 
     //end capital 
+    //start expenses
+    Route::get('expenses/',[\App\Http\Controllers\ExpensesController::class,'index'])->name('expenses.index');
+    Route::get('expenses/create',[\App\Http\Controllers\ExpensesController::class,'create'])->name('expenses.create');
+    Route::post('expenses/store',[\App\Http\Controllers\ExpensesController::class,'store'])->name('expenses.store');
+    Route::get('expenses/edit/{expenses}',[\App\Http\Controllers\ExpensesController::class,'edit'])->name('expenses.edit');
+    Route::post('expenses/update/{expenses}',[\App\Http\Controllers\ExpensesController::class,'update'])->name('expenses.update');
+
+    //end expenses 
 });
 
 Route::get('/{page}', [\App\Http\Controllers\AdminController::class,'index'])->middleware('auth:admin,web');
