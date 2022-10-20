@@ -189,9 +189,99 @@ class InvoiceCustomerController extends Controller
      * @param \App\Models\invoice_customer $invoice_customer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, invoice_customer $invoice_customer)
+    public function update(Request $request, invoice_customer $invoice)
     {
-        //
+        $id_invoice=$invoice->id;
+        $account_id=$invoice->customer->id;
+
+        foreach ($invoice->inventory as $order)
+        {
+            if($order->deleted_at!=null)
+            {
+                $order->update(['deleted_at'=>null]);
+            }
+            $order->update([
+                'quantity'=>$order->quantity+$order->pivot->quantity
+            ]);
+        } 
+        $invoice->inventory()->detach();
+        $invoice->delete();
+        $i = 0;
+        $total_before = 0;
+        $total_after = 0;
+
+        $profit = 0;
+
+        foreach ($request->products_id as $id) {
+            $product = product::find($id);
+            $quantity = $request->quantities[$i];
+            $total_before += $product->price_after * $quantity;
+            $total_after += ($product->price_after * $quantity) - ($product->price_after * $quantity * ($request->discount[$i] / 100));
+            $quantity *= -1;
+            foreach ($product->inventory as $inv) {
+
+                $val = $inv->quantity + $quantity;
+                if ($val >= 0) { //batch product sastifiy
+
+                    $price_after_discount = ($product->price_after * ($quantity * -1)) - ($product->price_after * ($quantity * -1) * ($request->discount[$i] / 100));
+                    $profit += $price_after_discount - ($inv->price_before * ($quantity * -1));
+                    if($price_after_discount - ($inv->price_before * ($quantity * -1)) < 0)
+                    {
+                        return redirect()->back()->with('error','نسبة الخصم المكتوبة في المنتج تجعلك تخسر ');
+                    }
+                    if ($val == 0) {
+                        $inv->update(['quantity' => $val]);
+                        $inv->delete();
+                    } else {
+                        $inv->update(['quantity' => $val]);
+                    }
+                    order_customer::create([
+                        'invoice_customer_id' => $id_invoice,
+                        'inventory_id' => $inv->id,
+                        'quantity' => ($quantity * -1),
+                        'price_before_discount' => $product->price_after * ($quantity * -1),
+                        'price_after_discount' => $price_after_discount,
+                        'discount' => $request->discount[$i]
+
+                    ]);
+
+
+                    break;
+                } else {// inv not quantity sastify
+                    $price_after_discount= ($product->price_after * ((-1 * $quantity) + $val)) - ($product->price_after * ((-1 * $quantity) + $val) * ($request->discount[$i] / 100));
+                    $profit +=  $price_after_discount-($inv->price_before * ((-1 * $quantity) + $val));
+                    if ($price_after_discount-($inv->price_before * ((-1 * $quantity) + $val)) < 0 )
+                    {
+                        return redirect()->back()->with('error','نسبة الخصم المكتوبة في المنتج تجعلك تخسر ');
+
+                    }
+                    order_customer::create([
+                        'invoice_customer_id' => $id_invoice,
+                        'inventory_id' => $inv->id,
+                        'quantity' => (-1 * $quantity) + $val,
+                        'price_before_discount' => $product->price_after * ((-1 * $quantity) + $val),
+                        'price_after_discount' =>$price_after_discount,
+                        'discount' => $request->discount[$i]
+
+                    ]);
+
+                    $quantity = $val;
+                    $inv->update(['quantity' => '0']);
+                    $inv->delete();
+                }
+
+            }//end for each inv
+            $i++;
+        }
+        $total_after -= ($request->invoice_discount / 100) * $total_after;
+        invoice_customer::create(['id'=>$id_invoice,'customer_id' => $account_id, 'discount' => $request->invoice_discount
+            , 'total_before' => $total_before, 'total_after' => $total_after,'created_by'=>$invoice->created_by ,'updated_by' => auth()->user()->name,
+            'profit' => $profit,
+            'payed' => 0
+        ]);
+
+        return redirect()->back()->with(['success' => 'تم نعديل الفاتورة بنجاح']);
+
     }
 
     /**
@@ -213,6 +303,7 @@ class InvoiceCustomerController extends Controller
                 'quantity'=>$order->quantity+$order->pivot->quantity
             ]);
         }
+        $invoice->inventory()->detach();
         $invoice->delete();
         return redirect()->back()->with('success','تم الحذف بنجاح');
     }

@@ -16,7 +16,7 @@ class CustomerController extends Controller
     {
         $account=customer::where('com_code',auth()->user()->com_code)->get();
 
-       return  view('customer.index',compact('account'));
+        return  view('customer.index',compact('account'));
 
     }
 
@@ -63,19 +63,19 @@ class CustomerController extends Controller
         }
 
 
-       customer::create([
-           'name'=>$request->name,
-           'balance_status'=>"2",
-           'address'=>$request->address,
-           'phone'=>$request->phone,
-           'discount'=>$request->discount,
-           'com_code'=>auth()->user()->com_code,
-           'balance'=>"0",
-           'start_balance'=>$request->balance,
-           'start_balance_status'=>$request->balance_status,
+        customer::create([
+            'name'=>$request->name,
+            'balance_status'=>"2",
+            'address'=>$request->address,
+            'phone'=>$request->phone,
+            'discount'=>$request->discount,
+            'com_code'=>auth()->user()->com_code,
+            'balance'=>"0",
+            'start_balance'=>$request->balance,
+            'start_balance_status'=>$request->balance_status,
 
-       ]);
-       return redirect()->back()->with('success','تم اضافة العميل بنجاح ');
+        ]);
+        return redirect()->back()->with('success','تم اضافة العميل بنجاح ');
 
 
     }

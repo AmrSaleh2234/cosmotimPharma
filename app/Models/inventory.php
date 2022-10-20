@@ -10,7 +10,7 @@ class inventory extends Model
 {
     use HasFactory,softDeletes;
     protected $fillable=[
-        'id','product_id','com_code','quantity','price_before','created_by','updated_by','account_id'
+        'id','product_id','com_code','quantity','price_before','created_by','updated_by','account_id','deleted_at'
     ];
     public function product()
     {

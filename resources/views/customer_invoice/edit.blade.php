@@ -45,7 +45,7 @@
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
-                                            <th scope="row">{{ ++$i }}</th>
+                                            <td scope="row">{{ ++$i }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->price_after }}</td>
                                             <td>{{ $item->total_quantity }}</td>
@@ -78,7 +78,7 @@
                         <h3 class="card-title mg-b-0">الفاتورة</h3>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
-                    <form action="{{ route('invoice_customer.update', $invoice->customer) }}" method="post">
+                    <form action="{{ route('invoice_customer.update', $invoice) }}" method="post">
                         @csrf
                         <div class="card-body">
                             <div class="table-responsive">
@@ -96,20 +96,11 @@
                                     <tbody id="tbody">
 
                                         @foreach ($invoice->inventory as $item)
-                                            {{-- '<tr> <td>' + name + '</td><td class="quantity">' +
-                                            '<input type="hidden" name="products_id[]" value= "' + id + '"> ' +
-                                            '<input class="input-sm quantity_input" value="1" data-price="' + price +
-                                            '" type="number" min ="1"  name="quantities[]" data-price ="' + price +
-                                            '"style="width:60px">' +
-                                            '</td><td class="discount"><input type ="number" min="0" max="100" style="width:49px" value ="{{ $invoice->customer->discount }}" class="discount_input" name="discount[]" ></td><td class="product_price" >' +
-                                            price +
-                                            '</td><td><button class="btn btn-danger btn-icon btn-delete-product" data-id = "' + id +
-                                            '"><i class="typcn typcn-document-delete "></i></button></td> </tr>';
-                                            <tr> --}}
+                                            
                                             <tr>
                                                 <td>{{ $item->product->name }}</td>
                                                 <td class="quantity">
-                                                    <input type="hidden" name="product_id[]"
+                                                    <input type="hidden" name="products_id[]"
                                                         value="{{ $item->product->id }}">
                                                     <input class="input-sm quantity_input"
                                                         value="{{ $item->pivot->quantity }}" name="quantities[]"
@@ -117,7 +108,7 @@
                                                         min="1" style="width: 60px">
                                                 </td>
                                                 <td class="discount">
-                                                    <input type="number" min="0" max="0" style="width: 49px"
+                                                    <input type="number" min="0" max="100" style="width: 49px"
                                                         value="{{ $item->pivot->discount }}" class="discount_input"
                                                         name="discount[]">
 
