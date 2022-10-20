@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    الحسابات
+    الموردين
 @endsection
 @section('css')
     <!-- Internal Data table css -->
@@ -18,7 +18,7 @@
         <div class="my-auto">
             <div class="d-flex">
                 <h4 class="content-title mb-0 my-auto">الاعدادات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">
-                    الحسابات</span>
+                    الموردين/</span>
             </div>
         </div>
 
@@ -36,7 +36,7 @@
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
                     <a class=" btn btn-outline-primary btn-block" style="width: 300px;margin-top: 20px"
-                        href="{{ route('customer.create') }}">اضافة عميل
+                        href="{{ route('supplier.create') }}">اضافة مورد
                     </a>
 
                 </div>
@@ -50,13 +50,13 @@
                             <thead>
                                 <tr>
                                     <th class="wd-5p border-bottom-0 ">#</th>
-                                    <th class="wd-15p border-bottom-0">اسم الحساب</th>
                                     <th class="wd-15p border-bottom-0">رقم الهاتف</th>
+                                    <th class="wd-15p border-bottom-0">اسم الحساب</th>
                                     <th class="wd-15p border-bottom-0">العنوان</th>
                                     <th class="wd-10p border-bottom-0">حالة الحساب</th>
-
-                                    <th class="wd-15p border-bottom-0">الرصيد الكلي</th>
+                                    <th class="wd-15p border-bottom-0"> المنشئ</th>
                                     <th class="wd-15p border-bottom-0" style="width: 69px">العمليات</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -67,7 +67,6 @@
                                         <td>{{ $item->phone }}</td>
                                         <td>{{ $item->address }}</td>
 
-
                                         @if ($item->balance_status == 1 || $item->start_balance_status == 1)
                                             <td><span> مدين وعليه مبلغ {{ $item->balance + $item->start_balance }}</span>
                                             </td>
@@ -77,14 +76,14 @@
                                         @elseif($item->balance_status == 2)
                                             <td> متزن</td>
                                         @endif
-                                        <td>{{ $item->balance + $item->start_balance }}</td>
-
+                                        <td class="text-primary">{{ $item->created_by }}</td>
                                         <td>
-                                            <button data-toggle="dropdown" class="btn btn-primary btn-block "
+                                            <button data-toggle="dropdown" class="btn btn-outline-primary btn-block "
                                                 style="width: 150px">العمليات <i
                                                     class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
                                             <div class="dropdown-menu">
-                                                <a href="" class="dropdown-item">تعديل</a>
+                                                <a href="{{ route('supplier.edit', $item) }}"
+                                                    class="dropdown-item">تعديل</a>
 
                                                 <a class="dropdown-item text-danger" data-effect="effect-flip-vertical"
                                                     data-toggle="modal" href="#modaldemo2" data-id="{{ $item->id }}"
@@ -94,6 +93,7 @@
                                                     class="dropdown-item"> انشاء فاتورة</a>
 
                                             </div><!-- dropdown-menu -->
+
 
 
 
