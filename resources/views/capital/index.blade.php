@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    الموردين
+    راس المال
 @endsection
 @section('css')
     <!-- Internal Data table css -->
@@ -32,11 +32,11 @@
             <div class="card card_top">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <h3 class="card-title mg-b-0">جدول الموردين </h3>
+                        <h3 class="card-title mg-b-0">جدول رأس المال </h3>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
                     <a class=" btn btn-outline-primary btn-block" style="width: 300px;margin-top: 20px"
-                        href="{{ route('supplier.create') }}">اضافة مورد
+                        href="{{ route('capital.create') }}">اضافة رأس المال
                     </a>
 
                 </div>
@@ -52,7 +52,6 @@
                                     <th class="wd-5p border-bottom-0 ">#</th>
                                     <th class="wd-15p border-bottom-0">رقم الهاتف</th>
                                     <th class="wd-15p border-bottom-0">اسم الحساب</th>
-                                    <th class="wd-15p border-bottom-0">العنوان</th>
                                     <th class="wd-10p border-bottom-0">حالة الحساب</th>
                                     <th class="wd-15p border-bottom-0"> المنشئ</th>
                                     <th class="wd-15p border-bottom-0" style="width: 69px">العمليات</th>
@@ -65,14 +64,13 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->phone }}</td>
-                                        <td>{{ $item->address }}</td>
 
-                                        @if ($item->balance_status == 1 || $item->start_balance_status == 1)
-                                            <td><span> مدين وعليه مبلغ {{ $item->balance + $item->start_balance }}</span>
+                                        @if ($item->balance_status == 1 )
+                                            <td><span> مدين وعليه مبلغ {{ $item->balance }}</span>
                                             </td>
-                                        @elseif($item->balance_status == 3 || $item->balance_status == 3)
+                                        @elseif($item->balance_status == 3 )
                                             <td><span> دائن ويستحق له مبلغ
-                                                    {{ $item->balance + $item->start_balance }}</span> </td>
+                                                    {{ $item->balance}}</span> </td>
                                         @elseif($item->balance_status == 2)
                                             <td> متزن</td>
                                         @endif
@@ -82,15 +80,13 @@
                                                 style="width: 150px">العمليات <i
                                                     class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
                                             <div class="dropdown-menu">
-                                                <a href="{{ route('supplier.edit', $item) }}"
+                                                <a href="{{ route('capital.edit', $item) }}"
                                                     class="dropdown-item">تعديل</a>
 
                                                 <a class="dropdown-item text-danger" data-effect="effect-flip-vertical"
                                                     data-toggle="modal" href="#modaldemo2" data-id="{{ $item->id }}"
                                                     data-name="{{ $item->name }}">حذف</a>
 
-                                                <a href="{{ route('invoice_customer.create', $item) }}"
-                                                    class="dropdown-item"> انشاء فاتورة</a>
 
                                             </div><!-- dropdown-menu -->
 

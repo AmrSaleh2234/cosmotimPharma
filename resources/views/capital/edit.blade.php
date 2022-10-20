@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    تعديل مورد
+   تعديل راس المال
 @endsection
 @section('css')
 @endsection
@@ -9,7 +9,7 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">تعديل/</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">$supplier->name</span>
+                <h4 class="content-title mb-0 my-auto">تعديل/</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">$capital->name</span>
             </div>
         </div>
     </div>
@@ -22,24 +22,24 @@
             <div class="card" style="border-top:3px solid cadetblue">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <h3 class="card-title mg-b-0">تعديل مورد </h3>
+                        <h3 class="card-title mg-b-0">تعديل راس المال </h3>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
 
 
                 </div>
                 <div class="card-body">
-                    <form action="{{route('supplier.update',$supplier)}}" method="post">
+                    <form action="{{route('capital.update',$capital)}}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>ادخل اسم المورد</label>
-                                    <input type="text" class="form-control" name="name" value="{{$supplier->name}}">
+                                    <input type="text" class="form-control" name="name" value="{{$capital->name}}">
                                 </div>
                                 <div class="form-group">
                                     <label>ادخل العنوان</label>
-                                    <input type="text" class="form-control" name="address" value="{{ $supplier->address}}">
+                                    <input type="text" class="form-control" name="address" value="{{ $capital->address}}">
                                 </div>
                                 
 
@@ -47,29 +47,29 @@
                             <div class="col-6">
                                 <div  class="form-group">
                                     <label>ادخل رقم الهاتف</label>
-                                    <input type="text" class="form-control" name="phone" value="{{$supplier->phone }}">
+                                    <input type="text" class="form-control" name="phone" value="{{$capital->phone }}">
 
 
                                 <div class="form-group">
                                     <label>حاله الحساب </label>
                                     <div class="row mg-t-10">
                                         <div class="col-lg-3">
-                                            <label class="rdiobox"><input name="balance_status" type="radio" value="1"@if($supplier->start_balance_status ==1) checked @endif >
+                                            <label class="rdiobox"><input name="balance_status" type="radio" value="1"@if($capital->balance_status ==1) checked @endif >
                                                 <span>مدين (عليه)</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status"   type="radio"value="2" @if($supplier->start_balance_status ==2) checked @endif >
+                                            <label class="rdiobox"><input name="balance_status"   type="radio"value="2" @if($capital->balance_status ==2) checked @endif >
                                                 <span>متزن</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status" type="radio" value="3"@if($supplier->start_balance_status ==3) checked @endif >
+                                            <label class="rdiobox"><input name="balance_status" type="radio" value="3"@if($capital->balance_status ==3) checked @endif >
                                                 <span>دائن (له)</span></label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group" id="balance" style="display: none">
                                     <label>ادخل الرصيد</label>
-                                    <input type="number" class="form-control" name="balance" value="{{ $supplier->start_balance }}">
+                                    <input type="number" class="form-control" name="balance" value="{{ $capital->balance }}">
                                 </div>
                             </div>
 
@@ -97,7 +97,7 @@
 
         $(document).ready(function () {
 
-            if({{$supplier->start_balance_status}} !=2)
+            if({{$capital->start_balance_status}} !=2)
             {
                 $('#balance').css('display','block')
             }

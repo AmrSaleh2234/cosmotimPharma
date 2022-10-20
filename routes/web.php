@@ -72,6 +72,14 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::post('supplier/update/{supplier}',[\App\Http\Controllers\SupplierControler::class,'update'])->name('supplier.update');
 
     //end supplier 
+    //start capital
+    Route::get('capital/',[\App\Http\Controllers\CapitalController::class,'index'])->name('capital.index');
+    Route::get('capital/create',[\App\Http\Controllers\CapitalController::class,'create'])->name('capital.create');
+    Route::post('capital/store',[\App\Http\Controllers\CapitalController::class,'store'])->name('capital.store');
+    Route::get('capital/edit/{capital}',[\App\Http\Controllers\CapitalController::class,'edit'])->name('capital.edit');
+    Route::post('capital/update/{capital}',[\App\Http\Controllers\CapitalController::class,'update'])->name('capital.update');
+
+    //end capital 
 });
 
 Route::get('/{page}', [\App\Http\Controllers\AdminController::class,'index'])->middleware('auth:admin,web');

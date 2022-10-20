@@ -61,6 +61,7 @@
 							<li><a class="slide-item" href="{{ url('/' . $page='inventory') }}">قائمة المخزن</a></li>
                             <li><a class="slide-item" href="{{ url('/' . $page='customer') }}">قائمة العملاء</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='supplier') }}">قائمة موردين</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='capital') }}">قائمة رأس المال </a></li>
 
 
 
