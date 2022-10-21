@@ -47,7 +47,7 @@ class InvoiceCustomerController extends Controller
 
         }
 
-        return view('customer_invoice..create', compact('account', 'data'));
+        return view('customer_invoice.create', compact('account', 'data'));
 
 
     }
@@ -203,7 +203,7 @@ class InvoiceCustomerController extends Controller
             $order->update([
                 'quantity'=>$order->quantity+$order->pivot->quantity
             ]);
-        } 
+        }
         $invoice->inventory()->detach();
         $invoice->delete();
         $i = 0;

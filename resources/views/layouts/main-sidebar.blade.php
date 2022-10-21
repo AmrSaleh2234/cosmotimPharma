@@ -63,6 +63,7 @@
 							<li><a class="slide-item" href="{{ url('/' . $page='supplier') }}">قائمة موردين</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='capital') }}">قائمة رأس المال </a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='expenses') }}">قائمة المصروفات </a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='gift') }}">قائمة الهدايا </a></li>
 
 
 

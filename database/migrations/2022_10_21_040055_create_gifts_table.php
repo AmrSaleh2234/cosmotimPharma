@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('total');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->integer('com_code')->default("1");
             $table->timestamps();
         });
     }

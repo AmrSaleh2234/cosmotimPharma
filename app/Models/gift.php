@@ -16,7 +16,7 @@ class gift extends Model
     }
     public function inventory()
     {
-        return $this->belongsToMany(inventory::class,'order_gifts')->withTrashed()->withPivot('gift_id','inventory_id','quantity','price_after');
+        return $this->belongsToMany(inventory::class,'order_gifts')->withTrashed()->withPivot('gift_id','inventory_id','quantity','total');
     }
 
 }
