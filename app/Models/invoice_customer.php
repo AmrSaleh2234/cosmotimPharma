@@ -22,7 +22,7 @@ class invoice_customer extends Model
 
     public function order()
     {
-        return $this->hasMany(order_customer::class)    ;
+        return $this->hasMany(order_customer::class);
     }
 
 }

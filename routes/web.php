@@ -64,14 +64,14 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::post('customer_invoice/edit/{invoice}',[\App\Http\Controllers\InvoiceCustomerController::class,'update'])->name('invoice_customer.update');
     Route::post('customer_invoice/delete/{invoice}',[\App\Http\Controllers\InvoiceCustomerController::class,'destroy'])->name('invoice_customer.destroy');
     //end customer invoice
-    //start supplier 
+    //start supplier
     Route::get('supplier/',[\App\Http\Controllers\SupplierControler::class,'index'])->name('supplier.index');
     Route::get('supplier/create',[\App\Http\Controllers\SupplierControler::class,'create'])->name('supplier.create');
     Route::post('supplier/store',[\App\Http\Controllers\SupplierControler::class,'store'])->name('supplier.store');
     Route::get('supplier/edit/{supplier}',[\App\Http\Controllers\SupplierControler::class,'edit'])->name('supplier.edit');
     Route::post('supplier/update/{supplier}',[\App\Http\Controllers\SupplierControler::class,'update'])->name('supplier.update');
 
-    //end supplier 
+    //end supplier
     //start capital
     Route::get('capital/',[\App\Http\Controllers\CapitalController::class,'index'])->name('capital.index');
     Route::get('capital/create',[\App\Http\Controllers\CapitalController::class,'create'])->name('capital.create');
@@ -79,7 +79,7 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::get('capital/edit/{capital}',[\App\Http\Controllers\CapitalController::class,'edit'])->name('capital.edit');
     Route::post('capital/update/{capital}',[\App\Http\Controllers\CapitalController::class,'update'])->name('capital.update');
 
-    //end capital 
+    //end capital
     //start expenses
     Route::get('expenses/',[\App\Http\Controllers\ExpensesController::class,'index'])->name('expenses.index');
     Route::get('expenses/create',[\App\Http\Controllers\ExpensesController::class,'create'])->name('expenses.create');
@@ -87,7 +87,16 @@ Route::group(['middleware'=>'auth:admin,web'],function (){
     Route::get('expenses/edit/{expenses}',[\App\Http\Controllers\ExpensesController::class,'edit'])->name('expenses.edit');
     Route::post('expenses/update/{expenses}',[\App\Http\Controllers\ExpensesController::class,'update'])->name('expenses.update');
 
-    //end expenses 
+    //end expenses
+     //start gift
+    Route::get('customer_gift/',[\App\Http\Controllers\InvoiceCustomerController::class,'index'])->name('customer_gift.index');
+    Route::get('customer_gift/details/{invoice}',[\App\Http\Controllers\InvoiceCustomerController::class,'orderDetails'])->name('customer_gift.orderDetails');
+    Route::get('customer_gift/{account}',[\App\Http\Controllers\InvoiceCustomerController::class,'create'])->name('customer_gift.create');
+    Route::post('customer_gift/{account}',[\App\Http\Controllers\InvoiceCustomerController::class,'store'])->name('customer_gift.store');
+    Route::get('customer_gift/edit/{invoice}',[\App\Http\Controllers\InvoiceCustomerController::class,'edit'])->name('customer_gift.edit');
+    Route::post('customer_gift/edit/{invoice}',[\App\Http\Controllers\InvoiceCustomerController::class,'update'])->name('customer_gift.update');
+    Route::post('customer_gift/delete/{invoice}',[\App\Http\Controllers\InvoiceCustomerController::class,'destroy'])->name('customer_gift.destroy');
+    //end gift
 });
 
 Route::get('/{page}', [\App\Http\Controllers\AdminController::class,'index'])->middleware('auth:admin,web');

@@ -20,4 +20,8 @@ class inventory extends Model
     {
         return $this->belongsToMany(invoice_customer::class,'order_customers')->withPivot('invoice_customer_id','inventory_id','price_before_discount','quantity','discount','price_after_discount');
     }
+    public function gift()
+    {
+        return $this->belongsToMany(gift::class,'order_gifts')->withPivot('invoice_customer_id','inventory_id','price_before_discount','quantity','discount','price_after_discount');
+    }
 }
