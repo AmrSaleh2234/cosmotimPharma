@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('employee_id');
             $table->tinyInteger('type');// 1 =>absent  2=>reward
             $table->tinyInteger('done');// 1 =>deposit or collect or not
+            $table->decimal('amount');
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->timestamps();

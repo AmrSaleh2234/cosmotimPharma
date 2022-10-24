@@ -106,6 +106,8 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     Route::post('employee/destroy', [\App\Http\Controllers\EmployeeController::class, 'destroy'])->name('employee.destroy');
     Route::get('employee/absent/{employee}',[\App\Http\Controllers\EmployeeController::class,'absent'])->name('employee.absent');
     Route::get('employee/attendance/{employee}',[\App\Http\Controllers\EmployeeController::class,'attendance'])->name('employee.attendance');
+    Route::post('employee/reward/{employee}',[\App\Http\Controllers\EmployeeController::class,'reward'])->name('employee.reward');
+//    Route::post('employee/expenses/{employee}',[\App\Http\Controllers\EmployeeController::class,'expenses'])->name('employee.expenses');
     //end employee
 });
 

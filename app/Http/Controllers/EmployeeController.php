@@ -161,28 +161,36 @@ class EmployeeController extends Controller
     //take absent
     public function absent(employee $employee)
     {
-        $salaryDay=$employee->salary/30;
-        if($employee->com_code != $this->getAuthData('com_code'))
-        {
+        $salaryDay = $employee->salary / 30;
+        if ($employee->com_code != $this->getAuthData('com_code')) {
             return $this->error('غير مسموح بالتحكم بهذا الموظف');
         }
-        if(count($employee->employee_datails()->whereDate('created_at',Carbon::now()->format('Y-m-d'))->where('type',1)->get()) > 0)
-        {
+        if (count($employee->employee_datails()->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('type', 1)->get()) > 0) {
             return $this->error('لقد تم تسجيل الغياب بالفعل ');
         }
-        $employee->employee_datails()->create(['type'=>1,'done'=>0 ,'created_by'=>$this->getAuthData('name')]);
-        $employee->update(['balance'=>$employee->balance - $salaryDay]);
+        $employee->employee_datails()->create(['type' => 1, 'done' => 0, 'amount' => $salaryDay, 'created_by' => $this->getAuthData('name')]);
+        $employee->update(['balance' => $employee->balance - $salaryDay]);
         return $this->success('تم تسجيل الغياب');
     }
+
     public function attendance(employee $employee)
     {
-        $salaryDay=$employee->salary/30;
-        if($employee->com_code != $this->getAuthData('com_code'))
-        {
+        $salaryDay = $employee->salary / 30;
+        if ($employee->com_code != $this->getAuthData('com_code')) {
             return $this->error('غير مسموح بالتحكم بهذا الموظف');
         }
-        $employee->employee_datails()->whereDate('created_at',Carbon::now()->format('Y-m-d'))->where('type',1)->first()->delete();
-        $employee->update(['balance'=>$employee->balance + $salaryDay]);
+        $employee->employee_datails()->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('type', 1)->first()->delete();
+        $employee->update(['balance' => $employee->balance + $salaryDay]);
         return $this->success('تم تعديل الغياب لحضور');
+    }
+
+    public function reward(Request $request, employee $employee)
+    {
+        $employee->update([
+            'balance' => $employee->balance + $request->reward
+        ]);
+        $employee->employee_datails()->create(['type' => "2", 'amount' => $request->reward, 'done' => 0, 'created_by' => $this->getAuthData('com_code')]);
+
+        return $this->success('جم' . $request->reward . "تم اضافة المكافأه قدرها ");
     }
 }

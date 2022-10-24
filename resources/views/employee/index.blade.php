@@ -11,6 +11,18 @@
     <link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+    <style>
+        td{
+            text-align: center;
+        }
+        th{
+            text-align: center !important;
+        }
+        @media (max-width: 767px){
+            .address  {
+            width: 150px !important;
+        }}
+    </style>
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
@@ -43,7 +55,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
 
-                        <table class="table text-md-nowrap" id="example1">
+                        <table class="table " id="example1">
                             @php
                                 $i = 0;
                             @endphp
@@ -51,13 +63,13 @@
                             <tr>
                                 <th class=" border-bottom-0 ">#</th>
                                 <th class="  border-bottom-0">اسم الحساب</th>
-                                <th class="wd-7p  border-bottom-0">رقم الهاتف</th>
-                                <th class="wd-15p  border-bottom-0">العنوان</th>
+                                <th class=" border-bottom-0">رقم الهاتف</th>
+                                <th class=" border-bottom-0" style="width: 15%!important;">العنوان</th>
                                 <th class="  border-bottom-0">الحساب</th>
-                                <th class="  border-bottom-0"> المنشئ</th>
-                                <th class=" wd-7p border-bottom-0"> غياب</th>
-                                <th class="  border-bottom-0" style="width: 69px">العمليات</th>
-
+                                <th class=" border-bottom-0"> عرض</th>
+                                <th class=" border-bottom-0"> غياب</th>
+                                <th class=" text-center border-bottom-0 " >العمليات</th>
+                                <th class=" border-bottom-0"> المنشئ</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -71,7 +83,11 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->phone }}</td>
-                                        <td>{{ $item->address }}</td>
+                                        <td >
+                                            <div class="address" style="text-align: right !important;width: 200px">
+                                                {{ $item->address }}
+                                            </div>
+                                        </td>
 
                                         @if ($item->balance < 0)
                                             <td><span>مخصوم : {{ $item->balance }}</span>
@@ -82,34 +98,48 @@
                                         @elseif($item->balance == 0)
                                             <td> 0</td>
                                         @endif
-                                        <td class="text-primary">{{ $item->created_by }}</td>
+                                        <td class="text-center">
+                                            <a class="btn btn-primary ml-2 btn-fixed btn-view" href=""><i
+                                                    class="typcn typcn-eye-outline tx-20 "></i></a>
+                                        </td>
 
-                                        <td>
+
+                                        <td class="text-center">
                                             @if($item->employee_datails()->whereDate('created_at', \Illuminate\Support\Carbon::now()->format('Y-m-d'))->get()->isEmpty())
 
-                                                <a class=" btn btn-danger d-flex justify-content-center "
+                                                <a class=" btn btn-danger d-flex justify-content-center  "
                                                    href="{{route('employee.absent',$item)}}"
-                                                   style="width:10px; cursor:pointer ">
+                                                   style="width:10px; cursor:pointer ;">
                                                     <i class="typcn typcn-user-delete-outline tx-20 "></i>
                                                 </a>
                                             @else
 
                                                 <a class=" btn btn-success d-flex justify-content-center "
                                                    href="{{route('employee.attendance',$item)}}"
-                                                   style="width:10px; cursor:pointer; ">
+                                                   style="width:10px; cursor:pointer;">
                                                     <i class="typcn typcn-user-add-outline tx-20 "></i>
                                                 </a>
                                             @endif
 
                                         </td>
 
-                                        <td>
+
+                                        <td class="d-flex justify-content-center">
                                             <button data-toggle="dropdown" class="btn btn-outline-primary btn-block "
                                                     style="width: 150px">العمليات <i
                                                     class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
+
+
                                             <div class="dropdown-menu">
+
                                                 <a href="{{ route('employee.edit', $item) }}"
-                                                   class="dropdown-item">تعديل</a>
+                                                   class="dropdown-item text-orange font-weight-bolder">صرف المرتب</a>
+
+                                                <a class="dropdown-item text-purple " data-effect="effect-flip-vertical"
+                                                   data-toggle="modal" href="#modaldemo1" data-id="{{$item->id}}">اضافة
+                                                    مكافأة علي الراتب</a>
+                                                <a href="{{ route('employee.edit', $item) }}"
+                                                   class="dropdown-item text-primary">تعديل</a>
 
                                                 <a class="dropdown-item text-danger" data-effect="effect-flip-vertical"
                                                    data-toggle="modal" href="#modaldemo2" data-id="{{ $item->id }}"
@@ -118,6 +148,47 @@
 
                                             </div><!-- dropdown-menu -->
 
+                                            <div class="modal" id="modaldemo1">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content modal-content-demo">
+                                                        <div class="modal-header">
+                                                            <h6 class="modal-title">ادخل المكافأه</h6>
+                                                            <button aria-label="Close" class="close"
+                                                                    data-dismiss="modal"
+                                                                    type="button">
+                                                                <span aria-hidden="true">&times;</span></button>
+                                                        </div>
+
+                                                        <form action="{{ route('employee.reward',$item) }}"
+                                                              method="post">
+                                                            <div class="modal-body">
+
+                                                                @csrf
+
+                                                                <input name="id" id="id" type="hidden">
+                                                                <div class="form-group">
+                                                                    <label>دخل قيمة المكافأه للموظف </label>
+                                                                    <input name="reward" id="reward_input" type="number"
+                                                                           min="10">
+                                                                </div>
+
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn ripple btn-primary-gradient"
+                                                                        type="submit">
+                                                                    حفظ
+                                                                </button>
+                                                                <button class="btn ripple btn-secondary"
+                                                                        data-dismiss="modal" type="button">
+                                                                    Close
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+                                            </div>
 
                                             <div class="modal" id="modaldemo2">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -155,6 +226,7 @@
 
 
                                         </td>
+                                        <td class="text-success">{{ $item->created_by }}</td>
                                     </tr>
                                     @endforeach
 
@@ -195,20 +267,7 @@
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
     <script src="{{ URL::asset('assets/js/modal.js') }}"></script>
     <script>
-        $('#modaldemo1').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget)
-            var id = button.data('id')
-            var product_id = button.data('product_id')
-            var quantity = button.data('quantity')
-            var price_before = button.data('price_before')
-            var price_after = button.data('price_after')
-            var modal = $(this)
-            modal.find('.modal-body #id').val(id);
-            modal.find('.modal-body #product_id').val(product_id);
-            modal.find('.modal-body #quantity').val(quantity);
-            modal.find('.modal-body #price_before').val(price_before);
-            modal.find('.modal-body #price_after').val(price_after);
-        })
+
     </script>
     <script>
         $('#modaldemo2').on('show.bs.modal', function (event) {
@@ -221,21 +280,10 @@
         })
     </script>
     <script>
-        // function attendance(identfier)
-        // {
-        //     $(document).ready(function() {
-        //         var url = $(identfier).data('url');
-        //         var type=$(identfier).data('type')
-        //         $.ajax({
-        //             url: url,
-        //             method: 'get',
-        //             success: function(data) {
-        //
-        //
-        //             }
-        //         })
-        //     });
-        // }
+
+
+
+
 
     </script>
 @endsection

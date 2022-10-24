@@ -10,7 +10,7 @@ class employee_details extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'employee_id', 'type', 'done', 'created_by', 'updated_by'
+        'id', 'employee_id', 'type', 'done', 'created_by', 'updated_by','amount'
     ];
 
     public function employee()
