@@ -18,7 +18,7 @@ class InvoiceCustomerController extends Controller
      */
     public function index()
     {
-        $invoices = invoice_customer::all();
+        $invoices = invoice_customer::all();//com code required
         return view('customer_invoice.index', compact('invoices'));
 
     }
@@ -63,9 +63,12 @@ class InvoiceCustomerController extends Controller
         $i = 0;
         $total_before = 0;
         $total_after = 0;
-        $id_invoice = invoice_customer::all()->last()->id + 1;
         $profit = 0;
+        $id_invoice = 1;
 
+        if (invoice_customer::all()->last()) {
+            $id_invoice = invoice_customer::all()->last()->id + 1;
+        }
         foreach ($request->products_id as $id) {
             $product = product::find($id);
             $quantity = $request->quantities[$i];

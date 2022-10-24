@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('inventories', function (Blueprint $table) {
+        Schema::create('invoice_suppliers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('product_id');
-            $table->integer('com_code')->default(1);
-            $table->integer('quantity');
-            $table->decimal('price_before');
+            $table->unsignedBigInteger('supplier_id');
+            $table->decimal('total');
+            $table->decimal('payed')->default('0');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->bigInteger('supplier_id')->nullable(); // we use it for check can edit or delete directly ofr from invoice
-            $table->softDeletes();
+            $table->tinyInteger('com_code')->default('1');
+
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inventories');
+        Schema::dropIfExists('invoice_suppliers');
     }
 };
