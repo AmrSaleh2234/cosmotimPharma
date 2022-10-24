@@ -97,6 +97,16 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     Route::post('gift/edit/{invoice}', [\App\Http\Controllers\GiftController::class, 'update'])->name('gift.update');
     Route::post('gift/delete/{invoice}', [\App\Http\Controllers\GiftController::class, 'destroy'])->name('gift.destroy');
     //    //end gift
+    //start employee
+    Route::get('employee/', [\App\Http\Controllers\EmployeeController::class, 'index'])->name('employee.index');
+    Route::get('employee/create', [\App\Http\Controllers\EmployeeController::class, 'create'])->name('employee.create');
+    Route::post('employee/store', [\App\Http\Controllers\EmployeeController::class, 'store'])->name('employee.store');
+    Route::get('employee/edit/{employee}', [\App\Http\Controllers\EmployeeController::class, 'edit'])->name('employee.edit');
+    Route::post('employee/update/{employee}', [\App\Http\Controllers\EmployeeController::class, 'update'])->name('employee.update');
+    Route::post('employee/destroy', [\App\Http\Controllers\EmployeeController::class, 'destroy'])->name('employee.destroy');
+    Route::get('employee/absent/{employee}',[\App\Http\Controllers\EmployeeController::class,'absent'])->name('employee.absent');
+    Route::get('employee/attendance/{employee}',[\App\Http\Controllers\EmployeeController::class,'attendance'])->name('employee.attendance');
+    //end employee
 });
 
 Route::get('/{page}', [\App\Http\Controllers\AdminController::class, 'index'])->middleware('auth:admin,web');

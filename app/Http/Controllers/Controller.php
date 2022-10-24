@@ -14,4 +14,13 @@ class Controller extends BaseController
     {
         return auth()->user()->$data;
     }
+    public function success($message)
+    {
+        return redirect()->back()->with('success',$message);
+    }
+    public function error($message)
+    {
+        return redirect()->back()->with('error',$message);
+    }
+    
 }
