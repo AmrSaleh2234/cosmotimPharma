@@ -6,19 +6,17 @@
 
             <th>اسم المنتج</th>
             <th>الكمية</th>
-            <th>الخصم</th>
-            <th>السعر قبل</th>
-            <th>السعر بعد</th>
+            <th>السعر </th>
+
         </tr>
         </thead>
         <tbody id="tbody">
-        @foreach($order as $item)
+        @foreach($invoice->inventory as $item)
             <tr>
-                <td>{{$item->inventory->product->name}}</td>
-                <td>{{$item->quantity}}</td>
-                <td class="text-primary">%{{$item->discount}}</td>
-                <td class="text-danger">{{$item->price_before_discount}}</td>
-                <td class="text-success">{{$item->price_after_discount}}</td>
+                <td>{{$item->product->name}}</td>
+                <td>{{$item->pivot->quantity}}</td>
+                <td class="text-danger">{{$item->pivot->total}}</td>
+
             </tr>
         @endforeach
 
@@ -30,15 +28,7 @@
 
 
 <div class="mt-3">
-    <span>المجموع قبل الخصم: </span> <span id="total" class="text-danger">{{$invoice->total_before}}جم </span>
-</div>
-@if($invoice->discount!=0)
-    <div class="mt-3">
-        <span>الخصم علي الفاتورة ككل : </span> <span id="total" class="text-primary">{{$invoice->discount}}%</span>
-    </div>
-@endif
-<div class="mt-3">
-    <span>المجموع بعد الخصم: </span> <span id="total" class="text-success"> {{$invoice->total_after}}جم </span>
+    <span>المجموع: </span> <span id="total" class="text-danger">{{$invoice->total}}جم </span>
 </div>
 
 

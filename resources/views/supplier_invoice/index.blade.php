@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    عرض فواتير المبيعات
+    عرض فواتير المشتريات
 @endsection
 @section('css')
     <link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
@@ -12,8 +12,8 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">العملاء </h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/فواتير
-                    المبيعات </span>
+                <h4 class="content-title mb-0 my-auto">الموردين </h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/فواتير
+                    المشتريات </span>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
             <div class="card" style="border-top:3px solid cadetblue">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <h3 class="card-title mg-b-0">فواتير المبيعات</h3>
+                        <h3 class="card-title mg-b-0">فواتير المشتريات</h3>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
                     <div class="card-body">
@@ -35,7 +35,7 @@
                                 <thead>
                                     <tr>
                                         <th class="wd-2">رقم الفاتورة</th>
-                                        <th class="">اسم العميل</th>
+                                        <th class="">اسم المورد</th>
                                         <th class="wd-5p">قيمة الفاتورة </th>
                                         <th class="wd-5p">المدفوع </th>
                                         <th class="wd-5">منشئ الفاتورة</th>
@@ -48,8 +48,8 @@
                                     @foreach ($invoices as $item)
                                         <tr>
                                             <td>{{ $item->id }}</td>
-                                            <td>{{ $item->customer->name }}</td>
-                                            <td class="">{{ $item->total_after }}</td>
+                                            <td>{{ $item->supplier->name }}</td>
+                                            <td class="">{{ $item->total }}</td>
                                             <td class="text-success">{{ $item->payed }}</td>
                                             <td class="text-primary">{{ $item->created_by }}</td>
                                             <td class="text-nowrap">{{ $item->created_at->format(' H:i Y-m-d') }}</td>
@@ -57,16 +57,16 @@
                                             <td class="d-flex no-wrap align-items-center ">
                                                 <button class="btn btn-primary ml-2 btn-fixed btn-view"
                                                     onclick="order(this);" data-id="{{ $item->id }}"
-                                                    data-url="{{ route('invoice_customer.orderDetails', $item) }}"><i
+                                                    data-url="{{ route('invoice_supplier.orderDetails', $item) }}"><i
                                                         class="typcn typcn-eye-outline tx-20 "></i></button>
                                                 <a class="btn btn-warning-gradient ml-2 btn-fixed"
-                                                    href="{{ route('invoice_customer.edit', $item->id) }}"><i
+                                                    href="{{ route('invoice_supplier.edit', $item->id) }}"><i
                                                         class="typcn typcn-edit tx-20 "></i></a>
                                                 <button class="btn btn-danger-gradient ml-2 btn-fixed"
-                                                    onclick="getElementById('delete_invoice_customer').submit()"><i
+                                                    onclick="getElementById('delete_invoice_supplier').submit()"><i
                                                         class="typcn typcn-delete-outline tx-20 "></i></button>
-                                                <form id="delete_invoice_customer" method="post"
-                                                    action="{{ route('invoice_customer.destroy', $item) }}"
+                                                <form id="delete_invoice_supplier" method="post"
+                                                    action="{{ route('invoice_supplier.destroy', $item) }}"
                                                     style="display: none">
                                                     @csrf
                                                 </form>
@@ -110,6 +110,7 @@
         </div>
 
     </div>
+
     <!-- row closed -->
     <!-- Container closed -->
     <!-- main-content closed -->

@@ -136,6 +136,17 @@ class InvoiceCustomerController extends Controller
             'profit' => $profit,
             'payed' => 0
         ]);
+        $status=2;
+        if ($account->balance+$total_after>0)
+        {
+            $status=3;
+        }
+        elseif ($account->balance+$total_after<0)
+        {
+            $status=1;
+        }
+        $account->update(['balance'=>$account->balance+$total_after,'balance_status'=>$status]);
+
 
         return redirect()->back()->with(['success' => 'تم ضافة الفاتورة بنجاح']);
     }
@@ -196,6 +207,7 @@ class InvoiceCustomerController extends Controller
     {
         $id_invoice=$invoice->id;
         $account_id=$invoice->customer->id;
+        $totalBeforDelete=$invoice->total_after;
 
         foreach ($invoice->inventory as $order)
         {
@@ -207,7 +219,18 @@ class InvoiceCustomerController extends Controller
                 'quantity'=>$order->quantity+$order->pivot->quantity
             ]);
         }
-        $invoice->inventory()->detach();
+        $status=2;
+        if ($invoice->customer->balance-$totalBeforDelete >0)
+        {
+            $status=3;
+        }
+        elseif ($invoice->customer->balance-$totalBeforDelete<0)
+        {
+            $status=1;
+        }
+        $invoice->customer->update(['balance'=>$invoice->customer->balance-$totalBeforDelete,'balance_status'=>$status]);
+
+        $invoice->inventory()->detach(); // delete pivot
         $invoice->delete();
         $i = 0;
         $total_before = 0;
@@ -277,11 +300,24 @@ class InvoiceCustomerController extends Controller
             $i++;
         }
         $total_after -= ($request->invoice_discount / 100) * $total_after;
+
         invoice_customer::create(['id'=>$id_invoice,'customer_id' => $account_id, 'discount' => $request->invoice_discount
             , 'total_before' => $total_before, 'total_after' => $total_after,'created_by'=>$invoice->created_by ,'updated_by' => auth()->user()->name,
             'profit' => $profit,
             'payed' => 0
         ]);
+
+        $status=2;
+        if ($invoice->customer->balance+$total_after >0)
+        {
+            $status=3;
+        }
+        elseif ($invoice->customer->balance+$total_after<0)
+        {
+            $status=1;
+        }
+        $invoice->customer->update(['balance'=>$invoice->customer->balance+$total_after,'balance_status'=>$status]);
+
 
         return redirect()->back()->with(['success' => 'تم نعديل الفاتورة بنجاح']);
 
