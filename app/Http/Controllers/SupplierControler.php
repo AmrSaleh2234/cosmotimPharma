@@ -135,7 +135,7 @@ class SupplierControler extends Controller
         $updated_balance += $difr;
         if ($start_balance!=$supplier->start_balance)
         {
-            return $this->error('لقد دفعت لهذا المورع من قبل ');
+            return $this->error('لقد دفعت لهذا المورع من قبل لا يمكن التعديل ');
         }
 
         $status = 2;

@@ -9,5 +9,10 @@ class capital extends Model
 {
     use HasFactory;
     protected $fillable = ['id','name','phone','address','balance','balance_status','com_code','created_by','updated_by','active'];
+    public function exchangeRevenue()
+    {
+        return $this->hasMany(exchangeRevenue::class)->where('type', '=', '6');
+    }
+
 
 }

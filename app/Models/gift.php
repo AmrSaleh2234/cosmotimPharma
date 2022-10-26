@@ -18,5 +18,10 @@ class gift extends Model
     {
         return $this->belongsToMany(inventory::class,'order_gifts')->withTrashed()->withPivot('gift_id','inventory_id','quantity','total');
     }
+    public function exchangeRevenue()
+    {
+        return $this->hasMany(exchangeRevenue::class)->where('type', '=', '7');
+    }
+
 
 }

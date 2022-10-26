@@ -14,5 +14,10 @@ class supplier extends Model
     {
         return$this->hasMany(invoice_supplier::class);
     }
+    public function exchangeRevenue()
+    {
+        return $this->hasMany(exchangeRevenue::class)->where('type', '=', '2');
+    }
+
 
 }

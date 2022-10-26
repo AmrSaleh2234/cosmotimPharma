@@ -9,4 +9,9 @@ class expenses extends Model
 {
     use HasFactory;
     protected $fillable = ['id','name','com_code','created_by','updated_by','active'];
+    public function exchangeRevenue()
+    {
+        return $this->hasMany(exchangeRevenue::class)->where('type', '=', '8');
+    }
+
 }
