@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\exchangeRevenue;
+use App\Models\safe;
 use App\Models\supplier;
 use Illuminate\Http\Request;
 
@@ -128,13 +130,12 @@ class SupplierControler extends Controller
 
         $updated_balance = $supplier->balance;
         foreach ($supplier->invoice_supplier as $invoice) {
-            $total += $invoice->total-$invoice->payed;
+            $total += $invoice->total - $invoice->payed;
         }
         $start_balance = $supplier->balance - $total;// ely matbky mn start balance
         $difr = $request->balance - $supplier->start_balance;
         $updated_balance += $difr;
-        if ($start_balance!=$supplier->start_balance)
-        {
+        if ($start_balance != $supplier->start_balance) {
             return $this->error('لقد دفعت لهذا المورع من قبل لا يمكن التعديل ');
         }
 
@@ -152,8 +153,8 @@ class SupplierControler extends Controller
             'phone' => $request->phone,
             'start_balance' => $request->balance,
             'start_balance_status' => $request->balance_status,
-            'balance'=>$updated_balance,
-            'balance_status'=>$status
+            'balance' => $updated_balance,
+            'balance_status' => $status
 
         ]);
         return redirect()->back()->with('success', 'تم تعديل المورد بنجاح ');
@@ -169,11 +170,11 @@ class SupplierControler extends Controller
      */
     public function destroy(Request $request)
     {
-        $supllier= supplier::find($request->id);
-        if (count($supllier->invoice_supplier) > 0){
+        $supllier = supplier::find($request->id);
+        if (count($supllier->invoice_supplier) > 0) {
             $this->error(' المورد له فواتير لا يمكن مسحه  ');
         }
-        if ($supllier->balance){
+        if ($supllier->balance) {
             $this->error(' المورد له مستحقات  ');
         }
         $supllier->delete();
@@ -182,31 +183,36 @@ class SupplierControler extends Controller
 
     public function getStartBalance($id)
     {
-        $total=0;
-        $supplier=supplier::find($id);
-        foreach ($supplier->invoice_supplier as $invoice)
-        {
-            $total+=$invoice->total - $invoice->payed;
+        $total = 0;
+        $supplier = supplier::find($id);
+        foreach ($supplier->invoice_supplier as $invoice) {
+            $total += $invoice->total - $invoice->payed;
         }
-        return $supplier->balance-$total;
+        return $supplier->balance - $total;
     }
 
     public function pay(Request $request)
     {
-        $total=0;
-        $supplier=supplier::find($request->id);
-        foreach ($supplier->invoice_supplier as $invoice)
-        {
-            $total+=$invoice->total - $invoice->payed;
+        $total = 0;
+        $supplier = supplier::find($request->id);
+        foreach ($supplier->invoice_supplier as $invoice) {
+            $total += $invoice->total - $invoice->payed;
         }
 
-        $balance= $supplier->balance-$total;
-        if ($request->payed>$balance)
-        {
+        $balance = $supplier->balance - $total;
+        if ($request->payed > $balance) {
             $this->error('البلغ اكبر من المستحق ');
         }
-        $supplier->update(['balance'=>$supplier->balance-$request->payed]);
-        return $this->success('تم دفع النقدية بنجاح ') ;
+        $supplier->update(['balance' => $supplier->balance - $request->payed]);
+        exchangeRevenue::create(['fk' => $supplier->id, 'amount' => -1*$request->payed, 'type' => 1, 'com_code' => $supplier->com_code]);
+        $safes = safe::where('com_code', $this->getAuthData('com_code'))->first();
+
+        if ($safes->amount < $request->payed) {
+            return $this->error('لا يوجد ما يكفي في الخزينه ');
+        }
+        $safes->update(['amount' => $safes->amount - $request->payed]);
+
+        return $this->success('تم دفع النقدية بنجاح ');
 
     }
 }

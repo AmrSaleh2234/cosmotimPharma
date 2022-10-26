@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class exchangeRevenue extends Model
 {
     use HasFactory;
-    protected $fillable=['id','fk','type','amount'];
+    protected $fillable=['id','fk','type','amount','com_code'];
 
     public function supplier()
     {

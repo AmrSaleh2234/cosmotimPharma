@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('safes', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->bigIncrements('id');
             $table->decimal('amount');
             $table->integer('com_code');
             $table->timestamps();

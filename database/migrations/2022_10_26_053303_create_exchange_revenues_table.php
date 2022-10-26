@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('exchange_revenues', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('fk');
             $table->tinyInteger('type');//1=>supplier 2=>customer 3=>supplier_invoice 4=>customer_invoice 5=>employee 6=>capital 7=>gift
             $table->decimal('amount');
