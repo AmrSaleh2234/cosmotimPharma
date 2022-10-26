@@ -41,7 +41,7 @@
                                     <label>ادخل العنوان</label>
                                     <input type="text" class="form-control" name="address">
                                 </div>
-                                
+
 
                             </div>
                             <div class="col-6">
@@ -54,20 +54,20 @@
                                     <label>حاله الحساب </label>
                                     <div class="row mg-t-10">
                                         <div class="col-lg-3">
-                                            <label class="rdiobox"><input name="balance_status" type="radio" value="1">
+                                            <label class="rdiobox"><input name="balance_status" disabled type="radio" value="1">
                                                 <span>مدين (عليه)</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status" checked  type="radio" value="2">
+                                            <label class="rdiobox"><input name="balance_status" disabled  type="radio" value="2">
                                                 <span>متزن</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status" type="radio" value="3">
+                                            <label class="rdiobox"><input name="balance_status" checked type="radio" value="3">
                                                 <span>دائن (له)</span></label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" id="balance" style="display: none">
+                                <div class="form-group" id="balance" >
                                     <label>ادخل الرصيد</label>
                                     <input type="number" class="form-control" name="balance">
                                 </div>
@@ -95,22 +95,22 @@
 @section('js')
     <script>
 
-        $(document).ready(function () {
-            $('input[name="balance_status"]').on('change',function ()
-            {
-                if($(this).val()!=2)
-                {
-                    $('#balance').css('display','block')
-
-
-                }
-                else
-                {
-                    $('#balance').css('display','none')
-                }
-
-            })
-        });
+        // $(document).ready(function () {
+        //     $('input[name="balance_status"]').on('change',function ()
+        //     {
+        //         if($(this).val()!=2)
+        //         {
+        //             $('#balance').css('display','block')
+        //
+        //
+        //         }
+        //         else
+        //         {
+        //             $('#balance').css('display','none')
+        //         }
+        //
+        //     })
+        // });
 
     </script>
 @endsection

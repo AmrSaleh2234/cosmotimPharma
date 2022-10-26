@@ -66,6 +66,8 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     //end customer invoice
     //start supplier
     Route::get('supplier/', [\App\Http\Controllers\SupplierControler::class, 'index'])->name('supplier.index');
+    Route::get('supplier/start_balance/{id}', [\App\Http\Controllers\SupplierControler::class, 'getStartBalance'])->name('supplier.start-balance');
+    Route::post('supplier/pay', [\App\Http\Controllers\SupplierControler::class, 'pay'])->name('supplier.pay');
     Route::get('supplier/create', [\App\Http\Controllers\SupplierControler::class, 'create'])->name('supplier.create');
     Route::post('supplier/store', [\App\Http\Controllers\SupplierControler::class, 'store'])->name('supplier.store');
     Route::get('supplier/edit/{supplier}', [\App\Http\Controllers\SupplierControler::class, 'edit'])->name('supplier.edit');
@@ -110,6 +112,7 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
 //    Route::post('employee/expenses/{employee}',[\App\Http\Controllers\EmployeeController::class,'expenses'])->name('employee.expenses');
     //end employee
     //start supplier invoice
+    Route::post('supplier_invoice/pay', [\App\Http\Controllers\InvoiceSupplierController::class, 'pay'])->name('invoice_supplier.pay');
     Route::get('supplier_invoice/', [\App\Http\Controllers\InvoiceSupplierController::class, 'index'])->name('invoice_supplier.index');
     Route::get('supplier_invoice/details/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'orderDetails'])->name('invoice_supplier.orderDetails');
     Route::get('supplier_invoice/{account}', [\App\Http\Controllers\InvoiceSupplierController::class, 'create'])->name('invoice_supplier.create');
@@ -117,6 +120,7 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     Route::get('supplier_invoice/edit/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'edit'])->name('invoice_supplier.edit');
     Route::post('supplier_invoice/edit/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'update'])->name('invoice_supplier.update');
     Route::post('supplier_invoice/delete/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'destroy'])->name('invoice_supplier.destroy');
+
     //end supplier invoice
 });
 

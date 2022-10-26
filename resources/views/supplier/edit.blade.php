@@ -41,7 +41,7 @@
                                     <label>ادخل العنوان</label>
                                     <input type="text" class="form-control" name="address" value="{{ $supplier->address}}">
                                 </div>
-                                
+
 
                             </div>
                             <div class="col-6">
@@ -54,20 +54,20 @@
                                     <label>حاله الحساب </label>
                                     <div class="row mg-t-10">
                                         <div class="col-lg-3">
-                                            <label class="rdiobox"><input name="balance_status" type="radio" value="1"@if($supplier->start_balance_status ==1) checked @endif >
+                                            <label class="rdiobox"><input name="balance_status" type="radio" value="1" disabled >
                                                 <span>مدين (عليه)</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status"   type="radio"value="2" @if($supplier->start_balance_status ==2) checked @endif >
+                                            <label class="rdiobox"><input name="balance_status"   type="radio" value="2" disabled >
                                                 <span>متزن</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status" type="radio" value="3"@if($supplier->start_balance_status ==3) checked @endif >
+                                            <label class="rdiobox"><input name="balance_status" type="radio" value="3" checked>
                                                 <span>دائن (له)</span></label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" id="balance" style="display: none">
+                                <div class="form-group" id="balance" >
                                     <label>ادخل الرصيد</label>
                                     <input type="number" class="form-control" name="balance" value="{{ $supplier->start_balance }}">
                                 </div>
@@ -95,31 +95,31 @@
 @section('js')
     <script>
 
-        $(document).ready(function () {
+        {{--$(document).ready(function () {--}}
 
-            if({{$supplier->start_balance_status}} !=2)
-            {
-                $('#balance').css('display','block')
-            }
-            else{
-                $('#balance').css('display','none')
-            }
+        {{--    if({{$supplier->start_balance_status}} !=2)--}}
+        {{--    {--}}
+        {{--        $('#balance').css('display','block')--}}
+        {{--    }--}}
+        {{--    else{--}}
+        {{--        $('#balance').css('display','none')--}}
+        {{--    }--}}
 
-            $('input[name="balance_status"]').on('change',function ()
-            {
-                if($(this).val()!=2)
-                {
-                    $('#balance').css('display','block')
+        {{--    $('input[name="balance_status"]').on('change',function ()--}}
+        {{--    {--}}
+        {{--        if($(this).val()!=2)--}}
+        {{--        {--}}
+        {{--            $('#balance').css('display','block')--}}
 
 
-                }
-                else
-                {
-                    $('#balance').css('display','none')
-                }
+        {{--        }--}}
+        {{--        else--}}
+        {{--        {--}}
+        {{--            $('#balance').css('display','none')--}}
+        {{--        }--}}
 
-            })
-        });
+        {{--    })--}}
+        {{--});--}}
 
     </script>
 @endsection

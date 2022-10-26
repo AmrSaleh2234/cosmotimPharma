@@ -248,4 +248,29 @@ class InvoiceSupplierController extends Controller
         return view('supplier_invoice._productOrder', compact('invoice'));
 
     }
+
+    public function pay(Request $request)
+    {
+        $invoice=invoice_supplier::find($request->id);
+
+        if($invoice->com_code != $this->getAuthData('com_code'))
+        {
+            $this->error('لا يمكن التعديل علي هذة اللفاتورة للمستخدم ');
+        }
+        if ($invoice->total < $request->pay) {
+            $this->error('البلغ اكبر من قيمة الفاتورة ');
+        }
+        $status = 2;
+        if ($invoice->supplier->balance - $request->payed > 0) {
+            $status = 3;
+        } elseif ($invoice->supplier->balance - $request->payed < 0) {
+            $status = 1;
+        }
+
+        $invoice->update(['payed' => $request->payed]);
+        $invoice->supplier->update(['balance' => $invoice->supplier->balance - $request->payed, 'balance_status' => $status]);
+        return $this->success('تم تسجيل النقديه ');
+
+
+    }
 }

@@ -73,10 +73,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($account as $item)
-                                @if($item->salary_date == \Illuminate\Support\Carbon::now()->format('d'))
 
-                                    <tr style="border: navy">
+                            @foreach ($account as $item)
+                                @if($item->salary_day == \Illuminate\Support\Carbon::now()->format('d'))
+
+                                    <tr style="background-color: #c8eec0">
                                 @else
                                     <tr>
                                         @endif
@@ -105,7 +106,7 @@
 
 
                                         <td class="text-center">
-                                            @if($item->employee_datails()->whereDate('created_at', \Illuminate\Support\Carbon::now()->format('Y-m-d'))->get()->isEmpty())
+                                            @if($item->employee_datails()->whereDate('created_at', \Illuminate\Support\Carbon::now()->format('Y-m-d'))->where('type',1)->get()->isEmpty())
 
                                                 <a class=" btn btn-danger d-flex justify-content-center  "
                                                    href="{{route('employee.absent',$item)}}"
