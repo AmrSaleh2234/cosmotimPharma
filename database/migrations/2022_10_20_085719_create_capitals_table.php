@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->tinyInteger('active')->default(1);// 1 is active 0 not active
+            $table->softDeletes();
             $table->timestamps();
         });
     }

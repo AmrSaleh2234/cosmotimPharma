@@ -10,12 +10,12 @@ class exchangeRevenue extends Model
     use HasFactory;
     protected $fillable=['id','fk','type','amount','com_code'];
 
-    public function supplier()
+    public function supplier()//done
     {
         return $this->belongsTo(supplier::class,'fk')->where('type','=',1)->get();
     }
 
-    public function customer()
+    public function customer()//done
     {
         return $this->belongsTo(customer::class,'fk')->where('type','=',2)->get();
     }
@@ -34,9 +34,9 @@ class exchangeRevenue extends Model
     {
         return $this->belongsTo(employee::class,'fk')->where('type','=',5)->get();
     }
-    public function capital()
+    public function capital()//done
     {
-        return $this->belongsTo(capital::class,'fk')->where('type','=',6)->get();
+        return $this->belongsTo(capital::class,'fk')->withTrashed()->where('type','=',6)->get();
     }
 
     public function gift()
@@ -45,7 +45,7 @@ class exchangeRevenue extends Model
     }
     public function expenses()
     {
-        return $this->belongsTo(expenses::class,'fk')->where('type','=',8)->get();
+        return $this->belongsTo(expenses::class,'fk')->withTrashed()->where('type','=',8)->get();
     }
 
 

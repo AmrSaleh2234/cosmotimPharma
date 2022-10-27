@@ -41,7 +41,7 @@
                                     <label>ادخل العنوان</label>
                                     <input type="text" class="form-control" name="address" value="{{ $capital->address}}">
                                 </div>
-                                
+
 
                             </div>
                             <div class="col-6">
@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="form-group" id="balance" style="display: none">
                                     <label>ادخل الرصيد</label>
-                                    <input type="number" class="form-control" name="balance" value="{{ $capital->balance }}">
+                                    <input type="number" class="form-control" name="balance" value="{{ abs($capital->balance) }}">
                                 </div>
                             </div>
 
@@ -97,7 +97,7 @@
 
         $(document).ready(function () {
 
-            if({{$capital->start_balance_status}} !=2)
+            if({{$capital->balance_status}} != 2)
             {
                 $('#balance').css('display','block')
             }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\capital;
+use App\Models\exchangeRevenue;
+use App\Models\safe;
 use Illuminate\Http\Request;
 
 class CapitalController extends Controller
@@ -49,7 +51,6 @@ class CapitalController extends Controller
             'name.required' =>'ادخل اسم الحساب',
             'name.string' =>'ادخل حروف فقط',
             'balance_status.required' =>'ادخل حاله الحساب',
-            'balance.required' =>'ادخل رصيد الحساب',
         ]);
         if ($request->balance_status!=2 && ($request->balance<=0 || $request->balance==null))
         {
@@ -58,6 +59,10 @@ class CapitalController extends Controller
         if($request->balance_status==2)
         {
             $request->balance=0;
+        }
+        elseif ($request->balance_status==3)
+        {
+            $request->balance*=-1;
         }
 
 
@@ -126,7 +131,7 @@ class CapitalController extends Controller
         {
             $request->balance=0;
         }
-        
+
         $capital->update([
             'name'=>$request->name,
             'address'=>$request->address,
@@ -147,8 +152,56 @@ class CapitalController extends Controller
      * @param  \App\Models\capital  $capital
      * @return \Illuminate\Http\Response
      */
-    public function destroy(capital $capital)
+    public function destroy(Request $request)
     {
-        //
+        $capital=capital::find($request->id);
+        if($capital->balance_status!=2)
+        {
+            return $this->error('لابد من ان يكون الحساب متزن ');
+        }
+        //$capital->exchangeRevenue()->delete();
+        $capital->delete();
+        return $this->success('تمت الارشفة ');
+    }
+
+    public function pay(Request $request)
+    {
+        $capital=capital::find($request->id);
+        $status=2;
+        if($capital->balance +$request->payed >0)
+        {
+            $status=1;
+        }
+        elseif ($capital->balance +$request->payed <0)
+        {
+            $status=3;
+        }
+        $capital->update(['balance' => $capital->balance +$request->payed ,'balance_status' => $status]);
+        exchangeRevenue::create(['fk' => $capital->id, 'amount' => -1*($request->payed), 'type' => 6, 'com_code' => $capital->com_code]);
+
+        $safe=safe::where('com_code',$this->getAuthData('com_code'))->first();
+        $safe->update(['amount'=>$safe->amount - $request->payed]);
+        return $this->success('تم الدفع بنجاح');
+    }
+
+    public function collect(Request $request)
+    {
+        $capital=capital::find($request->id);
+        $status=2;
+        if($capital->balance -$request->payed >0)
+        {
+            $status=1;
+        }
+        elseif ($capital->balance -$request->payed <0)
+        {
+            $status=3;
+        }
+        $capital->update(['balance' => $capital->balance -$request->payed,'balance_status' => $status]);
+        exchangeRevenue::create(['fk' => $capital->id, 'amount' => ($request->payed), 'type' => 6, 'com_code' => $capital->com_code]);
+
+        $safe=safe::where('com_code',$this->getAuthData('com_code'))->first();
+
+        $safe->update(['amount'=>$safe->amount + $request->payed]);
+        return $this->success('تم التحصيل بنجاح');
     }
 }
