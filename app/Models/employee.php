@@ -16,7 +16,7 @@ class employee extends Model
     }
     public function exchangeRevenue()
     {
-        return $this->hasMany(exchangeRevenue::class)->where('type', '=', '5');
+        return $this->hasMany(exchangeRevenue::class,'fk')->where('type', '=', '5');
     }
 
 }

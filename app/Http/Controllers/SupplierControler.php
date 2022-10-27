@@ -53,7 +53,7 @@ class SupplierControler extends Controller
             'balance_status.required' => 'ادخل حاله الحساب',
             'balance.required' => 'ادخل رصيد الحساب',
         ]);
-        if ($request->balance_status != 2 && ($request->balance <= 0 || $request->balance == null)) {
+        if ($request->balance_status != 2 && ($request->balance < 0 || $request->balance == null)) {
             return redirect()->back()->with('error', 'لابد من ادخال قيمة الرصيد ');
         }
         if ($request->balance_status == 2) {
@@ -63,11 +63,11 @@ class SupplierControler extends Controller
 
         supplier::create([
             'name' => $request->name,
-            'balance_status' => "2",
+            'balance_status' => $request->balance_status,
             'address' => $request->address,
             'phone' => $request->phone,
             'com_code' => auth()->user()->com_code,
-            'balance' => "0",
+            'balance' => $request->balance,
             'start_balance' => $request->balance,
             'start_balance_status' => $request->balance_status,
 
@@ -120,7 +120,7 @@ class SupplierControler extends Controller
             'balance_status.required' => 'ادخل حاله الحساب',
             'balance.required' => 'ادخل رصيد الحساب',
         ]);
-        if ($request->balance_status != 2 && ($request->balance <= 0 || $request->balance == null)) {
+        if ($request->balance_status != 2 && ($request->balance < 0 || $request->balance == null)) {
             return redirect()->back()->with('error', 'لابد من ادخال قيمة الرصيد ');
         }
         if ($request->balance_status == 2) {
@@ -174,11 +174,11 @@ class SupplierControler extends Controller
         if (count($supllier->invoice_supplier) > 0) {
             $this->error(' المورد له فواتير لا يمكن مسحه  ');
         }
-        if ($supllier->balance) {
+        if ($supllier->balance!=0) {
             $this->error(' المورد له مستحقات  ');
         }
         $supllier->delete();
-
+        return $this->success('تم الحذف بنجاح');
     }
 
     public function getStartBalance($id)
@@ -196,15 +196,15 @@ class SupplierControler extends Controller
         $total = 0;
         $supplier = supplier::find($request->id);
         foreach ($supplier->invoice_supplier as $invoice) {
-            $total += $invoice->total - $invoice->payed;
+            return $total += $invoice->total - $invoice->payed;
         }
 
         $balance = $supplier->balance - $total;
         if ($request->payed > $balance) {
-            $this->error('البلغ اكبر من المستحق ');
+            return $this->error('البلغ اكبر من المستحق ');
         }
         $supplier->update(['balance' => $supplier->balance - $request->payed]);
-        exchangeRevenue::create(['fk' => $supplier->id, 'amount' => -1*$request->payed, 'type' => 1, 'com_code' => $supplier->com_code]);
+        exchangeRevenue::create(['fk' => $supplier->id, 'amount' => -1 * $request->payed, 'type' => 1, 'com_code' => $supplier->com_code]);
         $safes = safe::where('com_code', $this->getAuthData('com_code'))->first();
 
         if ($safes->amount < $request->payed) {

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    انشاء الحسابات
+    انشاء عميل
 @endsection
 @section('css')
 @endsection
@@ -9,7 +9,7 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">الحسابات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ انشاء</span>
+                <h4 class="content-title mb-0 my-auto">عميل</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ انشاء</span>
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
             <div class="card" style="border-top:3px solid cadetblue">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <h3 class="card-title mg-b-0">انشاء الحسابات </h3>
+                        <h3 class="card-title mg-b-0">انشاء عميل </h3>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
 
@@ -57,22 +57,22 @@
                                     <label>حاله الحساب </label>
                                     <div class="row mg-t-10">
                                         <div class="col-lg-3">
-                                            <label class="rdiobox"><input name="balance_status" type="radio" value="1">
+                                            <label class="rdiobox"><input name="balance_status" checked type="radio" value="1">
                                                 <span>مدين (عليه)</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status" checked  type="radio" value="2">
+                                            <label class="rdiobox"><input name="balance_status" disabled  type="radio" value="2">
                                                 <span>متزن</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status" type="radio" value="3">
+                                            <label class="rdiobox"><input name="balance_status" disabled type="radio" value="3">
                                                 <span>دائن (له)</span></label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" id="balance" style="display: none">
+                                <div class="form-group" id="balance" >
                                     <label>ادخل الرصيد</label>
-                                    <input type="number" class="form-control" name="balance">
+                                    <input type="number" value="0" class="form-control" name="balance">
                                 </div>
                             </div>
 

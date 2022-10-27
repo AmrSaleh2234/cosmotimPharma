@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\customer;
+use App\Models\exchangeRevenue;
+use App\Models\safe;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -38,6 +40,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'name' =>'required|string|max:255',
             'address' =>'required|string|max:255',
@@ -53,7 +56,7 @@ class CustomerController extends Controller
             'account_type.required' =>'ادخل نوع الحساب',
             'balance.required' =>'ادخل رصيد الحساب',
         ]);
-        if ($request->balance_status!=2 && ($request->balance<=0 || $request->balance==null))
+        if ($request->balance_status!=2 && ($request->balance<0 || $request->balance==null))
         {
             return redirect()->back()->with('error','لابد من ادخال قيمة الرصيد ');
         }
@@ -65,14 +68,17 @@ class CustomerController extends Controller
 
         customer::create([
             'name'=>$request->name,
-            'balance_status'=>"2",
             'address'=>$request->address,
             'phone'=>$request->phone,
             'discount'=>$request->discount,
             'com_code'=>auth()->user()->com_code,
-            'balance'=>"0",
             'start_balance'=>$request->balance,
             'start_balance_status'=>$request->balance_status,
+            'balance'=>$request->balance,
+            'balance_status'=>$request->balance_status,
+            'created_by' => $this->getAuthData('name'),
+            'active' => 1
+
 
         ]);
         return redirect()->back()->with('success','تم اضافة العميل بنجاح ');
@@ -80,11 +86,6 @@ class CustomerController extends Controller
 
     }
 
-    public function customersView()
-    {
-        $account=customer::where('com_code',auth()->user()->com_code)->where('account_type','3')->get();//3=>customers
-        return  view('customers.index',compact('account'));
-    }
 
     /**
      * Display the specified resource.
@@ -103,9 +104,10 @@ class CustomerController extends Controller
      * @param  \App\Models\customer  $account
      * @return \Illuminate\Http\Response
      */
-    public function edit(customer $account)
+    public function edit(customer $customer)
     {
-        //
+        return view('customer.edit', compact('customer'));
+
     }
 
     /**
@@ -115,9 +117,61 @@ class CustomerController extends Controller
      * @param  \App\Models\customer  $account
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, customer $account)
+    public function update(Request $request, customer $customer)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'balance_status' => 'required|integer',
+
+
+        ], [
+            'name.required' => 'ادخل اسم الحساب',
+            'name.string' => 'ادخل حروف فقط',
+            'balance_status.required' => 'ادخل حاله الحساب',
+            'balance.required' => 'ادخل رصيد الحساب',
+        ]);
+        if ($request->balance_status != 2 && ($request->balance < 0 || $request->balance == null)) {
+            return redirect()->back()->with('error', 'لابد من ادخال قيمة الرصيد ');
+        }
+        if ($request->balance_status == 2) {
+            $request->balance = 0;
+        }
+        $total = 0;
+
+        $updated_balance = $customer->balance;
+        foreach ($customer->invoice_customer as $invoice) {
+            $total += $invoice->total - $invoice->payed;
+        }
+        $start_balance = $customer->balance - $total;// ely matbky mn start balance for sure he not exchange from customer
+        $difr = $request->balance - $customer->start_balance;
+        $updated_balance += $difr;
+        if ($start_balance != $customer->start_balance) {
+            return $this->error('لقد حصلت من العميل من قبل لا يمكن التعديل ');
+        }
+
+        $status = 2;
+        if ($updated_balance > 0) {
+            $status = 1;
+        } elseif ($updated_balance < 0) {
+            $status = 3;
+        }
+
+
+        $customer->update([
+            'name' => $request->name,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'start_balance' => $request->balance,
+            'start_balance_status' => $request->balance_status,
+            'balance' => $updated_balance,
+            'balance_status' => $status,
+            'updated_by' => $this->getAuthData('name'),
+            'discount' => $request->discount
+
+        ]);
+        return redirect()->back()->with('success', 'تم تعديل المورد بنجاح ');
     }
 
     /**
@@ -126,9 +180,50 @@ class CustomerController extends Controller
      * @param  \App\Models\customer  $account
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $account)
+    public function destroy(Request $request)
     {
-        customer::find($account->id)->delete();
-        return redirect()->back()->with('success',"تم حذف الحساب بنجاح");
+        $customer = customer::find($request->id);
+        if (count($customer->invoice_customer) > 0) {
+           return $this->error(' المورد له فواتير لا يمكن مسحه  ');
+        }
+
+        if ($customer->balance!=0) {
+           return $this->error(' العميل حصل من الحيساب القديم لا يمكن الحذف  ');
+        }
+        $customer->delete();
+        return $this->success('تم الحذف بنجاح');
+    }
+
+    public function getStartBalance($id)
+    {
+        $total = 0;
+        $customer = customer::find($id);
+        foreach ($customer->invoice_customer as $invoice) {
+            $total += $invoice->total - $invoice->payed;
+        }
+        return $customer->balance - $total;
+    }
+
+    public function collect(Request $request)
+    {
+        $total = 0;
+        $customer = customer::find($request->id);
+        foreach ($customer->invoice_customer as $invoice) {
+            return $total += $invoice->total - $invoice->payed;
+        }
+
+        $balance = $customer->balance - $total;  // start_balance
+        if ($request->payed > $balance) {
+            return $this->error('البلغ اكبر من المستحق ');
+        }
+        $customer->update(['balance' => $customer->balance - $request->payed]);
+        exchangeRevenue::create(['fk' => $customer->id, 'amount' => ($request->payed), 'type' => 2, 'com_code' => $customer->com_code]);
+        $safes = safe::where('com_code', $this->getAuthData('com_code'))->first();
+
+
+        $safes->update(['amount' => $safes->amount + $request->payed]);
+
+        return $this->success('تم دفع النقدية بنجاح ');
+
     }
 }

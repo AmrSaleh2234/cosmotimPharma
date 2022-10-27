@@ -34,13 +34,15 @@
                             <table id="example" class="table key-buttons text-md-nowrap">
                                 <thead>
                                 <tr>
-                                    <th class="wd-2">رقم الفاتورة</th>
-                                    <th class="">اسم المورد</th>
-                                    <th class="wd-5p">قيمة الفاتورة</th>
-                                    <th class="wd-5p">المدفوع</th>
-                                    <th class="wd-5">منشئ الفاتورة</th>
-                                    <th>التاريخ</th>
-                                    <th class="d-flex justify-content-center">العمليات</th>
+                                    <th class="wd-sm-5">رقم الفاتورة</th>
+                                    <th class="wd-sm-5">اسم المورد</th>
+                                    <th class="wd-sm-10">قيمة الفاتورة</th>
+                                    <th class="">المدفوع</th>
+                                    <th class="">التاريخ</th>
+                                    <th class="">دفع</th>
+                                    <th class="">العمليات</th>
+                                    <th class="">منشئ الفاتورة</th>
+
 
                                 </tr>
                                 </thead>
@@ -51,34 +53,39 @@
                                         <td>{{ $item->supplier->name }}</td>
                                         <td class="">{{ $item->total }}</td>
                                         <td class="text-success">{{ $item->payed }}</td>
-                                        <td class="text-primary">{{ $item->created_by }}</td>
+
                                         <td class="text-nowrap">{{ $item->created_at->format(' H:i d-m-Y') }}</td>
-
-                                        <td class="d-flex no-wrap align-items-center ">
-                                            <button class="btn btn-primary ml-2 btn-fixed btn-view"
-                                                    onclick="order(this);" data-id="{{ $item->id }}"
-                                                    data-url="{{ route('invoice_supplier.orderDetails', $item) }}"><i
-                                                    class="typcn typcn-eye-outline tx-20 "></i></button>
-                                            <a class="btn btn-warning-gradient ml-2 btn-fixed"
-                                               href="{{ route('invoice_supplier.edit', $item->id) }}"><i
-                                                    class="typcn typcn-edit tx-20 "></i></a>
-
-                                            <a class="btn btn-success-gradient ml-2 btn-fixed" data-id="{{$item->id}}"
+                                        <td class="text-nowrap">
+                                            <a class="btn btn-danger-gradient ml-2 btn-fixed" data-id="{{$item->id}}"
                                                data-not_payed="{{$item->total- $item->payed}}"
                                                data-effect="effect-flip-vertical"
                                                data-toggle="modal" href="#modaldemo8"><i
                                                     class="mdi mdi-cash-multiple tx-20 "></i></a>
-
-
-                                            <button class="btn btn-danger-gradient ml-2 btn-fixed"
-                                                    onclick="getElementById('delete_invoice_supplier').submit()"><i
-                                                    class="typcn typcn-delete-outline tx-20 "></i></button>
-                                            <form id="delete_invoice_supplier" method="post"
-                                                  action="{{ route('invoice_supplier.destroy', $item) }}"
-                                                  style="display: none">
-                                                @csrf
-                                            </form>
                                         </td>
+
+                                        <td class=" ">
+                                            <div class="d-flex no-wrap align-items-center">
+                                                <button class="btn btn-primary ml-2 btn-fixed btn-view"
+                                                        onclick="order(this);" data-id="{{ $item->id }}"
+                                                        data-url="{{ route('invoice_supplier.orderDetails', $item) }}">
+                                                    <i
+                                                        class="typcn typcn-eye-outline tx-20 "></i></button>
+                                                <a class="btn btn-warning-gradient ml-2 btn-fixed"
+                                                   href="{{ route('invoice_supplier.edit', $item->id) }}"><i
+                                                        class="typcn typcn-edit tx-20 "></i></a>
+                                                <button class="btn btn-danger ml-2 btn-fixed"
+                                                        onclick="getElementById('delete_invoice_supplier').submit()"><i
+                                                        class="typcn typcn-delete-outline tx-20 "></i></button>
+                                                <form id="delete_invoice_supplier" method="post"
+                                                      action="{{ route('invoice_supplier.destroy', $item) }}"
+                                                      style="display: none">
+                                                    @csrf
+                                                </form>
+                                            </div>
+
+                                        </td>
+
+                                        <td class="text-primary">{{ $item->created_by }}</td>
                                     </tr>
                                 @endforeach
                                 <div class="modal" id="modaldemo8">
@@ -94,11 +101,12 @@
                                                 <div class="modal-body">
 
                                                     @csrf
-                                                    <input type="hidden" name="id"  id="id">
+                                                    <input type="hidden" name="id" id="id">
                                                     <div class="form-group">
                                                         <label> المبلغ المدفوع </label>
                                                         <input class="form-control " type="number"
-                                                               name="payed">المتبقي من ثمن الفاتورة <span class="text-danger" id="not-payed"></span>
+                                                               name="payed">المتبقي من ثمن الفاتورة <span
+                                                            class="text-danger" id="not-payed"></span>
 
                                                     </div>
 

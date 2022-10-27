@@ -72,17 +72,17 @@
                                         </div>
                                     </td>
 
-                                    @if ($item->balance_status == 1 || $item->start_balance_status == 1)
-                                        <td><span> مدين وعليه مبلغ {{ $item->balance + $item->start_balance }}</span>
+                                    @if ($item->balance_status == 1)
+                                        <td><span> مدين وعليه مبلغ {{ $item->balance }}</span>
                                         </td>
-                                    @elseif($item->balance_status == 3 || $item->balance_status == 3)
+                                    @elseif($item->balance_status == 3 )
                                         <td><span> دائن ويستحق له مبلغ
-                                                    {{ $item->balance + $item->start_balance }}</span></td>
+                                                    {{ $item->balance }}</span></td>
                                     @elseif($item->balance_status == 2)
                                         <td> متزن</td>
                                     @endif
                                     <td class="text-center">
-                                        <a class="btn btn-success-gradient ml-2 btn-fixed" data-id="{{$item->id}}"
+                                        <a class="btn btn-danger-gradient ml-2 btn-fixed" data-id="{{$item->id}}"
 
                                            data-effect="effect-flip-vertical"
                                            data-toggle="modal" href="#modaldemo8"><i
@@ -96,15 +96,14 @@
                                                 class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
                                         <div class="dropdown-menu">
                                             <a href="{{ route('supplier.edit', $item) }}"
-                                               class="dropdown-item">تعديل</a>
+                                               class="dropdown-item text-primary">تعديل</a>
+
+                                            <a href="{{ route('invoice_supplier.create', $item) }}"
+                                               class="dropdown-item text-orange"> انشاء فاتورة</a>
 
                                             <a class="dropdown-item text-danger" data-effect="effect-flip-vertical"
                                                data-toggle="modal" href="#modaldemo2" data-id="{{ $item->id }}"
                                                data-name="{{ $item->name }}">حذف</a>
-
-                                            <a href="{{ route('invoice_supplier.create', $item) }}"
-                                               class="dropdown-item"> انشاء فاتورة</a>
-
                                         </div><!-- dropdown-menu -->
 
                                         <div class="modal" id="modaldemo2">

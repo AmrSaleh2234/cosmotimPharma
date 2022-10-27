@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    انشاء مورد
+تعديل العميل
 @endsection
 @section('css')
 @endsection
@@ -9,7 +9,7 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">تعديل</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ $customer->name</span>
+                <h4 class="content-title mb-0 my-auto">تعديل</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/{{ $customer->name}}</span>
             </div>
         </div>
     </div>
@@ -22,14 +22,14 @@
             <div class="card" style="border-top:3px solid cadetblue">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <h3 class="card-title mg-b-0">انشاء مورد </h3>
+                        <h3 class="card-title mg-b-0">تعديل عميل </h3>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
 
 
                 </div>
                 <div class="card-body">
-                    <form action="{{route('supplier.update',$customer)}}" method="post">
+                    <form action="{{route('customer.update',$customer)}}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-6">
@@ -41,7 +41,11 @@
                                     <label>ادخل العنوان</label>
                                     <input type="text" class="form-control" name="address" value="{{ $customer->address}}">
                                 </div>
-                                
+
+                                <div class="form-group">
+                                    <label>نسبة الخصم للعميل علي كل منتج</label>
+                                    <input type="number" max="100" value="{{$customer->discount}}" min="0" class="form-control" name="discount">
+                                </div>
 
                             </div>
                             <div class="col-6">
@@ -54,15 +58,15 @@
                                     <label>حاله الحساب </label>
                                     <div class="row mg-t-10">
                                         <div class="col-lg-3">
-                                            <label class="rdiobox"><input name="balance_status" type="radio" @if($customer->start_balance_status ==1) checked @endif value="1">
+                                            <label class="rdiobox"><input name="balance_status" type="radio" checked value="1">
                                                 <span>مدين (عليه)</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status"   type="radio" @if($customer->start_balance_status ==2) checked @endif value="2">
+                                            <label class="rdiobox"><input name="balance_status"   type="radio" disabled value="2">
                                                 <span>متزن</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status" type="radio" @if($customer->start_balance_status ==3) checked @endif value="3">
+                                            <label class="rdiobox"><input name="balance_status" type="radio" disabled value="3">
                                                 <span>دائن (له)</span></label>
                                         </div>
                                     </div>

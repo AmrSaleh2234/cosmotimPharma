@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
 @section('title')
-    الحسابات
+    العملاء
 @endsection
 @section('css')
     <!-- Internal Data table css -->
-    <link href="{{ URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"/>
     <link href="{{ URL::asset('assets/plugins/datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"/>
     <link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
@@ -36,7 +36,7 @@
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
                     <a class=" btn btn-outline-primary btn-block" style="width: 300px;margin-top: 20px"
-                        href="{{ route('customer.create') }}">اضافة عميل
+                       href="{{ route('customer.create') }}">اضافة عميل
                     </a>
 
                 </div>
@@ -48,97 +48,143 @@
                                 $i = 0;
                             @endphp
                             <thead>
-                                <tr>
-                                    <th class="wd-5p border-bottom-0 ">#</th>
-                                    <th class="wd-15p border-bottom-0">اسم الحساب</th>
-                                    <th class="wd-15p border-bottom-0">رقم الهاتف</th>
-                                    <th class="wd-15p border-bottom-0">العنوان</th>
-                                    <th class="wd-10p border-bottom-0">حالة الحساب</th>
+                            <tr>
+                                <th class=" border-bottom-0 ">#</th>
+                                <th class=" border-bottom-0">اسم الحساب</th>
+                                <th class=" border-bottom-0">رقم الهاتف</th>
+                                <th class=" border-bottom-0">العنوان</th>
+                                <th class=" border-bottom-0">حالة الحساب</th>
+                                <th class=" border-bottom-0">تحصيل النقديه اول الحساب</th>
+                                <th class="border-bottom-0">العمليات</th>
+                                <th class="border-bottom-0" >المنشئ</th>
 
-                                    <th class="wd-15p border-bottom-0">الرصيد الكلي</th>
-                                    <th class="wd-15p border-bottom-0" style="width: 69px">العمليات</th>
-                                </tr>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach ($account as $item)
-                                    <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ $item->phone }}</td>
-                                        <td>{{ $item->address }}</td>
+                            @foreach ($account as $item)
+                                <tr>
+                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->phone }}</td>
+                                    <td>
+                                        <div style="width: 150px">
+                                            {{ $item->address }}
+                                        </div>
+                                    </td>
 
 
-                                        @if ($item->balance_status == 1 || $item->start_balance_status == 1)
-                                            <td><span> مدين وعليه مبلغ {{ $item->balance + $item->start_balance }}</span>
-                                            </td>
-                                        @elseif($item->balance_status == 3 || $item->balance_status == 3)
-                                            <td><span> دائن ويستحق له مبلغ
-                                                    {{ $item->balance + $item->start_balance }}</span> </td>
-                                        @elseif($item->balance_status == 2)
-                                            <td> متزن</td>
-                                        @endif
-                                        <td>{{ $item->balance + $item->start_balance }}</td>
+                                    @if ($item->balance_status == 1 )
+                                        <td><span> مدين وعليه مبلغ {{ $item->balance  }}</span>
+                                        </td>
+                                    @elseif($item->balance_status == 3 )
+                                        <td><span> دائن ويستحق له مبلغ
+                                                    {{ $item->balance  }}</span></td>
+                                    @elseif($item->balance_status == 2)
+                                        <td> متزن</td>
+                                    @endif
 
-                                        <td>
-                                            <button data-toggle="dropdown" class="btn btn-primary btn-block "
+                                    <td class="text-center">
+                                        <a class="btn btn-success-gradient ml-2 btn-fixed" data-id="{{$item->id}}"
+
+                                           data-effect="effect-flip-vertical"
+                                           data-toggle="modal" href="#modaldemo3"><i
+                                                class="mdi mdi-cash-multiple tx-20 "></i></a>
+                                    </td>
+
+                                    <td>
+                                        <button data-toggle="dropdown" class="btn btn-outline-primary btn-block "
                                                 style="width: 150px">العمليات <i
-                                                    class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
-                                            <div class="dropdown-menu">
-                                                <a href="" class="dropdown-item">تعديل</a>
+                                                class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
+                                        <div class="dropdown-menu ">
+                                            <a href="{{route('customer.edit',$item)}}"
+                                               class="dropdown-item text-primary">تعديل</a>
 
-                                                <a class="dropdown-item text-danger" data-effect="effect-flip-vertical"
-                                                    data-toggle="modal" href="#modaldemo2" data-id="{{ $item->id }}"
-                                                    data-name="{{ $item->name }}">حذف</a>
+                                            <a href="{{ route('invoice_customer.create', $item) }}"
+                                               class="dropdown-item text-orange"> انشاء فاتورة</a>
 
-                                                <a href="{{ route('invoice_customer.create', $item) }}"
-                                                    class="dropdown-item"> انشاء فاتورة</a>
-
-                                            </div><!-- dropdown-menu -->
-
+                                            <a class="dropdown-item text-danger" data-effect="effect-flip-vertical"
+                                               data-toggle="modal" href="#modaldemo2" data-id="{{ $item->id }}"
+                                               data-name="{{ $item->name }}">حذف</a>
 
 
+                                        </div><!-- dropdown-menu -->
 
-
-
-
-                                            <div class="modal" id="modaldemo2">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content modal-content-demo">
-                                                        <div class="modal-header">
-                                                            <h6 class="modal-title">حذف المنتج</h6>
-                                                            <button aria-label="Close" class="close" data-dismiss="modal"
-                                                                type="button">
-                                                                <span aria-hidden="true">&times;</span></button>
-                                                        </div>
-                                                        <h4>هل انت متأكد من عمليه الحذف</h4>
-                                                        <form action="{{ route('customer.destroy') }}" method="post">
-                                                            <div class="modal-body">
-
-                                                                @csrf
-
-                                                                <input name="id" id="id" type="hidden">
-
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button class="btn ripple btn-danger" type="submit">حذف
-                                                                    المنتج
-                                                                </button>
-                                                                <button class="btn ripple btn-secondary"
-                                                                    data-dismiss="modal" type="button">
-                                                                    Close
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-
+                                    <div class="modal" id="modaldemo2">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title">حذف المنتج</h6>
+                                                    <button aria-label="Close" class="close" data-dismiss="modal"
+                                                            type="button">
+                                                        <span aria-hidden="true">&times;</span></button>
                                                 </div>
+                                                <h4>هل انت متأكد من عمليه الحذف</h4>
+                                                <form action="{{ route('customer.destroy') }}" method="post">
+                                                    <div class="modal-body">
+
+                                                        @csrf
+
+                                                        <input name="id" id="id" type="hidden">
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn ripple btn-danger" type="submit">حذف
+                                                            المنتج
+                                                        </button>
+                                                        <button class="btn ripple btn-secondary"
+                                                                data-dismiss="modal" type="button">
+                                                            Close
+                                                        </button>
+                                                    </div>
+                                                </form>
                                             </div>
 
+                                        </div>
+                                    </div>
 
-                                        </td>
-                                    </tr>
-                                @endforeach
 
+                                    </td>
+
+                                    <td>{{$item->created_by}}</td>
+                                </tr>
+                            @endforeach
+                            <div class="modal" id="modaldemo3">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content modal-content-demo">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title">تحصيل نقديه اول الحساب</h6>
+                                            <button aria-label="Close" class="close"
+                                                    data-dismiss="modal" type="button">
+                                                <span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <form action="{{route('customer.collect')}}" method="post">
+                                            <div class="modal-body">
+
+                                                @csrf
+                                                <input type="hidden" name="id" id="id">
+                                                <div class="form-group">
+                                                    <label> المبلغ المحصل </label>
+                                                    <input class="form-control " type="number"
+                                                           name="payed">المتبقي من الحساب اول المدة : <span
+                                                        class="text-danger" id="not-payed"></span>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn ripple btn-primary" type="submit">
+                                                    ادفع
+                                                </button>
+                                                <button class="btn ripple btn-secondary"
+                                                        data-dismiss="modal" type="button">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
 
                             </tbody>
                         </table>
@@ -176,7 +222,7 @@
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
     <script src="{{ URL::asset('assets/js/modal.js') }}"></script>
     <script>
-        $('#modaldemo1').on('show.bs.modal', function(event) {
+        $('#modaldemo1').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var id = button.data('id')
             var product_id = button.data('product_id')
@@ -192,12 +238,40 @@
         })
     </script>
     <script>
-        $('#modaldemo2').on('show.bs.modal', function(event) {
+        $('#modaldemo2').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var id = button.data('id')
 
             var modal = $(this)
             modal.find('.modal-body #id').val(id);
+
+        })
+    </script>
+    <script>
+        $('document').ready(function (){
+            $('#modaldemo3').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget)
+                var id = button.data('id')
+
+                var url = "customer/start_balance/" + id;
+                var modal = $(this)
+                modal.find('.modal-body #id').val(id);
+                $.ajax({
+                    url: url,
+                    method: 'get',
+                    success: function (data) {
+                        $('#not-payed').html(data)
+                        $('input[name="payed"]').prop('disabled', false)
+                        if (data == 0) {
+                            $('input[name="payed"]').prop('disabled', true)
+
+                        }
+
+
+                    }
+                })
+
+            })
 
         })
     </script>

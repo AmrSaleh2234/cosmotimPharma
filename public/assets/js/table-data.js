@@ -16,6 +16,7 @@ $(function (e) {
 		.appendTo('#example_wrapper .col-md-6:eq(0)');
 
 	$('#example1').DataTable({
+
 		language: {
 			searchPlaceholder: 'Search...',
 			sSearch: '',

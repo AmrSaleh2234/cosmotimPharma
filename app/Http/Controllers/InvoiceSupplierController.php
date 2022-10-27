@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\exchangeRevenue;
 use App\Models\invoice_supplier;
 use App\Models\product;
+use App\Models\safe;
 use App\Models\supplier;
 use Illuminate\Http\Request;
 
@@ -126,23 +128,23 @@ class InvoiceSupplierController extends Controller
      */
     public function edit(invoice_supplier $invoice)
     {
-        $products = product::where('com_code', auth()->user()->com_code)->get();
-        $data = [];
-        foreach ($products as $product) {
-
-            if (count($product->inventory) > 0) {
-                $sum = 0;
-                foreach ($product->inventory as $inv) {
-                    $sum += $inv->quantity;
-                }
-                $product->total_quantity = $sum;
-
-                array_push($data, $product);
-            }
-        }
-
-        return view('supplier_invoice.edit', compact('invoice', 'data'));
-
+//        $products = product::where('com_code', auth()->user()->com_code)->get();
+//        $data = [];
+//        foreach ($products as $product) {
+//
+//            if (count($product->inventory) > 0) {
+//                $sum = 0;
+//                foreach ($product->inventory as $inv) {
+//                    $sum += $inv->quantity;
+//                }
+//                $product->total_quantity = $sum;
+//
+//                array_push($data, $product);
+//            }
+//        }
+//
+//        return view('supplier_invoice.edit', compact('invoice', 'data'));
+    return $invoice->supplier->exchangeRevenue;
     }
 
     /**
@@ -251,15 +253,15 @@ class InvoiceSupplierController extends Controller
 
     public function pay(Request $request)
     {
-        $invoice=invoice_supplier::find($request->id);
+        $invoice = invoice_supplier::find($request->id);
 
-        if($invoice->com_code != $this->getAuthData('com_code'))
-        {
-            $this->error('لا يمكن التعديل علي هذة اللفاتورة للمستخدم ');
+        if ($invoice->com_code != $this->getAuthData('com_code')) {
+            return $this->error('لا يمكن التعديل علي هذة اللفاتورة للمستخدم ');
         }
-        if ($invoice->total < $request->pay) {
-            $this->error('البلغ اكبر من قيمة الفاتورة ');
+        if (($invoice->total-$invoice->payed) < $request->payed) {
+            return $this->error('البلغ اكبر من قيمة الفاتورة ');
         }
+
         $status = 2;
         if ($invoice->supplier->balance - $request->payed > 0) {
             $status = 3;
@@ -268,6 +270,9 @@ class InvoiceSupplierController extends Controller
         }
 
         $invoice->update(['payed' => $request->payed]);
+        exchangeRevenue::create(['amount' => (-1 * $request->payed), 'type' => '3', 'com_code' => $invoice->supplier->com_code, 'fk' => $invoice->id]);
+        $safe = safe::where('com_code', $invoice->com_code)->first();
+        $safe->update(['amount' => $safe->amount - $request->payed]);
         $invoice->supplier->update(['balance' => $invoice->supplier->balance - $request->payed, 'balance_status' => $status]);
         return $this->success('تم تسجيل النقديه ');
 

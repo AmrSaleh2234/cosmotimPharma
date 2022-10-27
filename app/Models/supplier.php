@@ -16,7 +16,7 @@ class supplier extends Model
     }
     public function exchangeRevenue()
     {
-        return $this->hasMany(exchangeRevenue::class)->where('type', '=', '1');
+        return $this->hasMany(exchangeRevenue::class,'fk')->where('type', '=', '1');
     }
 
 

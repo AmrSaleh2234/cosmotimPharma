@@ -25,7 +25,7 @@ class invoice_supplier extends Model
     }
     public function exchangeRevenue()
     {
-        return $this->hasMany(exchangeRevenue::class)->where('type', '=', '3');
+        return $this->hasMany(exchangeRevenue::class,'fk')->where('type', '=', '3');
     }
 
 
