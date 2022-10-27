@@ -91,10 +91,12 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     //end capital
     //start expenses
     Route::get('expenses/', [\App\Http\Controllers\ExpensesController::class, 'index'])->name('expenses.index');
+    Route::post('capital/pay', [\App\Http\Controllers\ExpensesController::class, 'pay'])->name('expenses.pay');
     Route::get('expenses/create', [\App\Http\Controllers\ExpensesController::class, 'create'])->name('expenses.create');
     Route::post('expenses/store', [\App\Http\Controllers\ExpensesController::class, 'store'])->name('expenses.store');
     Route::get('expenses/edit/{expenses}', [\App\Http\Controllers\ExpensesController::class, 'edit'])->name('expenses.edit');
     Route::post('expenses/update/{expenses}', [\App\Http\Controllers\ExpensesController::class, 'update'])->name('expenses.update');
+    Route::post('expenses/delete', [\App\Http\Controllers\ExpensesController::class, 'destroy'])->name('expenses.destroy');
 
     //end expenses
     //start gift
