@@ -12,16 +12,19 @@
     <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
     <style>
-        td{
+        td {
             text-align: center;
         }
-        th{
+
+        th {
             text-align: center !important;
         }
-        @media (max-width: 767px){
-            .address  {
-            width: 150px !important;
-        }}
+
+        @media (max-width: 767px) {
+            .address {
+                width: 150px !important;
+            }
+        }
     </style>
 @endsection
 @section('page-header')
@@ -68,7 +71,7 @@
                                 <th class="  border-bottom-0">الحساب</th>
                                 <th class=" border-bottom-0"> عرض</th>
                                 <th class=" border-bottom-0"> غياب</th>
-                                <th class=" text-center border-bottom-0 " >العمليات</th>
+                                <th class=" text-center border-bottom-0 ">العمليات</th>
                                 <th class=" border-bottom-0"> المنشئ</th>
                             </tr>
                             </thead>
@@ -84,7 +87,7 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->phone }}</td>
-                                        <td >
+                                        <td>
                                             <div class="address" style="text-align: right !important;width: 200px">
                                                 {{ $item->address }}
                                             </div>
@@ -133,7 +136,7 @@
 
                                             <div class="dropdown-menu">
 
-                                                <a href="{{ route('employee.edit', $item) }}"
+                                                <a data-toggle="modal" href="#modaldemo3" data-id="{{$item->id}}"
                                                    class="dropdown-item text-orange font-weight-bolder">صرف المرتب</a>
 
                                                 <a class="dropdown-item text-purple " data-effect="effect-flip-vertical"
@@ -224,7 +227,39 @@
 
                                                 </div>
                                             </div>
+                                            <div class="modal" id="modaldemo3">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content modal-content-demo">
+                                                        <div class="modal-header">
+                                                            <h6 class="modal-title">صرف المرتب</h6>
+                                                            <button aria-label="Close" class="close"
+                                                                    data-dismiss="modal"
+                                                                    type="button">
+                                                                <span aria-hidden="true">&times;</span></button>
+                                                        </div>
+                                                        <h4>هل انت متأكد من عمليه الصرف</h4>
+                                                        <form action="{{ route('employee.pay') }}" method="post">
+                                                            <div class="modal-body">
 
+                                                                @csrf
+
+                                                                <input name="id" id="id" type="hidden">
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn ripple btn-danger" type="submit">صرف
+                                                                    للموظف
+                                                                </button>
+                                                                <button class="btn ripple btn-secondary"
+                                                                        data-dismiss="modal" type="button">
+                                                                    Close
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+                                            </div>
 
                                         </td>
                                         <td class="text-success">{{ $item->created_by }}</td>
@@ -281,10 +316,13 @@
         })
     </script>
     <script>
+        $('#modaldemo3').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
 
+            var modal = $(this)
+            modal.find('.modal-body #id').val(id);
 
-
-
-
+        })
     </script>
 @endsection

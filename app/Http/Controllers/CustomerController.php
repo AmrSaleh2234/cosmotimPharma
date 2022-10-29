@@ -216,7 +216,13 @@ class CustomerController extends Controller
         if ($request->payed > $balance) {
             return $this->error('البلغ اكبر من المستحق ');
         }
-        $customer->update(['balance' => $customer->balance - $request->payed]);
+        $status = 2;
+        if ($customer->balance - $request->payed > 0) {
+            $status = 1;
+        } elseif ($customer->balance - $request->payed < 0) {
+            $status = 3;
+        }
+        $customer->update(['balance' => $customer->balance - $request->payed,'balance_status' => $status]);
         exchangeRevenue::create(['fk' => $customer->id, 'amount' => ($request->payed), 'type' => 2, 'com_code' => $customer->com_code]);
         $safes = safe::where('com_code', $this->getAuthData('com_code'))->first();
 

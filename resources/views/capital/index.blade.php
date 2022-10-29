@@ -311,11 +311,8 @@
                 var modal = $(this)
                 modal.find('.modal-body #id').val(id);
                 $('#not-payed2').html(balance)
-                $('input[name="payed"]').prop('disabled', false)
 
-                if (balance == 0) {
-                    $('input[name="payed"]').prop('disabled', true)
-                }
+
 
 
             })

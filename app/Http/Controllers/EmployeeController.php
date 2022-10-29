@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\employee;
+use App\Models\exchangeRevenue;
+use App\Models\safe;
 use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -179,7 +181,7 @@ class EmployeeController extends Controller
         if ($employee->com_code != $this->getAuthData('com_code')) {
             return $this->error('غير مسموح بالتحكم بهذا الموظف');
         }
-        $employee->employee_datails()->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('type', 1)->first()->delete();
+        $employee->employee_datails()->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('type', 1)->last()->delete();
         $employee->update(['balance' => $employee->balance + $salaryDay]);
         return $this->success('تم تعديل الغياب لحضور');
     }
@@ -192,5 +194,42 @@ class EmployeeController extends Controller
         $employee->employee_datails()->create(['type' => "2", 'amount' => $request->reward, 'done' => 0, 'created_by' => $this->getAuthData('com_code')]);
 
         return $this->success('جم' . $request->reward . "تم اضافة المكافأه قدرها ");
+    }
+
+    public function pay(Request $request)
+    {
+        $employee = employee::find($request->id);
+
+        if ($employee->com_code != $this->getAuthData('com_code')) {
+            return $this->error('لا يمكن التعديل علي هذة اللفاتورة للمستخدم ');
+        }
+
+
+        $date1 = Carbon::createFromFormat('Y-m-d', strval(Carbon::now()->format('Y-m')) . '-' . $employee->salary_day);
+        $date2 = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+
+        if (!$date2->gte($date1)) {
+            return $this->error('لم يأتي معاد المرتب بعد ');
+        }
+        $balance = $employee->salary;
+        foreach ($employee->employee_datails()->where('done','0')->get() as $datail) {
+            if($datail->type==1)
+            {
+                $balance-=$datail->amount;
+
+            }
+            else
+            {
+                $balance+=$datail->amount;
+            }
+            $datail->update(['done'=>1]);
+        }
+
+
+        $employee->update(['balance' => $employee->balance - $balance,'start_balance' => '-1']);
+        exchangeRevenue::create(['amount' => (-1 * $balance), 'type' => '5', 'com_code' => $employee->com_code, 'fk' => $employee->id]);
+        $safe = safe::where('com_code', $employee->com_code)->first();
+        $safe->update(['amount' => $safe->amount - $balance]);
+        return $this->success('تم تسجيل النقديه ');
     }
 }

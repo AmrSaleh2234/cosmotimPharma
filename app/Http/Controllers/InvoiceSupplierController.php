@@ -128,23 +128,23 @@ class InvoiceSupplierController extends Controller
      */
     public function edit(invoice_supplier $invoice)
     {
-//        $products = product::where('com_code', auth()->user()->com_code)->get();
-//        $data = [];
-//        foreach ($products as $product) {
-//
-//            if (count($product->inventory) > 0) {
-//                $sum = 0;
-//                foreach ($product->inventory as $inv) {
-//                    $sum += $inv->quantity;
-//                }
-//                $product->total_quantity = $sum;
-//
-//                array_push($data, $product);
-//            }
-//        }
-//
-//        return view('supplier_invoice.edit', compact('invoice', 'data'));
-    return $invoice->supplier->exchangeRevenue;
+        $products = product::where('com_code', auth()->user()->com_code)->get();
+        $data = [];
+        foreach ($products as $product) {
+
+            if (count($product->inventory) > 0) {
+                $sum = 0;
+                foreach ($product->inventory as $inv) {
+                    $sum += $inv->quantity;
+                }
+                $product->total_quantity = $sum;
+
+                array_push($data, $product);
+            }
+        }
+
+        return view('supplier_invoice.edit', compact('invoice', 'data'));
+
     }
 
     /**
@@ -161,6 +161,10 @@ class InvoiceSupplierController extends Controller
 
 
         $status = 2;
+        if ($invoice->payed >0)
+        {
+            return $this->error('لقد تم دفع جذء من الفاتورة ');
+        }
         if ($invoice->supplier->balance - $invoice->total > 0) {
             $status = 3;
         } elseif ($invoice->supplier->balance - $invoice->total < 0) {
@@ -175,6 +179,7 @@ class InvoiceSupplierController extends Controller
 
 
         $invoice->delete();
+
         $i = 0;
         $total = 0;
 
@@ -226,6 +231,10 @@ class InvoiceSupplierController extends Controller
      */
     public function destroy(invoice_supplier $invoice)
     {
+        if ($invoice->payed >0)
+        {
+            return $this->error('لقد تم دفع جذء من الفاتورة ');
+        }
         $status = 2;
         if ($invoice->supplier->balance - $invoice->total > 0) {
             $status = 3;
@@ -259,7 +268,7 @@ class InvoiceSupplierController extends Controller
             return $this->error('لا يمكن التعديل علي هذة اللفاتورة للمستخدم ');
         }
         if (($invoice->total-$invoice->payed) < $request->payed) {
-            return $this->error('البلغ اكبر من قيمة الفاتورة ');
+            return $this->error('البلغ اكبر من قيمة الفاتورة المتبقية ');
         }
 
         $status = 2;
@@ -269,13 +278,20 @@ class InvoiceSupplierController extends Controller
             $status = 1;
         }
 
-        $invoice->update(['payed' => $request->payed]);
+        $invoice->update(['payed' => $invoice->payed+$request->payed]);
         exchangeRevenue::create(['amount' => (-1 * $request->payed), 'type' => '3', 'com_code' => $invoice->supplier->com_code, 'fk' => $invoice->id]);
         $safe = safe::where('com_code', $invoice->com_code)->first();
         $safe->update(['amount' => $safe->amount - $request->payed]);
         $invoice->supplier->update(['balance' => $invoice->supplier->balance - $request->payed, 'balance_status' => $status]);
         return $this->success('تم تسجيل النقديه ');
+    }
 
-
+    public function payment(invoice_supplier $invoice)
+    {
+        if ($invoice->com_code != $this->getAuthData('com_code'))
+        {
+            return "غير ممسوح لك بعر المدفوعات ";
+        }
+        return view('customer_invoice._payment',compact('invoice'));
     }
 }

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\customer;
+use App\Models\exchangeRevenue;
 use App\Models\inventory;
 use App\Models\invoice_customer;
 use App\Models\order_customer;
 use App\Models\product;
+use App\Models\safe;
 use Illuminate\Http\Request;
 
 class InvoiceCustomerController extends Controller
@@ -16,10 +18,17 @@ class InvoiceCustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(customer $customer=null)
     {
+        if ($customer !=null)
+        {
+            $invoices=$customer->invoice_customer;
+            return view('customer_invoice.index', compact('invoices'));
+
+        }
         $invoices = invoice_customer::all();//com code required
         return view('customer_invoice.index', compact('invoices'));
+
 
     }
 
@@ -134,7 +143,7 @@ class InvoiceCustomerController extends Controller
         invoice_customer::create(['customer_id' => $account->id, 'discount' => $request->invoice_discount
             , 'total_before' => $total_before, 'total_after' => $total_after, 'created_by' => auth()->user()->name,
             'profit' => $profit,
-            'payed' => 0
+            'payed' => 0,'com_code'=>$this->getAuthData('com_code')
         ]);
         $status=2;
         if ($account->balance+$total_after>0)
@@ -209,6 +218,10 @@ class InvoiceCustomerController extends Controller
         $account_id=$invoice->customer->id;
         $totalBeforDelete=$invoice->total_after;
 
+        if($invoice->payed>0)
+        {
+            return $this->error('لقد تم تحصيل جذء من الفاتورة ');
+        }
         foreach ($invoice->inventory as $order)
         {
             if($order->deleted_at!=null)
@@ -222,11 +235,11 @@ class InvoiceCustomerController extends Controller
         $status=2;
         if ($invoice->customer->balance-$totalBeforDelete >0)
         {
-            $status=3;
+            $status=1;
         }
         elseif ($invoice->customer->balance-$totalBeforDelete<0)
         {
-            $status=1;
+            $status=3;
         }
         $invoice->customer->update(['balance'=>$invoice->customer->balance-$totalBeforDelete,'balance_status'=>$status]);
 
@@ -310,11 +323,11 @@ class InvoiceCustomerController extends Controller
         $status=2;
         if ($invoice->customer->balance+$total_after >0)
         {
-            $status=3;
+            $status=1;
         }
         elseif ($invoice->customer->balance+$total_after<0)
         {
-            $status=1;
+            $status=3;
         }
         $invoice->customer->update(['balance'=>$invoice->customer->balance+$total_after,'balance_status'=>$status]);
 
@@ -331,7 +344,16 @@ class InvoiceCustomerController extends Controller
      */
     public function destroy(invoice_customer $invoice)
     {
-
+        if($invoice->payed>0)
+        {
+            return $this->error('لقد تم تحصيل جذء من الفاتورة ');
+        }
+        $status = 2;
+        if ($invoice->customer->balance - $invoice->total > 0) {
+            $status = 1;
+        } elseif ($invoice->customer->balance - $invoice->total < 0) {
+            $status = 3;
+        }
         foreach ($invoice->inventory as $order)
         {
             if($order->quantity==0)
@@ -342,8 +364,45 @@ class InvoiceCustomerController extends Controller
                 'quantity'=>$order->quantity+$order->pivot->quantity
             ]);
         }
-        $invoice->inventory()->detach();
+        $invoice->customer->update(['balance' => $invoice->customer->balance - $invoice->total, 'balance_status' => $status]);
+        $invoice->inventory()->detach();//order delete
         $invoice->delete();
         return redirect()->back()->with('success','تم الحذف بنجاح');
     }
+
+    public function collect(Request $request)
+    {
+        $invoice = invoice_customer::find($request->id);
+
+        if ($invoice->com_code != $this->getAuthData('com_code')) {
+            return $this->error('لا يمكن التعديل علي هذة الفاتورة للمستخدم ');
+        }
+        if (($invoice->total_after-$invoice->payed) < $request->payed) {
+            return $this->error('البلغ المحصل اكبر من قيمة الفاتورة المتبقية ');
+        }
+
+        $status = 2;
+        if ($invoice->customer->balance - $request->payed > 0) {
+            $status = 1;
+        } elseif ($invoice->customer->balance - $request->payed < 0) {
+            $status = 3;
+        }
+
+        $invoice->update(['payed' => $invoice->payed+$request->payed]);
+        exchangeRevenue::create(['amount' => ($request->payed), 'type' => '4', 'com_code' => $invoice->customer->com_code, 'fk' => $invoice->id]);
+        $safe = safe::where('com_code', $invoice->com_code)->first();
+        $safe->update(['amount' => $safe->amount + $request->payed]);
+        $invoice->customer->update(['balance' => $invoice->customer->balance - $request->payed, 'balance_status' => $status]);
+        return $this->success('تم تسجيل النقديه ');
+    }
+
+    public function payment(invoice_customer $invoice)
+    {
+        if ($invoice->com_code != $this->getAuthData('com_code'))
+        {
+            return "غير ممسوح لك بعر المدفوعات ";
+        }
+        return view('customer_invoice._payment',compact('invoice'));
+    }
+
 }

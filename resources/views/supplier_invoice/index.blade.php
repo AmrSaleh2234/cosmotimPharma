@@ -52,7 +52,7 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->supplier->name }}</td>
                                         <td class="">{{ $item->total }}</td>
-                                        <td class="text-success">{{ $item->payed }}</td>
+                                        <td class="@if($item->payed==$item->total)text-success @else text-pink @endif ">{{ $item->payed }}</td>
 
                                         <td class="text-nowrap">{{ $item->created_at->format(' H:i d-m-Y') }}</td>
                                         <td class="text-nowrap">
@@ -81,6 +81,10 @@
                                                       style="display: none">
                                                     @csrf
                                                 </form>
+                                                <button class="btn btn-purple-gradient ml-2 btn-fixed" data-id="{{$item->id}}"
+                                                        data-effect="effect-flip-vertical"
+                                                        data-toggle="modal" onclick="payment(this)" ><i
+                                                        class=" typcn typcn-info-large-outline tx-20 "></i></button>
                                             </div>
 
                                         </td>
@@ -223,6 +227,29 @@
             // });
             $('#example_filter').css('display', 'none')
         });
+
+    </script>
+    <script>
+
+        function payment(identfier) {
+
+            var id = $(identfier).data('id')
+
+
+            $('#loader').css('display', 'block')
+            $.ajax({
+                url: "supplier_invoice/payment/" + id,
+                method: 'get',
+                success: function (data) {
+                    $('#loader').css('display', 'none')
+                    $('#tbody').empty()
+                    $('#tbody').append(data)
+
+                }
+
+
+            })
+        }
 
     </script>
 @endsection

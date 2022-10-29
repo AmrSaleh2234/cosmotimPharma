@@ -59,14 +59,15 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     Route::post('customer/destroy', [\App\Http\Controllers\CustomerController::class, 'destroy'])->name('customer.destroy');
     //end customer
     //start customer invoice
-    Route::get('customer_invoice/', [\App\Http\Controllers\InvoiceCustomerController::class, 'index'])->name('invoice_customer.index');
+    Route::post('customer_invoice/collect', [\App\Http\Controllers\InvoiceCustomerController::class, 'collect'])->name('invoice_customer.collect');
+    Route::get('customer_invoice/{customer?}', [\App\Http\Controllers\InvoiceCustomerController::class, 'index'])->name('invoice_customer.index');
+    Route::get('customer_invoice/payment/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'payment'])->name('invoice_customer.payment');
     Route::get('customer_invoice/details/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'orderDetails'])->name('invoice_customer.orderDetails');
-    Route::get('customer_invoice/{account}', [\App\Http\Controllers\InvoiceCustomerController::class, 'create'])->name('invoice_customer.create');
-    Route::post('customer_invoice/{account}', [\App\Http\Controllers\InvoiceCustomerController::class, 'store'])->name('invoice_customer.store');
+    Route::get('customer_invoice/create/{account}', [\App\Http\Controllers\InvoiceCustomerController::class, 'create'])->name('invoice_customer.create');
+    Route::post('customer_invoice//store{account}', [\App\Http\Controllers\InvoiceCustomerController::class, 'store'])->name('invoice_customer.store');
     Route::get('customer_invoice/edit/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'edit'])->name('invoice_customer.edit');
     Route::post('customer_invoice/edit/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'update'])->name('invoice_customer.update');
     Route::post('customer_invoice/delete/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'destroy'])->name('invoice_customer.destroy');
-    //end customer invoice
     //start supplier
     Route::get('supplier/', [\App\Http\Controllers\SupplierControler::class, 'index'])->name('supplier.index');
     Route::get('supplier/start_balance/{id}', [\App\Http\Controllers\SupplierControler::class, 'getStartBalance'])->name('supplier.start-balance');
@@ -80,7 +81,7 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     //start capital
     Route::get('capital/', [\App\Http\Controllers\CapitalController::class, 'index'])->name('capital.index');
     Route::post('capital/collect', [\App\Http\Controllers\CapitalController::class, 'collect'])->name('capital.collect');
-    Route::post('capital/pay', [\App\Http\Controllers\CapitalController::class, 'pay'])->name('capital.pay');
+    Route::post('capital/pay/', [\App\Http\Controllers\CapitalController::class, 'pay'])->name('capital.pay');
     Route::get('capital/create', [\App\Http\Controllers\CapitalController::class, 'create'])->name('capital.create');
     Route::post('capital/store', [\App\Http\Controllers\CapitalController::class, 'store'])->name('capital.store');
     Route::get('capital/edit/{capital}', [\App\Http\Controllers\CapitalController::class, 'edit'])->name('capital.edit');
@@ -91,7 +92,7 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     //end capital
     //start expenses
     Route::get('expenses/', [\App\Http\Controllers\ExpensesController::class, 'index'])->name('expenses.index');
-    Route::post('capital/pay', [\App\Http\Controllers\ExpensesController::class, 'pay'])->name('expenses.pay');
+    Route::post('expenses/pay', [\App\Http\Controllers\ExpensesController::class, 'pay'])->name('expenses.pay');
     Route::get('expenses/create', [\App\Http\Controllers\ExpensesController::class, 'create'])->name('expenses.create');
     Route::post('expenses/store', [\App\Http\Controllers\ExpensesController::class, 'store'])->name('expenses.store');
     Route::get('expenses/edit/{expenses}', [\App\Http\Controllers\ExpensesController::class, 'edit'])->name('expenses.edit');
@@ -111,6 +112,7 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     //start employee
     Route::get('employee/', [\App\Http\Controllers\EmployeeController::class, 'index'])->name('employee.index');
     Route::get('employee/create', [\App\Http\Controllers\EmployeeController::class, 'create'])->name('employee.create');
+    Route::post('employee/pay', [\App\Http\Controllers\EmployeeController::class, 'pay'])->name('employee.pay');
     Route::post('employee/store', [\App\Http\Controllers\EmployeeController::class, 'store'])->name('employee.store');
     Route::get('employee/edit/{employee}', [\App\Http\Controllers\EmployeeController::class, 'edit'])->name('employee.edit');
     Route::post('employee/update/{employee}', [\App\Http\Controllers\EmployeeController::class, 'update'])->name('employee.update');
@@ -124,11 +126,12 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     Route::post('supplier_invoice/pay', [\App\Http\Controllers\InvoiceSupplierController::class, 'pay'])->name('invoice_supplier.pay');
     Route::get('supplier_invoice/', [\App\Http\Controllers\InvoiceSupplierController::class, 'index'])->name('invoice_supplier.index');
     Route::get('supplier_invoice/details/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'orderDetails'])->name('invoice_supplier.orderDetails');
-    Route::get('supplier_invoice/{account}', [\App\Http\Controllers\InvoiceSupplierController::class, 'create'])->name('invoice_supplier.create');
-    Route::post('supplier_invoice/{account}', [\App\Http\Controllers\InvoiceSupplierController::class, 'store'])->name('invoice_supplier.store');
+    Route::get('supplier_invoice/create/{account}', [\App\Http\Controllers\InvoiceSupplierController::class, 'create'])->name('invoice_supplier.create');
+    Route::post('supplier_invoice/store/{account}', [\App\Http\Controllers\InvoiceSupplierController::class, 'store'])->name('invoice_supplier.store');
     Route::get('supplier_invoice/edit/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'edit'])->name('invoice_supplier.edit');
-    Route::post('supplier_invoice/edit/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'update'])->name('invoice_supplier.update');
+    Route::post('supplier_invoice/update/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'update'])->name('invoice_supplier.update');
     Route::post('supplier_invoice/delete/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'destroy'])->name('invoice_supplier.destroy');
+    Route::get('supplier_invoice/payment/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'payment'])->name('invoice_supplier.payment');
 
     //end supplier invoice
 });
