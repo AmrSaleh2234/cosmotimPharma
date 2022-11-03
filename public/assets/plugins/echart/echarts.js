@@ -1,6 +1,6 @@
 $(function(e) {
 	'use strict'
-	/*----Echart2----*/
+	/*----Echart1----*/
 	var chartdata = [{
 		name: 'sales',
 		type: 'bar',
@@ -418,8 +418,8 @@ $(function(e) {
 	var chart8 = document.getElementById('echart8');
 	var lineChart2 = echarts.init(chart8);
 	lineChart2.setOption(option8);
-	
-	
+
+
 	/*----BarChartEchart----*/
 	var echartBar = echarts.init(document.getElementById('index'), {
 		color: ['#9567e0', '#e09567'],

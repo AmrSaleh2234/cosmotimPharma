@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('admin.dashboard');
 });
 
 
@@ -32,9 +32,14 @@ Route::post('/admin', [LoginController::class, 'adminLogin'])->name('admin.login
 Route::get('/admin/register', [RegisterController::class, 'showAdminRegisterForm'])->name('admin.register-view');
 Route::post('/admin/register', [RegisterController::class, 'createAdmin'])->name('admin.register');
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.admin');
-})->middleware('auth:admin');
+Route::get('/admin/dashboard',[\App\Http\Controllers\HomeController::class,'adminDashboard'] )->name('admin.dashboard')->middleware('auth:admin');
+
+//    return view('admin.admin');
+
+
+
+
+
 Route::group(['middleware' => 'auth:admin,web'], function () {
     //start product
     Route::get('product', [\App\Http\Controllers\ProdcutController::class, 'index']);

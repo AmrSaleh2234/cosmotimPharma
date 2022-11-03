@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\customer;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,7 +14,6 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:web');
     }
 
     /**
@@ -25,4 +25,51 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function adminDashboard()
+    {
+        $currentDate = \Carbon\Carbon::now();
+        $startLastWeek = \Carbon\Carbon::now()->subDays($currentDate->dayOfWeek + 1)->subWeek();//start of last week
+        $startCurrentWeek = \Carbon\Carbon::now()->subDays($currentDate->dayOfWeek + 1);//start of current week
+        $endLastWeek = \Carbon\Carbon::now()->endOfWeek(\Illuminate\Support\Carbon::FRIDAY)->subWeek();// end of the
+        $endCurrentWeek = \Carbon\Carbon::now()->endOfWeek(\Illuminate\Support\Carbon::FRIDAY);// end of the current week
+        $invoicesCurrentWeek = \App\Models\invoice_customer::whereBetween('created_at', [$startCurrentWeek, $endCurrentWeek])->get();
+        $invoicesLastWeek = \App\Models\invoice_customer::whereBetween('created_at', [$startLastWeek, $endLastWeek])->get();
+        $startLastMonth = \Carbon\Carbon::now()->startOfMonth()->subMonth()->format('Y-m-d H:i');//start of last week
+        $startCurrentMonth = \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d H:i');//start of current week
+        $endLastMonth = \Carbon\Carbon::now()->endOfMonth()->subMonth()->format('Y-m-d H:i');// end of the
+        $endCurrentMonth = \Carbon\Carbon::now()->endOfMonth();// end of the current week
+        $invoicesCurrentMonth = \App\Models\invoice_customer::whereBetween('created_at', [$startCurrentMonth, $endCurrentMonth])->get();
+        $invoicesLastMonth = \App\Models\invoice_customer::whereBetween('created_at', [$startLastMonth, $endLastMonth])->get();
+        $total_after = \App\Models\invoice_customer::selectRaw('year(created_at) year, month(created_at) month, sum(total_after) total ')
+            ->groupBy('year', 'month')->whereYear('created_at', date('Y'))
+            ->orderBy('year', 'desc')
+            ->get();
+        $profit = \App\Models\invoice_customer::selectRaw('year(created_at) year, month(created_at) month, sum(profit) total')
+            ->groupBy('year', 'month')->whereYear('created_at', date('Y'))
+            ->orderBy('year', 'desc')
+            ->get();
+        $topCustomer = \App\Models\invoice_customer::selectRaw('customer_id id ,  sum(total_after) total , sum(payed) total_payed')
+            ->groupBy('customer_id')->whereYear('created_at', date('Y'))
+            ->orderBy('total', 'desc')
+            ->get();
+        $customer = [];
+        foreach ($topCustomer as $item) {
+            $temp = customer::find($item->id);
+            $temp->total = $item->total;
+            $temp->total_payed = $item->total_payed;
+            array_push($customer, $temp);
+        }
+        return view('admin.admin', compact('invoicesCurrentWeek',
+            'invoicesLastWeek'
+            ,'invoicesCurrentMonth'
+            , 'invoicesLastMonth'
+            , 'total_after'
+            , 'profit'
+            ,'customer'
+
+        ));
+    }
+
+
 }
