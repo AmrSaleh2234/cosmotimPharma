@@ -103,7 +103,8 @@
                                             <td> 0</td>
                                         @endif
                                         <td class="text-center">
-                                            <a class="btn btn-primary ml-2 btn-fixed btn-view" href=""><i
+                                            <a class="btn btn-primary ml-2 btn-fixed btn-view" href="{{route('employee.show',$item)}}"
+                                               ><i
                                                     class="typcn typcn-eye-outline tx-20 "></i></a>
                                         </td>
 
@@ -269,7 +270,6 @@
 
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>

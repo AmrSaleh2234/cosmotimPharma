@@ -80,6 +80,7 @@ class EmployeeController extends Controller
      */
     public function show(employee $employee)
     {
+        return view ('employee.show',compact('employee'));
     }
 
     /**
@@ -181,7 +182,7 @@ class EmployeeController extends Controller
         if ($employee->com_code != $this->getAuthData('com_code')) {
             return $this->error('غير مسموح بالتحكم بهذا الموظف');
         }
-        $employee->employee_datails()->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('type', 1)->last()->delete();
+        $employee->employee_datails()->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('type', 1)->delete();
         $employee->update(['balance' => $employee->balance + $salaryDay]);
         return $this->success('تم تعديل الغياب لحضور');
     }

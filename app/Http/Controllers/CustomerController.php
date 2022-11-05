@@ -208,6 +208,7 @@ class CustomerController extends Controller
     {
         $total = 0;
         $customer = customer::find($request->id);
+
         foreach ($customer->invoice_customer as $invoice) {
             return $total += $invoice->total - $invoice->payed;
         }

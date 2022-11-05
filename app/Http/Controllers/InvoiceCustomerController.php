@@ -26,7 +26,7 @@ class InvoiceCustomerController extends Controller
             return view('customer_invoice.index', compact('invoices'));
 
         }
-        $invoices = invoice_customer::all();//com code required
+        $invoices = invoice_customer::where('com_code',$this->getAuthData('com_code'))->get();//com code required
         return view('customer_invoice.index', compact('invoices'));
 
 

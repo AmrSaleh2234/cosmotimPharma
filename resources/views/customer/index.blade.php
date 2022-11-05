@@ -53,7 +53,8 @@
                                 <th class=" border-bottom-0">اسم الحساب</th>
                                 <th class=" border-bottom-0">رقم الهاتف</th>
                                 <th class=" border-bottom-0">العنوان</th>
-                                <th class=" border-bottom-0">حالة الحساب</th>
+                                <th class=" border-bottom-0">  حاله الحساب الكليه </th>
+                                <th class=" border-bottom-0">  حاله الحساب اول المدة </th>
                                 <th>عرض</th>
                                 <th class=" border-bottom-0">تحصيل النقديه اول الحساب</th>
                                 <th class="border-bottom-0">العمليات</th>
@@ -81,6 +82,15 @@
                                         <td><span> دائن ويستحق له مبلغ
                                                     {{ $item->balance  }}</span></td>
                                     @elseif($item->balance_status == 2)
+                                        <td> متزن</td>
+                                    @endif
+                                    @if ($item->start_balance_status == 1 )
+                                        <td><span> مدين وعليه مبلغ {{ $item->start_balance  }}</span>
+                                        </td>
+                                    @elseif($item->start_balance_status == 3 )
+                                        <td><span> دائن ويستحق له مبلغ
+                                                    {{ $item->start_balance  }}</span></td>
+                                    @elseif($item->start_balance_status == 2)
                                         <td> متزن</td>
                                     @endif
                                     <td class="text-center">
