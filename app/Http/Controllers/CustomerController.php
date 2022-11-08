@@ -233,4 +233,11 @@ class CustomerController extends Controller
         return $this->success('تم دفع النقدية بنجاح ');
 
     }
+
+
+    public function invoicesTable(customer $customer )
+    {
+//        return $customer->invoice_customer;
+        return view('customer.invoices-table',compact('customer'));
+    }
 }

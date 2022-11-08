@@ -23,7 +23,7 @@ class InvoiceCustomerController extends Controller
         if ($customer !=null)
         {
             $invoices=$customer->invoice_customer;
-            return view('customer_invoice.index', compact('invoices'));
+            return view('customer_invoice.index', compact('invoices','customer'));
 
         }
         $invoices = invoice_customer::where('com_code',$this->getAuthData('com_code'))->get();//com code required

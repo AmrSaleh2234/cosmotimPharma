@@ -54,6 +54,7 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     Route::post('inventory/destroy', [\App\Http\Controllers\InventoryController::class, 'destroy'])->name('inventory.destroy');
     //end inventory
     //start customer
+    Route::get('customer/invoicesInTable/{customer}', [\App\Http\Controllers\CustomerController::class, 'invoicesTable'])->name('customer.invoicesInTable');
     Route::get('customer', [\App\Http\Controllers\CustomerController::class, 'index'])->name('customer.index');
     Route::get('customer/start_balance/{id}', [\App\Http\Controllers\CustomerController::class, 'getStartBalance'])->name('customer.start-balance');
     Route::post('customer/pay', [\App\Http\Controllers\CustomerController::class, 'collect'])->name('customer.collect');

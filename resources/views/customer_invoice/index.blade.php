@@ -21,6 +21,10 @@
 @endsection
 @section('content')
     <!-- row -->
+    @if(isset($customer))
+        <a class="btn btn-primary" href="{{route('customer.invoicesInTable',$customer)}}">رؤية عامة للعميل </a>
+    @endif
+
     <div class="row d-flex flex-wrap">
         <div class="col-lg-8 col-sm-12">
             <div class="card" style="border-top:3px solid cadetblue">
