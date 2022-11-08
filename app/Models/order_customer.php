@@ -12,7 +12,7 @@ class order_customer extends Model
 
     public function customer()
     {
-        return $this->belongsTo(invoice_customer::class);
+        return $this->belongsTo(invoice_customer::class,'invoice_customer_id');
     }
     public function inventory()
     {

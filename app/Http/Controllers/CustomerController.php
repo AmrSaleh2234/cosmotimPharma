@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\customer;
 use App\Models\exchangeRevenue;
+use App\Models\invoice_customer;
+use App\Models\order_customer;
 use App\Models\safe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -237,7 +240,16 @@ class CustomerController extends Controller
 
     public function invoicesTable(customer $customer )
     {
-//        return $customer->invoice_customer;
-        return view('customer.invoices-table',compact('customer'));
+        $invoiceByProducts =DB::table('order_customers')
+                ->select('products.name as name' )
+            ->join('invoice_customers', 'invoice_customers.id', '=', 'order_customers.invoice_customer_id')
+        ->join('inventories', 'inventories.id', '=', 'order_customers.inventory_id')
+            ->selectRaw('sum(order_customers.price_after_discount)  sum_price , sum(order_customers.quantity) sum_quantity ')
+            ->groupBy('products.name')->join('products','inventories.product_id','products.id')
+            ->get();
+
+
+
+        return view('customer.invoices-table',compact('customer','invoiceByProducts'));
     }
 }
