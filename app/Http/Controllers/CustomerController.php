@@ -213,9 +213,9 @@ class CustomerController extends Controller
         $customer = customer::find($request->id);
 
         foreach ($customer->invoice_customer as $invoice) {
-             $total += $invoice->total - $invoice->payed;
+             $total += $invoice->total_after - $invoice->payed;
         }
-return $total;
+
         $balance = $customer->balance - $total;  // start_balance
         if ($request->payed > $balance) {
             return $this->error('البلغ اكبر من المستحق ');
