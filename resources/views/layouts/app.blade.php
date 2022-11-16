@@ -12,6 +12,12 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="{{URL::asset('assets/css-rtl/style.css')}}" rel="stylesheet">
+    <!--- Dark-mode css -->
+    <link href="{{URL::asset('assets/css-rtl/style-dark.css')}}" rel="stylesheet">
+    <!---Skinmodes css-->
+    <link href="{{URL::asset('assets/css-rtl/skin-modes.css')}}" rel="stylesheet">
+
 
     <!-- Scripts -->
 </head>
