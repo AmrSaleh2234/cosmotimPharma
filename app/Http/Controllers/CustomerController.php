@@ -213,7 +213,7 @@ class CustomerController extends Controller
         $customer = customer::find($request->id);
 
         foreach ($customer->invoice_customer as $invoice) {
-            return $total += $invoice->total - $invoice->payed;
+             $total += $invoice->total - $invoice->payed;
         }
 
         $balance = $customer->balance - $total;  // start_balance
