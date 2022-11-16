@@ -58,7 +58,8 @@
                                         <td class="text-success">{{ $item->payed }}</td>
                                         <td class="text-nowrap">{{ $item->created_at->format(' H:i Y-m-d') }}</td>
                                         <td>
-                                            <a class="btn btn-success-gradient ml-2 btn-fixed" data-id="{{$item->id}}" title="تحصيل الفاتورة"
+                                            <a class="btn btn-success-gradient ml-2 btn-fixed" data-id="{{$item->id}}"
+                                               title="تحصيل الفاتورة"
                                                data-not_payed="{{$item->total_after- $item->payed}}"
                                                data-effect="effect-flip-vertical"
                                                data-toggle="modal" href="#modaldemo8"><i
@@ -66,7 +67,8 @@
                                         </td>
 
                                         <td class="d-flex no-wrap align-items-center ">
-                                            <button class="btn btn-primary ml-2 btn-fixed btn-view" title="تفاصيل الفاتورة"
+                                            <button class="btn btn-primary ml-2 btn-fixed btn-view"
+                                                    title="تفاصيل الفاتورة"
                                                     onclick="order(this);" data-id="{{ $item->id }}"
                                                     data-url="{{ route('invoice_customer.orderDetails', $item) }}"><i
                                                     class="typcn typcn-eye-outline tx-20 "></i></button>
@@ -81,9 +83,11 @@
                                                   style="display: none">
                                                 @csrf
                                             </form>
-                                            <button class="btn btn-purple-gradient ml-2 btn-fixed" data-id="{{$item->id}}" title="تفاصيل الدفع"
-                                               data-effect="effect-flip-vertical"  data-url="{{ route('invoice_customer.payment', $item) }}"
-                                               data-toggle="modal" onclick="payment(this)" ><i
+                                            <button class="btn btn-purple-gradient ml-2 btn-fixed"
+                                                    data-id="{{$item->id}}" title="تفاصيل الدفع"
+                                                    data-effect="effect-flip-vertical"
+                                                    data-url="{{ route('invoice_customer.payment', $item) }}"
+                                                    data-toggle="modal" onclick="payment(this)"><i
                                                     class=" typcn typcn-info-large-outline tx-20 "></i></button>
                                         </td>
                                         <td class="text-primary">{{ $item->created_by }}</td>
@@ -153,7 +157,8 @@
 
                     </div>
                     <div class="d-flex justify-content-center mb-3">
-                        <button class="btn btn-primary-gradient w-75"><i class="typcn typcn-printer tx-20 "></i>اطبع
+                        <button class="btn btn-primary-gradient w-75" onclick="print()"><i
+                                class="typcn typcn-printer tx-20 "></i>اطبع
                         </button>
                     </div>
                 </div>
@@ -161,7 +166,26 @@
 
         </div>
 
+
+
+
     </div>
+{{--    <div class="col-lg-12 col-sm-12" style="display: none ">--}}
+{{--        <div class="card" style="border-top:3px solid cadetblue">--}}
+{{--            <div class="card-header pb-0">--}}
+{{--                <div class="d-flex justify-content-between">--}}
+{{--                    <h3 class="card-title mg-b-0">الفاتورة</h3>--}}
+{{--                    <i class="mdi mdi-dots-horizontal text-gray"></i>--}}
+{{--                </div>--}}
+
+{{--                <div class="card-body" id="printContent">--}}
+{{--                   --}}
+{{--                </div>--}}
+{{--                --}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+{{--    </div>--}}
     <!-- row closed -->
     </div>
     <!-- Container closed -->
@@ -202,6 +226,7 @@
                     $('#loader').css('display', 'none')
                     $('#tbody').empty()
                     $('#tbody').append(data)
+
                 }
             })
         }
@@ -230,7 +255,7 @@
 
         function payment(identfier) {
 
-            var url =$(identfier).data('url')
+            var url = $(identfier).data('url')
 
 
             $('#loader').css('display', 'block')
@@ -246,6 +271,16 @@
 
 
             })
+        }
+
+        function print() {
+            // var printContent = document.getElementById('print').innerHTML;
+            // var a = window.open('', '', 'height=500, width=500');
+            // a.document.write('<html>');
+            // a.document.write(printContent);
+            // a.document.write('</body></html>');
+            // a.document.close();
+            // a.print();
         }
 
     </script>

@@ -1,5 +1,5 @@
 
-<div class="table-responsive">
+<div class="table-responsive" id="printContent">
     <table class="table mg-b-0 text-md-nowrap">
         <thead>
         <tr>
