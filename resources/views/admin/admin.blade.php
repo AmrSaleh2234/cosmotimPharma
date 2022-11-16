@@ -13,6 +13,9 @@
 
 </style>
 @endsection
+@section('title')
+    الصفحه الرئيسية
+@endsection
 @section('page-header')
 
     <!-- breadcrumb -->
