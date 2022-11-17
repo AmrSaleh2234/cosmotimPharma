@@ -170,22 +170,34 @@
 
 
     </div>
-{{--    <div class="col-lg-12 col-sm-12" style="display: none ">--}}
-{{--        <div class="card" style="border-top:3px solid cadetblue">--}}
-{{--            <div class="card-header pb-0">--}}
-{{--                <div class="d-flex justify-content-between">--}}
-{{--                    <h3 class="card-title mg-b-0">الفاتورة</h3>--}}
-{{--                    <i class="mdi mdi-dots-horizontal text-gray"></i>--}}
-{{--                </div>--}}
+    <div class="col-lg-12 col-sm-12"  id ="print_invoice"style="">
+        <div class="card" style="border-top:3px solid cadetblue">
+            <div class="card-header pb-0">
+                <div class="">
+                    <h1 style="font-size: 23px" class="card-title  text-center">الفاتورة رقم: #<span id ="number_invoice"></span> </h1>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h1 style="font-size: 19px" class="card-title  ">اسم العميل: <span id ="name"></span> </h1>
+                            <h1 style="font-size: 19px" class="card-title  ">رقم الهاتف: <span id ="phone"></span> </h1>
+                            <h1 style="font-size: 19px" class="card-title  ">العنوان: <span id ="address"></span> </h1>
+                        </div>
+                        <h1 style="font-size: 30px" class="">
+                            Speed Farma
+                        </h1>
 
-{{--                <div class="card-body" id="printContent">--}}
-{{--                   --}}
-{{--                </div>--}}
-{{--                --}}
-{{--            </div>--}}
-{{--        </div>--}}
+                    </div>
 
-{{--    </div>--}}
+
+                </div>
+
+                <div class="card-body" id="printContent" >
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
     <!-- row closed -->
     </div>
     <!-- Container closed -->
@@ -217,6 +229,8 @@
 
 
             var url = $(identfier).data('url');
+            var id = $(identfier).data('id');
+            alert(id)
             $('#loader').css('display', 'block')
 
             $.ajax({
@@ -226,6 +240,10 @@
                     $('#loader').css('display', 'none')
                     $('#tbody').empty()
                     $('#tbody').append(data)
+                    $('#printContent').empty()
+                    $('#printContent').append(data)
+                    $('#number_invoice').empty()
+                    $('#number_invoice').append(id)
 
                 }
             })
@@ -274,13 +292,15 @@
         }
 
         function print() {
-            // var printContent = document.getElementById('print').innerHTML;
-            // var a = window.open('', '', 'height=500, width=500');
-            // a.document.write('<html>');
-            // a.document.write(printContent);
-            // a.document.write('</body></html>');
-            // a.document.close();
-            // a.print();
+            var printContent = document.getElementById('print_invoice').innerHTML;
+            var a = window.open('', '', 'height=500, width=500');
+            a.document.write('<html><head> <style>' +
+                'body{direction: rtl} tr,td,th {' +
+                'border: 1px solid} table{width: 100% ; border: 1px solid } </style></head><body>');
+            a.document.write(printContent);
+            a.document.write('</body></html>');
+            a.document.close();
+            a.print();
         }
 
     </script>

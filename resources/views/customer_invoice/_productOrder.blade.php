@@ -1,6 +1,6 @@
 
-<div class="table-responsive" id="printContent">
-    <table class="table mg-b-0 text-md-nowrap">
+<div class="table-responsive" >
+    <table class="table mg-b-0 ">
         <thead>
         <tr>
 
@@ -11,7 +11,7 @@
             <th>السعر بعد</th>
         </tr>
         </thead>
-        <tbody id="tbody">
+        <tbody >
         @foreach($order as $item)
             <tr>
                 <td>{{$item->inventory->product->name}}</td>
