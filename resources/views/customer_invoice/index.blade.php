@@ -170,7 +170,7 @@
 
 
     </div>
-    <div class="col-lg-12 col-sm-12"  id ="print_invoice"style="">
+    <div class="col-lg-12 col-sm-12"  id ="print_invoice"style="display: none">
         <div class="card" style="border-top:3px solid cadetblue">
             <div class="card-header pb-0">
                 <div class="">
