@@ -118,7 +118,7 @@ class InvoiceCustomerController extends Controller
                     $profit +=  $price_after_discount-($inv->price_before * ((-1 * $quantity) + $val));
                     if ($price_after_discount-($inv->price_before * ((-1 * $quantity) + $val)) < 0 )
                     {
-                        return redirect()->back()->with('error','نسبة الخصم المكتوبة في المنتج تجعلك تخسر ');
+                        return redirect()->back()->with(['error','نسبة الخصم المكتوبة في المنتج تجعلك تخسر ']);
 
                     }
                     order_customer::create([
@@ -214,13 +214,14 @@ class InvoiceCustomerController extends Controller
      */
     public function update(Request $request, invoice_customer $invoice)
     {
+
         $id_invoice=$invoice->id;
         $account_id=$invoice->customer->id;
         $totalBeforDelete=$invoice->total_after;
 
         if($invoice->payed>0)
         {
-            return $this->error('لقد تم تحصيل جذء من الفاتورة ');
+            return "$this->error('لقد تم تحصيل جذء من الفاتورة ')";
         }
         foreach ($invoice->inventory as $order)
         {
@@ -291,7 +292,7 @@ class InvoiceCustomerController extends Controller
                     $profit +=  $price_after_discount-($inv->price_before * ((-1 * $quantity) + $val));
                     if ($price_after_discount-($inv->price_before * ((-1 * $quantity) + $val)) < 0 )
                     {
-                        return redirect()->back()->with('error','نسبة الخصم المكتوبة في المنتج تجعلك تخسر ');
+                        return redirect()->back()->with(['error','نسبة الخصم المكتوبة في المنتج تجعلك تخسر ']);
 
                     }
                     order_customer::create([
@@ -344,6 +345,7 @@ class InvoiceCustomerController extends Controller
      */
     public function destroy(invoice_customer $invoice)
     {
+
         if($invoice->payed>0)
         {
             return $this->error('لقد تم تحصيل جذء من الفاتورة ');
@@ -403,6 +405,11 @@ class InvoiceCustomerController extends Controller
             return "غير ممسوح لك بعر المدفوعات ";
         }
         return view('customer_invoice._payment',compact('invoice'));
+    }
+
+    public function print($id)
+    {
+
     }
 
 }

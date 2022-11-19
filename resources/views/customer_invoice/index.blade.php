@@ -59,6 +59,7 @@
                                         <td class="text-nowrap">{{ $item->created_at->format(' H:i Y-m-d') }}</td>
                                         <td>
                                             <a class="btn btn-success-gradient ml-2 btn-fixed" data-id="{{$item->id}}"
+
                                                title="تحصيل الفاتورة"
                                                data-not_payed="{{$item->total_after- $item->payed}}"
                                                data-effect="effect-flip-vertical"
@@ -70,15 +71,16 @@
                                             <button class="btn btn-primary ml-2 btn-fixed btn-view"
                                                     title="تفاصيل الفاتورة"
                                                     onclick="order(this);" data-id="{{ $item->id }}"
-                                                    data-url="{{ route('invoice_customer.orderDetails', $item) }}"><i
+                                                    data-url="{{ route('invoice_customer.orderDetails', $item) }}"
+                                                    data-url_print="{{route('invoice_customer.print',$item->id)}}"><i
                                                     class="typcn typcn-eye-outline tx-20 "></i></button>
                                             <a class="btn btn-warning-gradient ml-2 btn-fixed" title="تعديل"
                                                href="{{ route('invoice_customer.edit', $item->id) }}"><i
                                                     class="typcn typcn-edit tx-20 "></i></a>
                                             <button class="btn btn-danger-gradient ml-2 btn-fixed" title="حذف"
-                                                    onclick="getElementById('delete_invoice_customer').submit()"><i
+                                                    onclick="getElementById('delete_invoice_customer-{{$item->id}}').submit()"><i
                                                     class="typcn typcn-delete-outline tx-20 "></i></button>
-                                            <form id="delete_invoice_customer" method="post"
+                                            <form id="delete_invoice_customer-{{$item->id}}" method="post"
                                                   action="{{ route('invoice_customer.destroy', $item) }}"
                                                   style="display: none">
                                                 @csrf
@@ -157,7 +159,7 @@
 
                     </div>
                     <div class="d-flex justify-content-center mb-3">
-                        <button class="btn btn-primary-gradient w-75" onclick="print()"><i
+                        <button class="btn btn-primary-gradient w-75" id="print-btn" data-id="" data-url="" onclick="printInvoice()"><i
                                 class="typcn typcn-printer tx-20 "></i>اطبع
                         </button>
                     </div>
@@ -167,38 +169,36 @@
         </div>
 
 
-
-
     </div>
 
-    <div class="col-lg-12 col-sm-12"  id ="print_invoice" style="display: none">
-        <div class="card" style="border-top:3px solid cadetblue">
-            <div class="card-header pb-0">
-                <div class="">
-                    <h1 style="font-size: 23px" class="card-title  text-center">الفاتورة رقم: #<span id ="number_invoice"></span> </h1>
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h1 style="font-size: 19px" class="card-title  ">اسم العميل: <span id ="name"></span> </h1>
-                            <h1 style="font-size: 19px" class="card-title  ">رقم الهاتف: <span id ="phone"></span> </h1>
-                            <h1 style="font-size: 19px" class="card-title  ">العنوان: <span id ="address"></span> </h1>
-                        </div>
-                        <h1 style="font-size: 30px" class="">
-                            Speed Farma
-                        </h1>
+    {{--    <div class="col-lg-12 col-sm-12"  id ="print_invoice" style="display: none">--}}
+    {{--        <div class="card" style="border-top:3px solid cadetblue">--}}
+    {{--            <div class="card-header pb-0">--}}
+    {{--                <div class="">--}}
+    {{--                    <h1 style="font-size: 23px" class="card-title  text-center">الفاتورة رقم: #<span id ="number_invoice"></span> </h1>--}}
+    {{--                    <div class="d-flex justify-content-between">--}}
+    {{--                        <div>--}}
+    {{--                            <h1 style="font-size: 19px" class="card-title  ">اسم العميل: <span id ="name"></span> </h1>--}}
+    {{--                            <h1 style="font-size: 19px" class="card-title  ">رقم الهاتف: <span id ="phone"></span> </h1>--}}
+    {{--                            <h1 style="font-size: 19px" class="card-title  ">العنوان: <span id ="address"></span> </h1>--}}
+    {{--                        </div>--}}
+    {{--                        <h1 style="font-size: 30px" class="">--}}
+    {{--                            Speed Farma--}}
+    {{--                        </h1>--}}
 
-                    </div>
+    {{--                    </div>--}}
 
 
-                </div>
+    {{--                </div>--}}
 
-                <div class="card-body" id="printContent" >
+    {{--                <div class="card-body" id="printContent" >--}}
 
-                </div>
+    {{--                </div>--}}
 
-            </div>
-        </div>
+    {{--            </div>--}}
+    {{--        </div>--}}
 
-    </div>
+    {{--    </div>--}}
     <!-- row closed -->
     </div>
     <!-- Container closed -->
@@ -230,8 +230,8 @@
 
 
             var url = $(identfier).data('url');
+            var url_print = $(identfier).data('url_print');
             var id = $(identfier).data('id');
-            alert(id)
             $('#loader').css('display', 'block')
 
             $.ajax({
@@ -241,10 +241,13 @@
                     $('#loader').css('display', 'none')
                     $('#tbody').empty()
                     $('#tbody').append(data)
-                    $('#printContent').empty()
-                    $('#printContent').append(data)
-                    $('#number_invoice').empty()
-                    $('#number_invoice').append(id)
+                    document.getElementById('print-btn').setAttribute('data-id', id)
+                    document.getElementById('print-btn').setAttribute('data-url', url_print)
+
+                    // $('#printContent').empty()
+                    // $('#printContent').append(data)
+                    // $('#number_invoice').empty()
+                    // $('#number_invoice').append(id)
 
                 }
             })
@@ -292,16 +295,45 @@
             })
         }
 
-        function print() {
-            var printContent = document.getElementById('print_invoice').innerHTML;
-            var a = window.open('', '', 'height=500, width=500');
-            a.document.write('<html><head> <style>' +
-                'body{direction: rtl} tr,td,th {' +
-                'border: 1px solid} table{width: 100% ; border: 1px solid } </style></head><body>');
-            a.document.write(printContent);
-            a.document.write('</body></html>');
-            a.document.close();
-            a.print();
+        function printInvoice() {
+
+
+            var id = $('#print-btn').data('id')
+            var url = $('#print-btn').data('url_print')
+
+
+            alert(id)
+            if(id != null)
+            {
+
+                // var printContent = document.getElementById('print_invoice').innerHTML;
+                // var a = window.open('', '', 'height=500, width=500');
+                // a.document.write('<html><head> <style>' +
+                //     'body{direction: rtl} tr,td,th {' +
+                //     'border: 1px solid} table{width: 100% ; border: 1px solid } </style></head><body>');
+                // a.document.write(printContent);
+                // a.document.write('</body></html>');
+                // a.document.close();
+                // a.print();
+
+
+
+                $.ajax({
+                    url:,
+                    method: 'get',
+                    success: function (data) {
+
+
+
+                        // $('#printContent').empty()
+                        // $('#printContent').append(data)
+                        // $('#number_invoice').empty()
+                        // $('#number_invoice').append(id)
+
+                    }
+                })
+            }
+
         }
 
     </script>

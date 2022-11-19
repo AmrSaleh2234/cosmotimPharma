@@ -67,12 +67,13 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     //start customer invoice
     Route::post('customer_invoice/collect', [\App\Http\Controllers\InvoiceCustomerController::class, 'collect'])->name('invoice_customer.collect');
     Route::get('customer_invoice/{customer?}', [\App\Http\Controllers\InvoiceCustomerController::class, 'index'])->name('invoice_customer.index');
+    Route::get('customer_invoice/print/{id}', [\App\Http\Controllers\InvoiceCustomerController::class, 'print'])->name('invoice_customer.print');
     Route::get('customer_invoice/payment/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'payment'])->name('invoice_customer.payment');
     Route::get('customer_invoice/details/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'orderDetails'])->name('invoice_customer.orderDetails');
     Route::get('customer_invoice/create/{account}', [\App\Http\Controllers\InvoiceCustomerController::class, 'create'])->name('invoice_customer.create');
-    Route::post('customer_invoice//store{account}', [\App\Http\Controllers\InvoiceCustomerController::class, 'store'])->name('invoice_customer.store');
+    Route::post('customer_invoice/store{account}', [\App\Http\Controllers\InvoiceCustomerController::class, 'store'])->name('invoice_customer.store');
     Route::get('customer_invoice/edit/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'edit'])->name('invoice_customer.edit');
-    Route::post('customer_invoice/edit/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'update'])->name('invoice_customer.update');
+    Route::post('customer_invoice/update/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'update'])->name('invoice_customer.update');
     Route::post('customer_invoice/delete/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'destroy'])->name('invoice_customer.destroy');
     //start supplier
     Route::get('supplier/', [\App\Http\Controllers\SupplierControler::class, 'index'])->name('supplier.index');

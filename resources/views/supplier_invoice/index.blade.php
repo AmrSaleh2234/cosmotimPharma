@@ -74,9 +74,9 @@
                                                    href="{{ route('invoice_supplier.edit', $item->id) }}"><i
                                                         class="typcn typcn-edit tx-20 "></i></a>
                                                 <button class="btn btn-danger ml-2 btn-fixed"
-                                                        onclick="getElementById('delete_invoice_supplier').submit()"><i
+                                                        onclick="getElementById('delete_invoice_supplier-{{$item->id}}').submit()"><i
                                                         class="typcn typcn-delete-outline tx-20 "></i></button>
-                                                <form id="delete_invoice_supplier" method="post"
+                                                <form id="delete_invoice_supplier-{{$item->id}}" method="post"
                                                       action="{{ route('invoice_supplier.destroy', $item) }}"
                                                       style="display: none">
                                                     @csrf
