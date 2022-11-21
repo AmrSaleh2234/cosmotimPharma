@@ -233,7 +233,6 @@
 
 </body>
 <script>
-    window.onafterprint = window.close;
     var p= window.print();
 
 
