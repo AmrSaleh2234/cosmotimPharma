@@ -159,9 +159,9 @@
 
                     </div>
                     <div class="d-flex justify-content-center mb-3">
-                        <button class="btn btn-primary-gradient w-75" id="print-btn" data-idInvoice="" data-url="" onclick="printInvoice()"><i
+                        <a class="btn btn-primary-gradient w-75" href="" target="_blank" id="print-btn" data-idInvoice="" data-url="" ><i
                                 class="typcn typcn-printer tx-20 "></i>اطبع
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -171,34 +171,7 @@
 
     </div>
 
-    {{--    <div class="col-lg-12 col-sm-12"  id ="print_invoice" style="display: none">--}}
-    {{--        <div class="card" style="border-top:3px solid cadetblue">--}}
-    {{--            <div class="card-header pb-0">--}}
-    {{--                <div class="">--}}
-    {{--                    <h1 style="font-size: 23px" class="card-title  text-center">الفاتورة رقم: #<span id ="number_invoice"></span> </h1>--}}
-    {{--                    <div class="d-flex justify-content-between">--}}
-    {{--                        <div>--}}
-    {{--                            <h1 style="font-size: 19px" class="card-title  ">اسم العميل: <span id ="name"></span> </h1>--}}
-    {{--                            <h1 style="font-size: 19px" class="card-title  ">رقم الهاتف: <span id ="phone"></span> </h1>--}}
-    {{--                            <h1 style="font-size: 19px" class="card-title  ">العنوان: <span id ="address"></span> </h1>--}}
-    {{--                        </div>--}}
-    {{--                        <h1 style="font-size: 30px" class="">--}}
-    {{--                            Speed Farma--}}
-    {{--                        </h1>--}}
 
-    {{--                    </div>--}}
-
-
-    {{--                </div>--}}
-
-    {{--                <div class="card-body" id="printContent" >--}}
-
-    {{--                </div>--}}
-
-    {{--            </div>--}}
-    {{--        </div>--}}
-
-    {{--    </div>--}}
     <!-- row closed -->
     </div>
     <!-- Container closed -->
@@ -242,9 +215,8 @@
                     $('#tbody').empty()
                     $('#tbody').append(data)
 
-                    document.getElementById('print-btn').setAttribute('data-idInvoice', id)
 
-                    document.getElementById('print-btn').setAttribute('data-url', url_print)
+                    document.getElementById('print-btn').setAttribute('href', url_print)
 
                     // $('#printContent').empty()
                     // $('#printContent').append(data)
@@ -297,44 +269,7 @@
             })
         }
 
-        function printInvoice() {
 
-
-            var id = document.getElementById('print-btn').getAttribute('data-idInvoice')
-            var url = $('#print-btn').data('url')
-
-
-            if(url != "")
-            {
-
-                //var printContent = document.getElementById('print_invoice').innerHTML;
-                var a = window.open('', '', 'height=500, width=500');
-                // a.document.write('<html><head> <style>' +
-                //     'body{direction: rtl} tr,td,th {' +
-                //     'border: 1px solid} table{width: 100% ; border: 1px solid } </style></head><body>');
-                // a.document.write(printContent);
-                // a.document.write('</body></html>');
-                // a.document.close();
-                // a.print();
-
-
-
-                $.ajax({
-                    url:url,
-                    method: 'get',
-                    success: function (data) {
-
-
-                        a.document.write(data);
-
-                        a.print();
-                        a.close();
-
-                    }
-                })
-            }
-
-        }
 
     </script>
 @endsection
