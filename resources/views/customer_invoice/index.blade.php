@@ -159,7 +159,7 @@
 
                     </div>
                     <div class="d-flex justify-content-center mb-3">
-                        <button class="btn btn-primary-gradient w-75" id="print-btn" data-id="" data-url="" onclick="printInvoice()"><i
+                        <button class="btn btn-primary-gradient w-75" id="print-btn" data-idInvoice="" data-url="" onclick="printInvoice()"><i
                                 class="typcn typcn-printer tx-20 "></i>اطبع
                         </button>
                     </div>
@@ -241,7 +241,9 @@
                     $('#loader').css('display', 'none')
                     $('#tbody').empty()
                     $('#tbody').append(data)
-                    document.getElementById('print-btn').setAttribute('data-id', id)
+
+                    document.getElementById('print-btn').setAttribute('data-idInvoice', id)
+
                     document.getElementById('print-btn').setAttribute('data-url', url_print)
 
                     // $('#printContent').empty()
@@ -298,16 +300,15 @@
         function printInvoice() {
 
 
-            var id = $('#print-btn').data('id')
-            var url = $('#print-btn').data('url_print')
+            var id = document.getElementById('print-btn').getAttribute('data-idInvoice')
+            var url = $('#print-btn').data('url')
 
 
-            alert(id)
-            if(id != null)
+            if(url != "")
             {
 
-                // var printContent = document.getElementById('print_invoice').innerHTML;
-                // var a = window.open('', '', 'height=500, width=500');
+                //var printContent = document.getElementById('print_invoice').innerHTML;
+                var a = window.open('', '', 'height=500, width=500');
                 // a.document.write('<html><head> <style>' +
                 //     'body{direction: rtl} tr,td,th {' +
                 //     'border: 1px solid} table{width: 100% ; border: 1px solid } </style></head><body>');
@@ -319,16 +320,15 @@
 
 
                 $.ajax({
-                    url:,
+                    url:url,
                     method: 'get',
                     success: function (data) {
 
 
+                        a.document.write(data);
 
-                        // $('#printContent').empty()
-                        // $('#printContent').append(data)
-                        // $('#number_invoice').empty()
-                        // $('#number_invoice').append(id)
+                        a.print();
+                        a.close();
 
                     }
                 })

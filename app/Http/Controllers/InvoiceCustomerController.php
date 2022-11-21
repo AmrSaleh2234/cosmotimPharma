@@ -407,8 +407,10 @@ class InvoiceCustomerController extends Controller
         return view('customer_invoice._payment',compact('invoice'));
     }
 
-    public function print($id)
+    public function print(invoice_customer $invoice)
     {
+
+        return view('customer_invoice.invoice',compact('invoice'));
 
     }
 

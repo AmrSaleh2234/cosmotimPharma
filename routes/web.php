@@ -67,7 +67,7 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     //start customer invoice
     Route::post('customer_invoice/collect', [\App\Http\Controllers\InvoiceCustomerController::class, 'collect'])->name('invoice_customer.collect');
     Route::get('customer_invoice/{customer?}', [\App\Http\Controllers\InvoiceCustomerController::class, 'index'])->name('invoice_customer.index');
-    Route::get('customer_invoice/print/{id}', [\App\Http\Controllers\InvoiceCustomerController::class, 'print'])->name('invoice_customer.print');
+    Route::get('customer_invoice/print/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'print'])->name('invoice_customer.print');
     Route::get('customer_invoice/payment/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'payment'])->name('invoice_customer.payment');
     Route::get('customer_invoice/details/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'orderDetails'])->name('invoice_customer.orderDetails');
     Route::get('customer_invoice/create/{account}', [\App\Http\Controllers\InvoiceCustomerController::class, 'create'])->name('invoice_customer.create');
