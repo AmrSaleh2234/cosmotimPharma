@@ -35,6 +35,14 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+{{--                            <div id="invoiceSearch" class="">--}}
+{{--                                <label>--}}
+{{--                                    <input type="search"--}}
+{{--                                           class="form-control form-control-sm"--}}
+{{--                                           placeholder="Search..."--}}
+{{--                                           aria-controls="example">--}}
+{{--                                </label>--}}
+{{--                            </div>--}}
                             <table id="example" class="table key-buttons text-md-nowrap">
                                 <thead>
                                 <tr>
@@ -78,7 +86,8 @@
                                                href="{{ route('invoice_customer.edit', $item->id) }}"><i
                                                     class="typcn typcn-edit tx-20 "></i></a>
                                             <button class="btn btn-danger-gradient ml-2 btn-fixed" title="حذف"
-                                                    onclick="getElementById('delete_invoice_customer-{{$item->id}}').submit()"><i
+                                                    onclick="getElementById('delete_invoice_customer-{{$item->id}}').submit()">
+                                                <i
                                                     class="typcn typcn-delete-outline tx-20 "></i></button>
                                             <form id="delete_invoice_customer-{{$item->id}}" method="post"
                                                   action="{{ route('invoice_customer.destroy', $item) }}"
@@ -159,7 +168,8 @@
 
                     </div>
                     <div class="d-flex justify-content-center mb-3">
-                        <a class="btn btn-primary-gradient w-75" href="" target="_blank" id="print-btn" data-idInvoice="" data-url="" ><i
+                        <a class="btn btn-primary-gradient w-75" href="" target="_blank" id="print-btn"
+                           data-idInvoice="" data-url=""><i
                                 class="typcn typcn-printer tx-20 "></i>اطبع
                         </a>
                     </div>
@@ -196,7 +206,35 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
-    <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <script>
+        $(function (e) {
+            //file export datatable
+            var table = $('#example').DataTable({
+                lengthChange: false,
+                buttons: ['copy', 'excel', 'colvis'],
+                responsive: true,
+                language: {
+                    searchPlaceholder: 'Search...',
+                    sSearch: '',
+                }
+
+
+            });
+
+
+            table.buttons().container()
+                .appendTo('#example_wrapper .col-md-6:eq(0)');
+            $('#example_filter input').on('change', function () {
+                var search = $(this);
+                table
+                    .column(0)
+                    .search(search.val())
+                    .draw();
+
+            });
+        })
+
+    </script>
 
     <script>
         function order(identfier) {
@@ -227,13 +265,6 @@
             })
         }
 
-        $(document).ready(function () {
-            // $('#example').dataTable({
-            //     "bFilter": false,
-            //     "bDestroy": true
-            // });
-            $('#example_filter').css('display', 'none')
-        });
 
     </script>
     <script>
@@ -268,7 +299,6 @@
 
             })
         }
-
 
 
     </script>
