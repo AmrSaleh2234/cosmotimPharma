@@ -29,14 +29,15 @@
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
                     <div class="card-body">
+                        <a class="btn btn-warning-gradient mb-3" href="{{route('gift.create')}}">أضف هديه </a>
                         <div class="table-responsive">
                             <table id="example" class="table key-buttons text-md-nowrap">
                                 <thead>
                                     <tr>
-                                        <th class="wd-5p">رقم الفاتورة</th>
-                                        <th class="wd-5p">قيمة الفاتورة </th>
-                                        <th class="wd-5">منشئ الفاتورة</th>
-                                        <th class="wd-5">التاريخ</th>
+                                        <th class="">رقم الفاتورة</th>
+                                        <th class="">قيمة الفاتورة </th>
+                                        <th class="">منشئ الفاتورة</th>
+                                        <th class="">التاريخ</th>
                                         <th class="d-flex justify-content-center">العمليات</th>
 
                                     </tr>

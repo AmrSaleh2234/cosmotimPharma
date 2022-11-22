@@ -50,8 +50,9 @@
                             <thead>
                             <tr>
                                 <th class="border-bottom-0 ">#</th>
-                                <th class=" border-bottom-0">رقم الهاتف</th>
                                 <th class=" border-bottom-0">اسم الحساب</th>
+                                <th class=" border-bottom-0">رقم الهاتف</th>
+
                                 <th class=" border-bottom-0">العنوان</th>
                                 <th class=" border-bottom-0">حالة الحساب ككل</th>
 

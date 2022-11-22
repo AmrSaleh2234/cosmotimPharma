@@ -43,7 +43,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
 
-                        <table class="table text-md-nowrap" id="example1">
+                        <table class="table " id="example1">
                             @php
                                 $i = 0;
                             @endphp
@@ -57,7 +57,7 @@
                                 <th class=" border-bottom-0">  حاله الحساب اول المدة </th>
                                 <th>عرض</th>
                                 <th class=" border-bottom-0">تحصيل النقديه اول الحساب</th>
-                                <th class="border-bottom-0">العمليات</th>
+                                <th class="border-bottom-0" style="width: 69px">العمليات</th>
                                 <th class="border-bottom-0" >المنشئ</th>
 
                             </tr>

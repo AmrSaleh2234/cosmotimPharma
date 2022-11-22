@@ -59,7 +59,7 @@ class CustomerController extends Controller
             'account_type.required' =>'ادخل نوع الحساب',
             'balance.required' =>'ادخل رصيد الحساب',
         ]);
-        if ($request->balance_status!=2 && ($request->balance<0 || $request->balance==null))
+        if ($request->balance_status!=2 && ($request->balance<=0 || $request->balance==null))
         {
             return redirect()->back()->with('error','لابد من ادخال قيمة الرصيد ');
         }
@@ -202,7 +202,7 @@ class CustomerController extends Controller
         $total = 0;
         $customer = customer::find($id);
         foreach ($customer->invoice_customer as $invoice) {
-            $total += $invoice->total - $invoice->payed;
+            $total += $invoice->total_after - $invoice->payed;
         }
         return $customer->balance - $total;
     }

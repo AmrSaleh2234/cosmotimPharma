@@ -33,7 +33,7 @@
                         <h3 class="card-title mg-b-0">فواتير المبيعات</h3>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" id="print_invoices_details">
                         <div class="table-responsive">
                             <table id="example" class="table key-buttons text-md-nowrap">
                                 <thead>
@@ -52,7 +52,7 @@
                                 @endphp
                                 @foreach($customer->invoice_customer as $item)
                                     <tr>
-                                        <td rowspan="{{count($item->order)}}" style="position: relative">
+                                        <td rowspan="{{count($item->order)+2}}" style="position: relative;border: 2px solid #673ab7;">
                                             <div class="d-flex justify-content-center align-items-center text-primary"
                                                  style="position: absolute;top:0;left: 0; height: 100%;width: 100%;">
                                                 {{$item->id}}
@@ -81,25 +81,21 @@
                                     @endphp
                                 @endforeach
                                 <tr class="text-purple" style="border: 1px solid">
-                                    <td rowspan="2" style="border: 1px solid ;position: relative">
-                                        <div class="d-flex justify-content-center align-items-center"
-                                             style="position: absolute;top: 0;left: 0; height: 100%; width: 100%;">
-                                            مجموع فاتورة {{$item->id}}
-                                        </div>
-                                    </td>
-                                    <td rowspan="2" style="border: 1px solid ;position: relative">
+
+                                    <td style="border: 1.7px solid #673ab7;"> الاجمالي</td>
+                                    <td style="border-top: 1.7px solid #673ab7;border-bottom: 1.7px solid #673ab7;border-left: 1.7px solid #673ab7;"> المدفوع</td>
+                                    <td style="border-top: 1.7px solid #673ab7;border-bottom: 1.7px solid #673ab7;border-left: 1.7px solid #673ab7;"> الغير مدفوع</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1.7px solid #673ab7; ;position: relative">
                                         <div class="d-flex justify-content-center align-items-center"
                                              style="position: absolute;top: 0;left: 0; height: 100%; width: 100%;">
                                             {{$item->total_after}}
                                         </div>
                                     </td>
-                                    <td style="border: 1px solid"> المدفوع</td>
-                                    <td style="border: 1px solid"> الغير مدفوع</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-success" style="border: 1px solid purple ">{{$item->payed}}</td>
+                                    <td class="text-success" style="border: border-top: 1.7px solid #673ab7;border-bottom: 1.7px solid #673ab7;border-left: 1.7px solid #673ab7; ">{{$item->payed}}</td>
                                     <td class="text-danger"
-                                        style="border: 1px solid purple ; ">{{$item->total_after-$item->payed}}</td>
+                                        style="border-top: 1.7px solid #673ab7;border-bottom: 1.7px solid #673ab7;border-left: 1.7px solid #673ab7 ; ">{{$item->total_after-$item->payed}}</td>
 
                                 </tr>
 
@@ -116,8 +112,12 @@
 
                                 </tbody>
                             </table>
+
                         </div>
 
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-primary-gradient w-50 mb-3" onclick="print_invoices()">اطبع</button>
                     </div>
 
 
@@ -132,11 +132,11 @@
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
 
-                    <div class="card-body" id="tbody">
+                    <div class="card-body" id="print-products">
 
 
                         <div class="table-responsive">
-                            <table id="example" class="table key-buttons text-md-nowrap">
+                            <table id="" class="table">
                                 <thead>
                                 <tr>
 
@@ -158,6 +158,9 @@
                         </div>
 
 
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-primary-gradient w-50 mb-3" onclick="print_products()">اطبع</button>
                     </div>
 
                 </div>
@@ -191,6 +194,22 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/print.js') }}"></script>
+    <script>
+        function print_invoices()
+        {
+            $('#print_invoices_details').printThis();
+
+        }
+    </script>
+    <script>
+        function print_products()
+        {
+
+            $('#print-products').printThis();
+
+        }
+    </script>
 
 @endsection
 

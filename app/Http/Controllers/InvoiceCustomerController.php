@@ -148,11 +148,11 @@ class InvoiceCustomerController extends Controller
         $status=2;
         if ($account->balance+$total_after>0)
         {
-            $status=3;
+            $status=1;//customer must pay
         }
         elseif ($account->balance+$total_after<0)
         {
-            $status=1;
+            $status=3;//customer collect
         }
         $account->update(['balance'=>$account->balance+$total_after,'balance_status'=>$status]);
 
