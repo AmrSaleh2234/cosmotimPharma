@@ -224,7 +224,7 @@
         </tr>
     </table>
 </article>
-<aside style="padding-top: 35px">
+<aside style="padding-top: 60px">
     <h1><span style="font-size: 25px" > ملاحظة </span></h1>
     <div >
         <p>مش فاكر</p>
