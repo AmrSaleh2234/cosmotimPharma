@@ -189,7 +189,36 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
-    <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <script>
+        $(function (e) {
+            //file export datatable
+            var table = $('#example').DataTable({
+                lengthChange: false,
+                buttons: ['copy', 'excel', 'colvis'],
+                responsive: true,
+                language: {
+                    searchPlaceholder: 'Search...',
+                    sSearch: '',
+                }
+
+
+            });
+
+
+            table.buttons().container()
+                .appendTo('#example_wrapper .col-md-6:eq(0)');
+            $('#example_filter input').on('change', function () {
+                var search = $(this);
+                table
+                    .column(0)
+                    .search(search.val())
+                    .draw();
+
+            });
+        })
+
+    </script>
+
     <script>
         $('#modaldemo8').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
@@ -220,13 +249,6 @@
             })
         }
 
-        $(document).ready(function () {
-            // $('#example').dataTable({
-            //     "bFilter": false,
-            //     "bDestroy": true
-            // });
-            $('#example_filter').css('display', 'none')
-        });
 
     </script>
     <script>
