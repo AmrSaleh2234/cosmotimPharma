@@ -151,9 +151,9 @@
 <header style="direction: rtl">
 
     <address >
-        <p class="special-font"> الاسم: {{$invoice->customer->name}} </p>
-        <p class="special-font">  العنوان: {{$invoice->customer->address}}  </p>
-        <p class="special-font"> الهاتف: {{$invoice->customer->phone}} </p>
+        <p class="special-font"> الاسم: {{$invoice->supplier->name}} </p>
+        <p class="special-font">  العنوان: {{$invoice->supplier->address}}  </p>
+        <p class="special-font"> الهاتف: {{$invoice->supplier->phone}} </p>
     </address>
     <span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span>
 </header>
@@ -173,7 +173,7 @@
         </tr>
         <tr>
             <th><span >المبلغ المستحق</span></th>
-            <td style="color: #0a58ca;font-size: 13px"><span>{{$invoice->total_after-$invoice->payed}}</span><span id="prefix" > جم</span></td>
+            <td style="color: #0a58ca;font-size: 13px"><span>{{$invoice->total-$invoice->payed}}</span><span id="prefix" > جم</span></td>
         </tr>
     </table>
     <table class="inventory">
@@ -181,7 +181,6 @@
         <tr>
             <th><span >الصنف</span></th>
             <th><span >سعر الحمهور</span></th>
-            <th><span >الخصم</span></th>
             <th><span >السعر</span></th>
             <th><span >الكمية</span></th>
             <th><span >الاجمالي</span></th>
@@ -192,10 +191,9 @@
             <tr>
                 <td><span >{{$item->product->name}}</span></td>
                 <td><span >{{$item->product->price_after}}</span><span data-prefix> جم </span></td>
-                <td style="color:#0ba360"><span data-prefix>%</span><span >{{$item->pivot->discount}}</span></td>
-                <td><span >{{$item->pivot->price_after_discount/$item->pivot->quantity}}</span><span data-prefix> جم</span></td>
+                <td><span >{{$item->pivot->pricePerOne}}</span><span data-prefix> جم</span></td>
                 <td><span >{{$item->pivot->quantity}}</span></td>
-                <td><span>{{$item->pivot->price_after_discount}}</span><span data-prefix> جم</span></td>
+                <td><span>{{$item->pivot->pricePerOne*$item->pivot->quantity}}</span><span data-prefix> جم</span></td>
             </tr>
         @endforeach
 
@@ -205,14 +203,9 @@
     <table class="balance">
         <tr>
             <th><span >الاجمالي</span></th>
-            <td><span>{{$invoice->total_after}}</span><span data-prefix> جم</span></td>
+            <td><span>{{$invoice->total}}</span><span data-prefix> جم</span></td>
         </tr>
-        @if($invoice->discount !=0)
-            <tr>
-                <th style="color: #0ba360;font-size: 13px"><span >خصم كلي علي الفاتورة</span></th>
-                <td><span data-prefix>%</span><span>{{$invoice->discount}}</span></td>
-            </tr>
-        @endif
+
 
         <tr>
             <th><span >المدفوع</span></th>
@@ -220,7 +213,7 @@
         </tr>
         <tr>
             <th><span >المستحق</span></th>
-            <td style="color: #0a58ca;font-size: 13px"><span>{{$invoice->total_after-$invoice->payed}}</span><span data-prefix> جم</span> </td>
+            <td style="color: #0a58ca;font-size: 13px"><span>{{$invoice->total-$invoice->payed}}</span><span data-prefix> جم</span> </td>
         </tr>
     </table>
 </article>

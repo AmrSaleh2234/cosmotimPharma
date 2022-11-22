@@ -66,7 +66,7 @@
                                         <td class=" ">
                                             <div class="d-flex no-wrap align-items-center">
                                                 <button class="btn btn-primary ml-2 btn-fixed btn-view"
-                                                        onclick="order(this);" data-id="{{ $item->id }}"
+                                                        onclick="order(this);" data-id="{{ $item->id }}" data-url_print="{{route('invoice_supplier.print',$item)}}"
                                                         data-url="{{ route('invoice_supplier.orderDetails', $item) }}">
                                                     <i
                                                         class="typcn typcn-eye-outline tx-20 "></i></button>
@@ -74,16 +74,18 @@
                                                    href="{{ route('invoice_supplier.edit', $item->id) }}"><i
                                                         class="typcn typcn-edit tx-20 "></i></a>
                                                 <button class="btn btn-danger ml-2 btn-fixed"
-                                                        onclick="getElementById('delete_invoice_supplier-{{$item->id}}').submit()"><i
+                                                        onclick="getElementById('delete_invoice_supplier-{{$item->id}}').submit()">
+                                                    <i
                                                         class="typcn typcn-delete-outline tx-20 "></i></button>
                                                 <form id="delete_invoice_supplier-{{$item->id}}" method="post"
                                                       action="{{ route('invoice_supplier.destroy', $item) }}"
                                                       style="display: none">
                                                     @csrf
                                                 </form>
-                                                <button class="btn btn-purple-gradient ml-2 btn-fixed" data-id="{{$item->id}}"
+                                                <button class="btn btn-purple-gradient ml-2 btn-fixed"
+                                                        data-id="{{$item->id}}"
                                                         data-effect="effect-flip-vertical"
-                                                        data-toggle="modal" onclick="payment(this)" ><i
+                                                        data-toggle="modal" onclick="payment(this)"><i
                                                         class=" typcn typcn-info-large-outline tx-20 "></i></button>
                                             </div>
 
@@ -155,8 +157,10 @@
 
                     </div>
                     <div class="d-flex justify-content-center mb-3">
-                        <button class="btn btn-primary-gradient w-75"><i class="typcn typcn-printer tx-20 "></i>اطبع
-                        </button>
+                        <a class="btn btn-primary-gradient w-75" href="" target="_blank" id="print-btn"
+                           data-idInvoice="" data-url=""><i
+                                class="typcn typcn-printer tx-20 "></i>اطبع
+                        </a>
                     </div>
 
 
@@ -166,7 +170,8 @@
         </div>
 
     </div>
-
+   </div>
+</div>
     <!-- row closed -->
     <!-- Container closed -->
     <!-- main-content closed -->
@@ -236,8 +241,8 @@
 
 
             var url = $(identfier).data('url');
+            var url_print = $(identfier).data('url_print');
             $('#loader').css('display', 'block')
-
             $.ajax({
                 url: url,
                 method: 'get',
@@ -245,6 +250,7 @@
                     $('#loader').css('display', 'none')
                     $('#tbody').empty()
                     $('#tbody').append(data)
+                    document.getElementById('print-btn').setAttribute('href', url_print)
                 }
             })
         }
@@ -266,6 +272,7 @@
                     $('#loader').css('display', 'none')
                     $('#tbody').empty()
                     $('#tbody').append(data)
+
 
                 }
 

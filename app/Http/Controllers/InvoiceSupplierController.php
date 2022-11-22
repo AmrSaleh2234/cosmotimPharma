@@ -294,4 +294,9 @@ class InvoiceSupplierController extends Controller
         }
         return view('customer_invoice._payment',compact('invoice'));
     }
+
+    public function print(invoice_supplier $invoice)
+    {
+        return view('supplier_invoice.invoice',compact('invoice'));
+    }
 }
