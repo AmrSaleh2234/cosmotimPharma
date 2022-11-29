@@ -20,7 +20,6 @@
             margin: 0;
             padding: 0;
             text-decoration: none;
-            vertical-align: top;
         }
 
         /* content editable */
@@ -37,8 +36,6 @@
         /* table */
 
         table {
-            font-size: 75%;
-            table-layout: fixed;
             width: 100%;
         }
 
@@ -219,13 +216,6 @@
 
         /* table balance */
 
-        table.balance th, table.balance td {
-            width: 50%;
-        }
-
-        table.balance td {
-            text-align: right;
-        }
 
         /* aside */
 
