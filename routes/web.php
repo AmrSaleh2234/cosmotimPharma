@@ -73,7 +73,9 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     Route::get('customer_invoice/create/{account}', [\App\Http\Controllers\InvoiceCustomerController::class, 'create'])->name('invoice_customer.create');
     Route::post('customer_invoice/store{account}', [\App\Http\Controllers\InvoiceCustomerController::class, 'store'])->name('invoice_customer.store');
     Route::get('customer_invoice/edit/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'edit'])->name('invoice_customer.edit');
+    Route::get('customer_invoice/return/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'returns'])->name('invoice_customer.return');
     Route::post('customer_invoice/update/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'update'])->name('invoice_customer.update');
+    Route::post('customer_invoice/doReturn/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'doReturn'])->name('invoice_customer.doReturn');
     Route::post('customer_invoice/delete/{invoice}', [\App\Http\Controllers\InvoiceCustomerController::class, 'destroy'])->name('invoice_customer.destroy');
     //start supplier
     Route::get('supplier/', [\App\Http\Controllers\SupplierControler::class, 'index'])->name('supplier.index');

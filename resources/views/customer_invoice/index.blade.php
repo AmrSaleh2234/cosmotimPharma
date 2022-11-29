@@ -35,14 +35,14 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-{{--                            <div id="invoiceSearch" class="">--}}
-{{--                                <label>--}}
-{{--                                    <input type="search"--}}
-{{--                                           class="form-control form-control-sm"--}}
-{{--                                           placeholder="Search..."--}}
-{{--                                           aria-controls="example">--}}
-{{--                                </label>--}}
-{{--                            </div>--}}
+                            {{--                            <div id="invoiceSearch" class="">--}}
+                            {{--                                <label>--}}
+                            {{--                                    <input type="search"--}}
+                            {{--                                           class="form-control form-control-sm"--}}
+                            {{--                                           placeholder="Search..."--}}
+                            {{--                                           aria-controls="example">--}}
+                            {{--                                </label>--}}
+                            {{--                            </div>--}}
                             <table id="example" class="table key-buttons text-md-nowrap">
                                 <thead>
                                 <tr>
@@ -100,6 +100,8 @@
                                                     data-url="{{ route('invoice_customer.payment', $item) }}"
                                                     data-toggle="modal" onclick="payment(this)"><i
                                                     class=" typcn typcn-info-large-outline tx-20 "></i></button>
+                                            <a class="btn btn-warning btn-fixed" title="مرتجعات" href="{{route('invoice_customer.return', $item->id)}}"><i
+                                                    class=" typcn typcn-refresh-outline tx-20 "></i></a>
                                         </td>
                                         <td class="text-primary">{{ $item->created_by }}</td>
 
