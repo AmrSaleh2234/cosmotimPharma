@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('total_before');
             $table->decimal('total_after');
             $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->tinyInteger('com_code');
             $table->decimal('profit');
             $table->decimal('payed')->default('0');

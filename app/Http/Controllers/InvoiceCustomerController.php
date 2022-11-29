@@ -318,7 +318,7 @@ class InvoiceCustomerController extends Controller
         invoice_customer::create(['id'=>$id_invoice,'customer_id' => $account_id, 'discount' => $request->invoice_discount
             , 'total_before' => $total_before, 'total_after' => $total_after,'created_by'=>$invoice->created_by ,'updated_by' => auth()->user()->name,
             'profit' => $profit,
-            'payed' => 0
+            'payed' => 0,'com_code'=>$this->getAuthData('com_code')
         ]);
 
         $status=2;
