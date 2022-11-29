@@ -221,7 +221,7 @@ class InvoiceCustomerController extends Controller
 
         if($invoice->payed>0)
         {
-            return "$this->error('لقد تم تحصيل جذء من الفاتورة ')";
+            return $this->error('لقد تم تحصيل جذء من الفاتورة ');
         }
         foreach ($invoice->inventory as $order)
         {
