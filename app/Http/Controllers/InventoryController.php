@@ -16,7 +16,7 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        $products = product::where('com_code',auth()->user()->com_code)->get();
+        $products = product::where('com_code',auth()->user()->com_code)->where('active','1')->get();
         return view('inventory.index',compact('products'));
 
 
