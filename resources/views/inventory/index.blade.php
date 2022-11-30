@@ -107,7 +107,7 @@
                                     <td>{{$item->product->name}}</td>
                                     <td>{{$item->quantity}}</td>
                                     <td>{{$item->price_before}}</td>
-                                    <td>{{$product->price_after}}</td>
+                                    <td>{{$item->product->price_after}}</td>
 
                                     <td>
 
@@ -121,66 +121,62 @@
                                            data-name="{{$item->product->name}}"  style="width: 100px">حذف</a>
 
 
-                                        <div class="modal" id="modaldemo1">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content modal-content-demo">
-                                                    <div class="modal-header">
-                                                        <h6 class="modal-title">تعديل المنتج</h6>
-                                                        <button aria-label="Close" class="close" data-dismiss="modal"
-                                                                type="button">
-                                                            <span aria-hidden="true">&times;</span></button>
-                                                    </div>
-                                                    <form action="{{route('inventory.edit')}}" method="post">
-                                                        <div class="modal-body">
-
-                                                            @csrf
-                                                            <input type="hidden" name="id" id="id">
-                                                            <div class="form-group">
-                                                                <label>اختر المنتج</label>
-                                                                <select class="form-control" name="product_id"
-                                                                        id="product_id">
-                                                                    @foreach($products as $product)
-                                                                        <option
-                                                                            value="{{$product->id}}">{{$product->name}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div>الكمية</div>
-                                                                <input class="w-100" type="number" name="quantity"
-                                                                       id="quantity">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div>السعر قبل البيع</div>
-                                                                <input class="w-100" type="text" name="price_before"
-                                                                       id="price_before">
-                                                            </div>
-
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn ripple btn-primary" type="submit">تعديل
-                                                                المنتج
-                                                            </button>
-                                                            <button class="btn ripple btn-secondary"
-                                                                    data-dismiss="modal" type="button">
-                                                                Close
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-
-
-
 
                                     </td>
                                 </tr>
                                 @endforeach
                             @endforeach
+                            <div class="modal" id="modaldemo1">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content modal-content-demo">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title">تعديل المنتج</h6>
+                                            <button aria-label="Close" class="close" data-dismiss="modal"
+                                                    type="button">
+                                                <span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <form action="{{route('inventory.edit')}}" method="post">
+                                            <div class="modal-body">
+
+                                                @csrf
+                                                <input type="hidden" name="id" id="id">
+                                                <div class="form-group">
+                                                    <label>اختر المنتج</label>
+                                                    <select class="form-control" name="product_id"
+                                                            id="product_id">
+                                                        @foreach($products as $product)
+                                                            <option
+                                                                value="{{$product->id}}">{{$product->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>الكمية</div>
+                                                    <input class="w-100" type="number" name="quantity"
+                                                           id="quantity">
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>السعر قبل البيع</div>
+                                                    <input class="w-100" type="text" name="price_before"
+                                                           id="price_before">
+                                                </div>
+
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn ripple btn-primary" type="submit">تعديل
+                                                    المنتج
+                                                </button>
+                                                <button class="btn ripple btn-secondary"
+                                                        data-dismiss="modal" type="button">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
                             <div class="modal" id="modaldemo2">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content modal-content-demo">
