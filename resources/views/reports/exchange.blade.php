@@ -57,31 +57,31 @@
                             <tbody>
                             @foreach ($exchange as $item)
                                 <tr>
-                                    <td>{{ $i++}}</td>
+                                    <td>{{ ++$i}}</td>
                                     {{--                                    start name of account--}}
                                     @if($item->type==1)
-                                        <td>{{$item->type}}</td>
+                                        <td>مورد</td>
                                         <td class="text-primary">{{\App\Models\supplier::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==2)
-                                        <td>{{$item->type}}</td>
+                                        <td>عميل</td>
                                         <td class="text-primary">{{\App\Models\customer::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==3)
-                                        <td>{{$item->type}}</td>
+                                        <td>فاتورة مشتريات</td>
                                         <td class="text-primary">{{\App\Models\invoice_supplier::where('id',$item->fk)->first()->supplier->name}}</td>
                                     @elseif($item->type==4)
-                                        <td>{{$item->type}}</td>
+                                        <td>فاتورة مبيعات</td>
                                         <td class="text-primary">{{\App\Models\invoice_customer::where('id',$item->fk)->first()->customer->name}}</td>
                                     @elseif($item->type==5)
-                                        <td>{{$item->type}}</td>
+                                        <td>موظف</td>
                                         <td class="text-primary">{{\App\Models\employee::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==6)
-                                        <td>{{$item->type}}</td>
+                                        <td>رأس مال</td>
                                         <td class="text-primary">{{\App\Models\capital::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==7)
-                                        <td>{{$item->type}}</td>
+                                        <td>هدية</td>
                                         <td class="text-primary" style="width:130px">{{\App\Models\gift::where('id',$item->fk)->first()->description}}</td>
                                     @elseif($item->type==8)
-                                        <td>{{$item->type}}</td>
+                                        <td>مصروفات</td>
                                         <td class="text-primary">{{\App\Models\expenses::where('id',$item->fk)->first()->name}}</td>
                                     @endif
                                     {{--                                    end name of account--}}
