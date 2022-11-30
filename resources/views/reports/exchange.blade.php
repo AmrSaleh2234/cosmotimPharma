@@ -48,6 +48,7 @@
                             <thead>
                             <tr>
                                 <th class=" border-bottom-0 ">#</th>
+                                <th class=" border-bottom-0 ">نوع الحساب</th>
                                 <th class=" border-bottom-0 ">اسم الحساب</th>
                                 <th class=" border-bottom-0 ">القيمة</th>
 
@@ -59,20 +60,28 @@
                                     <td>{{ $i++}}</td>
                                     {{--                                    start name of account--}}
                                     @if($item->type==1)
+                                        <td>{{$item->type}}</td>
                                         <td class="text-primary">{{\App\Models\supplier::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==2)
+                                        <td>{{$item->type}}</td>
                                         <td class="text-primary">{{\App\Models\customer::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==3)
+                                        <td>{{$item->type}}</td>
                                         <td class="text-primary">{{\App\Models\invoice_supplier::where('id',$item->fk)->first()->supplier->name}}</td>
                                     @elseif($item->type==4)
+                                        <td>{{$item->type}}</td>
                                         <td class="text-primary">{{\App\Models\invoice_customer::where('id',$item->fk)->first()->customer->name}}</td>
                                     @elseif($item->type==5)
+                                        <td>{{$item->type}}</td>
                                         <td class="text-primary">{{\App\Models\employee::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==6)
+                                        <td>{{$item->type}}</td>
                                         <td class="text-primary">{{\App\Models\capital::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==7)
+                                        <td>{{$item->type}}</td>
                                         <td class="text-primary" style="width:130px">{{\App\Models\gift::where('id',$item->fk)->first()->description}}</td>
                                     @elseif($item->type==8)
+                                        <td>{{$item->type}}</td>
                                         <td class="text-primary">{{\App\Models\expenses::where('id',$item->fk)->first()->name}}</td>
                                     @endif
                                     {{--                                    end name of account--}}
