@@ -123,38 +123,7 @@
 
                                         </div><!-- dropdown-menu -->
 
-                                    <div class="modal" id="modaldemo2">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content modal-content-demo">
-                                                <div class="modal-header">
-                                                    <h6 class="modal-title">حذف المنتج</h6>
-                                                    <button aria-label="Close" class="close" data-dismiss="modal"
-                                                            type="button">
-                                                        <span aria-hidden="true">&times;</span></button>
-                                                </div>
-                                                <h4>هل انت متأكد من عمليه الحذف</h4>
-                                                <form action="{{ route('customer.destroy') }}" method="post">
-                                                    <div class="modal-body">
 
-                                                        @csrf
-
-                                                        <input name="id" id="id" type="hidden">
-
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn ripple btn-danger" type="submit">حذف
-                                                            المنتج
-                                                        </button>
-                                                        <button class="btn ripple btn-secondary"
-                                                                data-dismiss="modal" type="button">
-                                                            Close
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-
-                                        </div>
-                                    </div>
 
 
                                     </td>
@@ -162,6 +131,38 @@
                                     <td>{{$item->created_by}}</td>
                                 </tr>
                             @endforeach
+                            <div class="modal" id="modaldemo2">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content modal-content-demo">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title">حذف المنتج</h6>
+                                            <button aria-label="Close" class="close" data-dismiss="modal"
+                                                    type="button">
+                                                <span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <h4>هل انت متأكد من عمليه الحذف</h4>
+                                        <form action="{{ route('customer.destroy') }}" method="post">
+                                            <div class="modal-body">
+
+                                                @csrf
+
+                                                <input name="id" id="id" type="hidden">
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn ripple btn-danger" type="submit">حذف
+                                                    المنتج
+                                                </button>
+                                                <button class="btn ripple btn-secondary"
+                                                        data-dismiss="modal" type="button">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
                             <div class="modal" id="modaldemo3">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content modal-content-demo">
