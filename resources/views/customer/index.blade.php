@@ -65,7 +65,7 @@
                             <tbody>
                             @foreach ($account as $item)
                                 <tr>
-                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->phone }}</td>
                                     <td>
