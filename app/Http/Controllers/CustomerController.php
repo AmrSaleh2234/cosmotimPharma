@@ -186,13 +186,13 @@ class CustomerController extends Controller
     public function destroy(Request $request)
     {
         $customer = customer::find($request->id);
-        return $customer;
+return $request;
         if (count($customer->invoice_customer) > 0) {
            return $this->error(' المورد له فواتير لا يمكن مسحه  ');
         }
 
         if ($customer->balance!=0) {
-           return $this->error(' العميل حصل من الحيساب القديم لا يمكن الحذف  ');
+           return $this->error(' العميل حصل من الحساب القديم لا يمكن الحذف  ');
         }
         $customer->delete();
         return $this->success('تم الحذف بنجاح');
