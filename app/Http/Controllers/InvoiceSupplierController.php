@@ -30,9 +30,24 @@ class InvoiceSupplierController extends Controller
      */
     public function create(supplier $account)
     {
-        $data = product::where('com_code', auth()->user()->com_code)->get();
+        $products = product::where('com_code', auth()->user()->com_code)->get();
+        $data = [];
+        foreach ($products as $product) {
+            $product->total_quantity=0;
+            if (count($product->inventory) > 0) {
+                $sum = 0;
+                foreach ($product->inventory as $inv) {
+                    $sum += $inv->quantity;
+                }
+                $product->total_quantity = $sum;
 
 
+            }
+
+            array_push($data, $product);
+
+
+        }
 
         return view('supplier_invoice.create', compact('account', 'data'));
 
