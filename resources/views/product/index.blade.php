@@ -95,95 +95,101 @@
                                         <a class="modal-effect btn btn-primary" data-effect="effect-flip-vertical"
                                            data-toggle="modal" href="#modaldemo1" data-id="{{$item->id}}"
                                            data-name="{{$item->name}}" data-price="{{$item->price_after}}">تعديل</a>
-                                        <div class="modal" id="modaldemo1">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content modal-content-demo">
-                                                    <div class="modal-header">
-                                                        <h6 class="modal-title">تعديل المنتج</h6>
-                                                        <button aria-label="Close" class="close" data-dismiss="modal"
-                                                                type="button">
-                                                            <span aria-hidden="true">&times;</span></button>
-                                                    </div>
-                                                    <form action="{{route('product.edit')}}" method="post">
-                                                        <div class="modal-body">
 
-                                                            @csrf
-                                                            <div class="form-group">
-                                                                <label>اسم المنتج</label>
-                                                                <input class="form-control" type="text"
-                                                                       id="edit_product_name" name="product_name">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>سعر المنتج للبيع </label>
-                                                                <input class="form-control" type="text"
-                                                                       id="edit_price_after" name="price_after">
-                                                            </div>
-                                                            <input name="id" id="id" type="hidden">
+                                        @if($item->active == 1)
+                                            <a class="modal-effect btn btn-danger "
+                                               data-effect="effect-flip-vertical"
+                                               data-toggle="modal" href="#modaldemo2" data-id="{{$item->id}}"
+                                               data-name="{{$item->name}}">
 
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn ripple btn-primary" type="submit">تعديل
-                                                                المنتج
-                                                            </button>
-                                                            <button class="btn ripple btn-secondary"
-                                                                    data-dismiss="modal" type="button">
-                                                                Close
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
 
-                                            </div>
-                                        </div>
+                                                تعطيل</a>
+                                        @else
+                                            <a class="modal-effect btn btn-info "
+                                               data-effect="effect-flip-vertical"
+                                               data-toggle="modal" href="#modaldemo2" data-id="{{$item->id}}"
+                                               data-name="{{$item->name}}">
 
-                                        <a class="modal-effect btn btn-info "
-                                           data-effect="effect-flip-vertical"
-                                           data-toggle="modal" href="#modaldemo2" data-id="{{$item->id}}"
-                                           data-name="{{$item->name}}">
-                                            @if($item->active == 1)
-                                                تعطيل
-                                            @else
-                                                تفعيل
-                                            @endif
-                                        </a>
-                                        <div class="modal" id="modaldemo2">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content modal-content-demo">
-                                                    <div class="modal-header">
-                                                        <h6 class="modal-title">تعطيل وتفعيل المنتج</h6>
-                                                        <button aria-label="Close" class="close" data-dismiss="modal"
-                                                                type="button">
-                                                            <span aria-hidden="true">&times;</span></button>
-                                                    </div>
-                                                    <h4>هل انت متأكد </h4>
-                                                    <form action="{{route('product.activate')}}" method="post">
-                                                        <div class="modal-body">
+                                                تعطيل</a>
+                                        @endif
 
-                                                            @csrf
 
-                                                            <input name="id" id="id" type="hidden">
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn ripple btn-success" type="submit">تعطيل
-                                                                او تفعيل
-                                                                المنتج
-                                                            </button>
-                                                            <button class="btn ripple btn-secondary"
-                                                                    data-dismiss="modal" type="button">
-                                                                Close
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
+                            <div class="modal" id="modaldemo1">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content modal-content-demo">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title">تعديل المنتج</h6>
+                                            <button aria-label="Close" class="close" data-dismiss="modal"
+                                                    type="button">
+                                                <span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <form action="{{route('product.edit')}}" method="post">
+                                            <div class="modal-body">
 
+                                                @csrf
+                                                <div class="form-group">
+                                                    <label>اسم المنتج</label>
+                                                    <input class="form-control" type="text"
+                                                           id="edit_product_name" name="product_name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>سعر المنتج للبيع </label>
+                                                    <input class="form-control" type="text"
+                                                           id="edit_price_after" name="price_after">
+                                                </div>
+                                                <input name="id" id="id" type="hidden">
 
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn ripple btn-primary" type="submit">تعديل
+                                                    المنتج
+                                                </button>
+                                                <button class="btn ripple btn-secondary"
+                                                        data-dismiss="modal" type="button">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal" id="modaldemo2">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content modal-content-demo">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title">تعطيل وتفعيل المنتج</h6>
+                                            <button aria-label="Close" class="close" data-dismiss="modal"
+                                                    type="button">
+                                                <span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <h4>هل انت متأكد </h4>
+                                        <form action="{{route('product.activate')}}" method="post">
+                                            <div class="modal-body">
+
+                                                @csrf
+
+                                                <input name="id" id="id" type="hidden">
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn ripple btn-success" type="submit">تعطيل
+                                                    او تفعيل
+                                                    المنتج
+                                                </button>
+                                                <button class="btn ripple btn-secondary"
+                                                        data-dismiss="modal" type="button">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
                             </tbody>
                         </table>
 
@@ -241,6 +247,5 @@
 
         })
     </script>
-
 
 @endsection
