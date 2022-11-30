@@ -37,7 +37,7 @@
                                     <th>#</th>
                                     <th>اسم المنتج</th>
                                     <th>السعر</th>
-                                    <th>الكمية </th>
+
                                     <th>اضافة</th>
 
                                 </tr>
@@ -48,7 +48,7 @@
                                         <th scope="row">{{++$i}}</th>
                                         <td>{{$item->name}}</td>
                                         <td>{{$item->price_after}}</td>
-                                        <td>{{$item->total_quantity}}</td>
+
                                         <td>
                                             <a>
                                                 <button class="btn btn-success btn-icon add-product-btn"
