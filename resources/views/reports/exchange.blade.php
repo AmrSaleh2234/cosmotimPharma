@@ -53,7 +53,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($data as $item)
+                            @foreach ($exchange as $item)
                                 <tr>
                                     <td>{{ $i++}}</td>
                                     @if($item->amount>=0)
