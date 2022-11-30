@@ -136,7 +136,7 @@
                 var name = button.data('name');
                 var id = button.data('id');
                 var price = button.data('price');
-                var html='<tr> <td>'+ name+'</td><td class="quantity">'+ '<input type="hidden" name="products_id[]" value= "'+id+'"> '+ '<input class="input-sm quantity_input" value="1" data-price="'+price+'" type="number" min ="1"  name="quantities[]" data-price ="'+price+'"style="width:60px">'+'</td><td " > <input name="price[]" class="product_price" type="number" min="10" value="10" >  </td><td><button class="btn btn-danger btn-icon btn-delete-product" data-id = "'+id+'"><i class="typcn typcn-document-delete "></i></button></td> </tr>';
+                var html='<tr> <td>'+ name+'</td><td class="quantity">'+ '<input type="hidden" name="products_id[]" value= "'+id+'"> '+ '<input class=" quantity_input" value="1" data-price="'+price+'" type="number" min ="1"  name="quantities[]" data-price ="'+price+'"style="width:60px">'+'</td><td " > <input name="price[]" class="product_price" type="number" min="10" value="10" >  </td><td><button class="btn btn-danger btn-icon btn-delete-product" data-id = "'+id+'"><i class="typcn typcn-document-delete "></i></button></td> </tr>';
                 $('.enableByJs').prop('disabled',false)
                 $('#tbody').append(html);
                 $(this).prop('disabled',true);
