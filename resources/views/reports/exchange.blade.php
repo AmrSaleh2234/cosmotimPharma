@@ -47,10 +47,10 @@
                             @endphp
                             <thead>
                             <tr>
-                                <th class=" border-bottom-0 ">#</th>
-                                <th class=" border-bottom-0 ">نوع الحساب</th>
-                                <th class=" border-bottom-0 ">اسم الحساب</th>
-                                <th class=" border-bottom-0 ">القيمة</th>
+                                <th class=" border-bottom-0  "  style="width: 20%">#</th>
+                                <th class=" border-bottom-0 " style="width: 20%">نوع الحساب</th>
+                                <th class=" border-bottom-0 " style="width: 20%">اسم الحساب</th>
+                                <th class=" border-bottom-0 " style="width: 20%">القيمة</th>
 
                             </tr>
                             </thead>
