@@ -41,18 +41,20 @@ class InventoryController extends Controller
     public function store(inventoryRequest $request)
     {
         $request->validated();
-        inventory::create([
-            'product_id' => $request->product_id,
-            'quantity' => $request->quantity,
-            'price_before' => $request->price_before,
 
-            ]);
         $product=product::where('id',$request->product_id)->first();
 
         if ($request->price_before >= $product->price_after )
         {
             return redirect()->back()->with('error','سعر المنتج قبل البيع يجب ان يكون اقل من بعد البيع ');
         }
+
+        inventory::create([
+            'product_id' => $request->product_id,
+            'quantity' => $request->quantity,
+            'price_before' => $request->price_before,
+
+        ]);
         return redirect()->back()->with('success','لقد تم اضافة المنتج في المخزن');
     }
 
