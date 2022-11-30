@@ -186,6 +186,7 @@ class CustomerController extends Controller
     public function destroy(Request $request)
     {
         $customer = customer::find($request->id);
+        return $customer;
         if (count($customer->invoice_customer) > 0) {
            return $this->error(' المورد له فواتير لا يمكن مسحه  ');
         }
