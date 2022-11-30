@@ -41,7 +41,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
 
-                        <table class="table key-buttons text-md-nowrap " id="example1">
+                        <table class="table key-buttons  " id="example">
                             @php
                                 $i = 0;
                             @endphp
