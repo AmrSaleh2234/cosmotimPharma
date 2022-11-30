@@ -48,6 +48,7 @@
                             <thead>
                             <tr>
                                 <th class=" border-bottom-0 ">#</th>
+                                <th class=" border-bottom-0 ">اسم الحساب</th>
                                 <th class=" border-bottom-0 ">القيمة</th>
 
                             </tr>
@@ -56,6 +57,25 @@
                             @foreach ($exchange as $item)
                                 <tr>
                                     <td>{{ $i++}}</td>
+                                    {{--                                    start name of account--}}
+                                    @if($item->type==1)
+                                        <td class="text-success">{{\App\Models\supplier::where('id',$item->fk)->first()->name}}</td>
+                                    @elseif($item->type==2)
+                                        <td class="text-danger">{{\App\Models\customer::where('id',$item->fk)->first()->name}}</td>
+                                    @elseif($item->type==3)
+                                        <td class="text-danger">{{\App\Models\invoice_supplier::where('id',$item->fk)->first()}}</td>
+                                    @elseif($item->type==4)
+                                        <td class="text-danger">{{\App\Models\invoice_customer::where('id',$item->fk)->first()}}</td>
+                                    @elseif($item->type==5)
+                                        <td class="text-danger">{{\App\Models\employee::where('id',$item->fk)->first()}}</td>
+                                    @elseif($item->type==6)
+                                        <td class="text-danger">{{\App\Models\capital::where('id',$item->fk)->first()}}</td>
+                                    @elseif($item->type==7)
+                                        <td class="text-danger">{{\App\Models\gift::where('id',$item->fk)->first()}}</td>
+                                    @elseif($item->type==8)
+                                        <td class="text-danger">{{\App\Models\expenses::where('id',$item->fk)->first()}}</td>
+                                    @endif
+                                    {{--                                    end name of account--}}
                                     @if($item->amount>=0)
                                         <td class="text-success">{{$item->amount}}</td>
                                     @else
