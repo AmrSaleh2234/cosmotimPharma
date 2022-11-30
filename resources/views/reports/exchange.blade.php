@@ -59,21 +59,21 @@
                                     <td>{{ $i++}}</td>
                                     {{--                                    start name of account--}}
                                     @if($item->type==1)
-                                        <td class="text-success">{{\App\Models\supplier::where('id',$item->fk)->first()->name}}</td>
+                                        <td class="text-primary">{{\App\Models\supplier::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==2)
-                                        <td class="text-danger">{{\App\Models\customer::where('id',$item->fk)->first()->name}}</td>
+                                        <td class="text-primary">{{\App\Models\customer::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==3)
-                                        <td class="text-danger">{{\App\Models\invoice_supplier::where('id',$item->fk)->first()}}</td>
+                                        <td class="text-primary">{{\App\Models\invoice_supplier::where('id',$item->fk)->first()->supplier->name}}</td>
                                     @elseif($item->type==4)
-                                        <td class="text-danger">{{\App\Models\invoice_customer::where('id',$item->fk)->first()}}</td>
+                                        <td class="text-primary">{{\App\Models\invoice_customer::where('id',$item->fk)->first()->customer->name}}</td>
                                     @elseif($item->type==5)
-                                        <td class="text-danger">{{\App\Models\employee::where('id',$item->fk)->first()}}</td>
+                                        <td class="text-primary">{{\App\Models\employee::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==6)
-                                        <td class="text-danger">{{\App\Models\capital::where('id',$item->fk)->first()}}</td>
+                                        <td class="text-primary">{{\App\Models\capital::where('id',$item->fk)->first()->name}}</td>
                                     @elseif($item->type==7)
-                                        <td class="text-danger">{{\App\Models\gift::where('id',$item->fk)->first()}}</td>
+                                        <td class="text-primary" style="width:130px">{{\App\Models\gift::where('id',$item->fk)->first()->description}}</td>
                                     @elseif($item->type==8)
-                                        <td class="text-danger">{{\App\Models\expenses::where('id',$item->fk)->first()}}</td>
+                                        <td class="text-primary">{{\App\Models\expenses::where('id',$item->fk)->first()->name}}</td>
                                     @endif
                                     {{--                                    end name of account--}}
                                     @if($item->amount>=0)
