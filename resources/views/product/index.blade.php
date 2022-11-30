@@ -110,7 +110,7 @@
                                                data-toggle="modal" href="#modaldemo2" data-id="{{$item->id}}"
                                                data-name="{{$item->name}}">
 
-                                                تعطيل</a>
+                                                تفعيل</a>
                                         @endif
 
 
