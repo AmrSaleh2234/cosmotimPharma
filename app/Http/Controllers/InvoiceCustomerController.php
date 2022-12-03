@@ -68,6 +68,15 @@ class InvoiceCustomerController extends Controller
      */
     public function store(Request $request, customer $account)
     {
+        $request->validate([
+            "quantities"    => "required|array|min:1",
+            "quantities.*"  => "required|numeric|min:1",
+            "discount"    => "required|array|min:1",
+            "discount.*"  => "required|numeric|min:0|max:100",
+            "products_id"    => "required|array|min:1",
+            "products_id.*"  => "required|numeric",
+        ]);
+
         $i = 0;
         $total_before = 0;
         $total_after = 0;
@@ -90,9 +99,7 @@ class InvoiceCustomerController extends Controller
 
                     $price_after_discount = ($product->price_after * ($quantity * -1)) - ($product->price_after * ($quantity * -1) * ($request->discount[$i] / 100));
                     $profit += $price_after_discount - ($inv->price_before * ($quantity * -1));
-                    if ($price_after_discount - ($inv->price_before * ($quantity * -1)) < 0) {
-                        return redirect()->back()->with('error', 'نسبة الخصم المكتوبة في المنتج تجعلك تخسر ');
-                    }
+
                     if ($val == 0) {
                         $inv->update(['quantity' => $val]);
                         $inv->delete();
@@ -215,7 +222,14 @@ class InvoiceCustomerController extends Controller
      */
     public function update(Request $request, invoice_customer $invoice)
     {
-
+        $request->validate([
+            "quantities"    => "required|array|min:1",
+            "quantities.*"  => "required|numeric|min:1",
+            "discount"    => "required|array|min:1",
+            "discount.*"  => "required|numeric|min:0|max:100",
+            "products_id"    => "required|array|min:1",
+            "products_id.*"  => "required|numeric",
+        ]);
         $id_invoice = $invoice->id;
         $account_id = $invoice->customer->id;
         $totalBeforDelete = $invoice->total_after;

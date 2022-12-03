@@ -66,6 +66,14 @@ class InvoiceSupplierController extends Controller
      */
     public function store(Request $request, supplier $account)
     {
+        $request->validate([
+            "quantities"    => "required|array|min:1",
+            "quantities.*"  => "required|numeric|min:1",
+            "price"    => "required|array|min:1",
+            "price.*"  => "required|numeric|min:1",
+            "products_id"    => "required|array|min:1",
+            "products_id.*"  => "required|numeric",
+        ]);
         $i = 0;
         $id_invoice = 1;
         $total = 0;
@@ -135,6 +143,7 @@ class InvoiceSupplierController extends Controller
      */
     public function edit(invoice_supplier $invoice)
     {
+
         $products = product::where('com_code', auth()->user()->com_code)->get();
         $data = [];
         foreach ($products as $product) {
@@ -163,6 +172,14 @@ class InvoiceSupplierController extends Controller
      */
     public function update(Request $request, invoice_supplier $invoice)
     {
+        $request->validate([
+            "quantities"    => "required|array|min:1",
+            "quantities.*"  => "required|numeric|min:1",
+            "price"    => "required|array|min:1",
+            "price.*"  => "required|numeric|min:1",
+            "products_id"    => "required|array|min:1",
+            "products_id.*"  => "required|numeric",
+        ]);
 
         $id_invoice = $invoice->id;
 
