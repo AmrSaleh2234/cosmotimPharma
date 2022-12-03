@@ -69,12 +69,12 @@ class InvoiceCustomerController extends Controller
     public function store(Request $request, customer $account)
     {
         $request->validate([
-            "quantities"    => "required|array|min:1",
-            "quantities.*"  => "required|numeric|min:1",
-            "discount"    => "required|array|min:1",
-            "discount.*"  => "required|numeric|min:0|max:100",
-            "products_id"    => "required|array|min:1",
-            "products_id.*"  => "required|numeric",
+            "quantities" => "required|array|min:1",
+            "quantities.*" => "required|numeric|min:1",
+            "discount" => "required|array|min:1",
+            "discount.*" => "required|numeric|min:0|max:100",
+            "products_id" => "required|array|min:1",
+            "products_id.*" => "required|numeric",
         ]);
 
         $i = 0;
@@ -207,8 +207,6 @@ class InvoiceCustomerController extends Controller
     }
 
 
-
-
     /**
      * Update the specified resource in storage.
      *
@@ -219,12 +217,12 @@ class InvoiceCustomerController extends Controller
     public function update(Request $request, invoice_customer $invoice)
     {
         $request->validate([
-            "quantities"    => "required|array|min:1",
-            "quantities.*"  => "required|numeric|min:1",
-            "discount"    => "required|array|min:1",
-            "discount.*"  => "required|numeric|min:0|max:100",
-            "products_id"    => "required|array|min:1",
-            "products_id.*"  => "required|numeric",
+            "quantities" => "required|array|min:1",
+            "quantities.*" => "required|numeric|min:1",
+            "discount" => "required|array|min:1",
+            "discount.*" => "required|numeric|min:0|max:100",
+            "products_id" => "required|array|min:1",
+            "products_id.*" => "required|numeric",
         ]);
         $id_invoice = $invoice->id;
         $account_id = $invoice->customer->id;
@@ -336,92 +334,94 @@ class InvoiceCustomerController extends Controller
         return redirect()->back()->with(['success' => 'تم نعديل الفاتورة بنجاح']);
 
     }
+
     public function returns(invoice_customer $invoice)
     {
 
         return view('customer_invoice.return', compact('invoice'));
 
     }
+
     public function doReturn(Request $request, invoice_customer $invoice)
     {
 
         $request->validate([
-            "orders_id"    => "required|array|min:1",
-            "orders_id.*"  => "required|numeric",
-            "quantities"    => "required|array|min:1",
-            "quantities.*"  => "required|numeric|min:1",
-            "damage"    => "required|array|min:1",
-            "damage.*"  => "required|numeric|min:0",
+            "orders_id" => "required|array|min:1",
+            "orders_id.*" => "required|numeric",
+            "quantities" => "required|array|min:1",
+            "quantities.*" => "required|numeric|min:1",
+            "damage" => "required|array|min:1",
+            "damage.*" => "required|numeric|min:0",
         ]);
-        $i=0;
-        $total_after=0;
-        $total_before=0;
-        foreach ($request->orders_id as $order_id)
-        {
-            $order=order_customer::find($order_id);
-            $priceUnitAfter= $order->price_after_discount/$order->quantity;
-            $priceUnitBefore= $order->price_before_discount/$order->quantity;
-            $total_after+=($priceUnitAfter*$request->quantities[$i]);
-            $total_before+=($priceUnitBefore*$request->quantities[$i]);
+        $i = 0;
+        $total_after = 0;
+        $total_before = 0;
+        $flag = 0;
+        foreach ($request->orders_id as $order_id) {
+            $order = order_customer::find($order_id);
+            $priceUnitAfter = $order->price_after_discount / $order->quantity;
+            $priceUnitBefore = $order->price_before_discount / $order->quantity;
+            $total_after += ($priceUnitAfter * $request->quantities[$i]);
+            $total_before += ($priceUnitBefore * $request->quantities[$i]);
             $i++;
         }
-        if($invoice->total_after-$total_after < $invoice->payed)
-        {
+        if ($invoice->total_after - $total_after < $invoice->payed) {
             return $this->error('قيمة الفاتورة بعد الارجاع  ستصبح اقل من المدفوع ');
         }
-        if($invoice->total_after==$total_after)
-        {
-            $invoice->delete();
-            return $this->success('تم حذف الفاتورة');
-        }
-        else{
-            $invoice->update([
-                'total_after' => $invoice->total_after-$total_after,
-                'total_before' => $invoice->total_before-$total_before,
-            ]);
+
+        if ($invoice->total_after == $total_after) {
+            $flag = 1;
         }
 
-        $i=0;
-        foreach ($request->orders_id as $order_id)
-        {
-            $order=order_customer::find($order_id);
-            if($request->quantities[$i]>$order->quantity)
-            {
+        $invoice->update([
+            'total_after' => $invoice->total_after - $total_after,
+            'total_before' => $invoice->total_before - $total_before,
+        ]);
+
+
+        $i = 0;
+        foreach ($request->orders_id as $order_id) {
+            $order = order_customer::find($order_id);
+            if ($request->quantities[$i] > $order->quantity) {
                 return $this->error('الكمية المرجعة اكبر من كمية الفاتورة ');
 
             }
-            if($request->quantities[$i]<$request->damage[$i])
-            {
+
+            if ($request->quantities[$i] < $request->damage[$i]) {
                 return $this->error('الكمية التالفة اكبر من الكمية المرجعة  ');
 
             }
-            $inv=$order->inventory;
-            $priceUnitAfter= $order->price_after_discount/$order->quantity;
-            $priceUnitBefore= $order->price_before_discount/$order->quantity;
+            $inv = $order->inventory;
+            $priceUnitAfter = $order->price_after_discount / $order->quantity;
+            $priceUnitBefore = $order->price_before_discount / $order->quantity;
 
-            if($inv->deleted_at!=null && ($request->quantities[$i]-$request->damage[$i])>0) //make trash null value if have quantity
+            if ($inv->deleted_at != null && ($request->quantities[$i] - $request->damage[$i]) > 0) //make trash null value if have quantity
             {
-                $inv->update(['deleted_at'=>null]);
+                $inv->update(['deleted_at' => null]);
             }
-            $inv->update(['quantity' => $inv->quantity+($request->quantities[$i]-$request->damage[$i])]);//return quantity to inventory
+            $inv->update(['quantity' => $inv->quantity + ($request->quantities[$i] - $request->damage[$i])]);//return quantity to inventory
 
-            if($order->quantity==$request->quantities[$i])
-            {
+            if ($order->quantity == $request->quantities[$i]) {
                 $order->delete();
-            }else{
+            } else {
                 $order->update([
-                    'quantity' => $order->quantity-$request->quantities[$i],
-                    'price_after_discount' => $order->price_after_discount-($priceUnitAfter*$request->quantities[$i]),
-                    'price_before_discount' => $order->price_before_discount-($priceUnitBefore*$request->quantities[$i]),
+                    'quantity' => $order->quantity - $request->quantities[$i],
+                    'price_after_discount' => $order->price_after_discount - ($priceUnitAfter * $request->quantities[$i]),
+                    'price_before_discount' => $order->price_before_discount - ($priceUnitBefore * $request->quantities[$i]),
                 ]);
             }
 
 
             $invoice->customer()->update([
-                'balance' => $invoice->customer->balance-($priceUnitAfter*$request->quantities[$i]),
+                'balance' => $invoice->customer->balance - ($priceUnitAfter * $request->quantities[$i]),
 
             ]);
             $i++;
+        }
+        if ($flag)
+        {
+            $invoice->delete();
+            return redirect()->route('invoice_customer.index')->with(['success','تم حذف الفاتورة بنجاح ']);
         }
         return $this->success('تم الارجاع بنجاح ');
     }
@@ -459,7 +459,8 @@ class InvoiceCustomerController extends Controller
         return redirect()->back()->with('success', 'تم الحذف بنجاح');
     }
 
-    public function collect(Request $request)
+    public
+    function collect(Request $request)
     {
         $invoice = invoice_customer::find($request->id);
 
@@ -485,7 +486,8 @@ class InvoiceCustomerController extends Controller
         return $this->success('تم تسجيل النقديه ');
     }
 
-    public function payment(invoice_customer $invoice)
+    public
+    function payment(invoice_customer $invoice)
     {
         if ($invoice->com_code != $this->getAuthData('com_code')) {
             return "غير ممسوح لك بعر المدفوعات ";
@@ -493,7 +495,8 @@ class InvoiceCustomerController extends Controller
         return view('customer_invoice._payment', compact('invoice'));
     }
 
-    public function print(invoice_customer $invoice)
+    public
+    function print(invoice_customer $invoice)
     {
 
         return view('customer_invoice.invoice', compact('invoice'));
@@ -505,9 +508,8 @@ class InvoiceCustomerController extends Controller
     public function searchDate($customer = null, Request $request)
     {
         if ($request->firstDate == null && $request->secondDate == null) {
-          return  redirect()->route('invoice_customer.index');
-        }
-        elseif ($request->firstDate == null || $request->secondDate == null) {
+            return redirect()->route('invoice_customer.index');
+        } elseif ($request->firstDate == null || $request->secondDate == null) {
             return $this->error('لابد من ادخال التارخين معا اعد المحاوله ');
         }
         if ($request->secondDate < $request->firstDate) {
@@ -516,12 +518,12 @@ class InvoiceCustomerController extends Controller
             $request->firstDate = $temp;
         }
         if ($customer != -1 && $customer != null) {
-            $invoices = invoice_customer::where('customer_id',$customer)->whereDate('created_at','>=', $request->firstDate)->whereDate('created_at','<=',$request->secondDate)->get();
+            $invoices = invoice_customer::where('customer_id', $customer)->whereDate('created_at', '>=', $request->firstDate)->whereDate('created_at', '<=', $request->secondDate)->get();
             return view('customer_invoice.index', compact('invoices', 'customer'));
 
         } else {
 
-            $invoices = invoice_customer::where('com_code', $this->getAuthData('com_code'))->whereDate('created_at','>=', $request->firstDate)->whereDate('created_at','<=',$request->secondDate)->get();
+            $invoices = invoice_customer::where('com_code', $this->getAuthData('com_code'))->whereDate('created_at', '>=', $request->firstDate)->whereDate('created_at', '<=', $request->secondDate)->get();
 
             return view('customer_invoice.index', compact('invoices'));
         }
