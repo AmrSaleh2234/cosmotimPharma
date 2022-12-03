@@ -43,8 +43,10 @@ $(function() {
 	});
 	// Datepicker
 	$('.fc-datepicker').datepicker({
+        format: 'yyyy-mm-dd ',
 		showOtherMonths: true,
-		selectOtherMonths: true
+		selectOtherMonths: true,
+        autoclose: true
 	});
 	$('#datepickerNoOfMonths').datepicker({
 		showOtherMonths: true,

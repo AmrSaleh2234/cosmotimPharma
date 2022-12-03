@@ -6,6 +6,16 @@
     <link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+
+    <link href="{{URL::asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet">
+    <!--Internal  Datetimepicker-slider css -->
+    <link href="{{URL::asset('assets/plugins/amazeui-datetimepicker/css/amazeui.datetimepicker.css')}}"
+          rel="stylesheet">
+    <link href="{{URL::asset('assets/plugins/jquery-simple-datetimepicker/jquery.simple-dtpicker.css')}}"
+          rel="stylesheet">
+    <link href="{{URL::asset('assets/plugins/pickerjs/picker.min.css')}}" rel="stylesheet">
+    <!-- Internal Spectrum-colorpicker css -->
+    <link href="{{URL::asset('assets/plugins/spectrum-colorpicker/spectrum.css')}}" rel="stylesheet">
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
@@ -21,8 +31,16 @@
 @endsection
 @section('content')
     <!-- row -->
+    @php
+        $c=-1;
+        if(isset($customer))
+            {
+                 $c=$customer;
+            }
+    @endphp
     @if(isset($customer))
         <a class="btn btn-primary" href="{{route('customer.invoicesInTable',$customer)}}">رؤية عامة للعميل </a>
+
     @endif
 
     <div class="row d-flex flex-wrap">
@@ -34,6 +52,36 @@
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
                     <div class="card-body">
+                        <form action="{{route('invoice_customer.searchDate',['customer'=>$c])}}" method="get" class="mb-3">
+                            @csrf
+                            <div class="row">
+                                <div class="input-group col-5 ">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="typcn typcn-calendar-outline tx-24 lh--9 op-6"></i>
+                                        </div>
+                                    </div>
+                                    <input autocomplete="off" class="form-control fc-datepicker" placeholder="YYYY/MM/DD" type="text" name="firstDate">
+                                </div>
+                                <div class="input-group col-5 ">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="typcn typcn-calendar-outline tx-24 lh--9 op-6"></i>
+                                        </div>
+                                    </div>
+                                    <input autocomplete="off" class="form-control fc-datepicker" placeholder="YYYY/MM/DD" type="text" name="secondDate">
+                                </div>
+
+                                <div class="col-2" >
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="ion-ionic  ion ion-md-search tx-24 lh--9 op-6 "></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+
+                        </form>
                         <div class="table-responsive">
                             {{--                            <div id="invoiceSearch" class="">--}}
                             {{--                                <label>--}}
@@ -100,7 +148,8 @@
                                                     data-url="{{ route('invoice_customer.payment', $item) }}"
                                                     data-toggle="modal" onclick="payment(this)"><i
                                                     class=" typcn typcn-info-large-outline tx-20 "></i></button>
-                                            <a class="btn btn-warning btn-fixed" title="مرتجعات" href="{{route('invoice_customer.return', $item->id)}}"><i
+                                            <a class="btn btn-warning btn-fixed" title="مرتجعات"
+                                               href="{{route('invoice_customer.return', $item->id)}}"><i
                                                     class=" typcn typcn-refresh-outline tx-20 "></i></a>
                                         </td>
                                         <td class="text-primary">{{ $item->created_by }}</td>
@@ -207,6 +256,31 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
+
+    <script src="{{URL::asset('assets/plugins/jquery-ui/ui/widgets/datepicker.js')}}"></script>
+    <!--Internal  jquery.maskedinput js -->
+    <script src="{{URL::asset('assets/plugins/jquery.maskedinput/jquery.maskedinput.js')}}"></script>
+    <!--Internal  spectrum-colorpicker js -->
+    <script src="{{URL::asset('assets/plugins/spectrum-colorpicker/spectrum.js')}}"></script>
+    <!-- Internal Select2.min js -->
+    <script src="{{URL::asset('assets/plugins/select2/js/select2.min.js')}}"></script>
+    <!--Internal Ion.rangeSlider.min js -->
+    <script src="{{URL::asset('assets/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
+    <!--Internal  jquery-simple-datetimepicker js -->
+    <script src="{{URL::asset('assets/plugins/amazeui-datetimepicker/js/amazeui.datetimepicker.min.js')}}"></script>
+    <!-- Ionicons js -->
+    <script src="{{URL::asset('assets/plugins/jquery-simple-datetimepicker/jquery.simple-dtpicker.js')}}"></script>
+    <!--Internal  pickerjs js -->
+    <script src="{{URL::asset('assets/plugins/pickerjs/picker.min.js')}}"></script>
+    <!-- Internal form-elements js -->
+    <script>
+        $('.fc-datepicker').datepicker({
+            dateFormat: 'yy-mm-dd',
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true
+        });
+    </script>
     <!--Internal  Datatable js -->
     <script>
         $(function (e) {

@@ -342,7 +342,7 @@ class InvoiceCustomerController extends Controller
                 $order->update(['deleted_at' => null]);
             }
             $order->update([
-                'quantity' => $order->quantity + ($order->pivot->quantity-$request->damage[$k])
+                'quantity' => $order->quantity + ($order->pivot->quantity - $request->damage[$k])
             ]);
             $k++;
         }
@@ -512,6 +512,35 @@ class InvoiceCustomerController extends Controller
     {
 
         return view('customer_invoice.invoice', compact('invoice'));
+
+    }
+
+
+    //search by date
+    public function searchDate($customer = null, Request $request)
+    {
+        if ($request->firstDate == null && $request->secondDate == null) {
+          return  redirect()->route('invoice_customer.index');
+        }
+        elseif ($request->firstDate == null || $request->secondDate == null) {
+            return $this->error('لابد من ادخال التارخين معا اعد المحاوله ');
+        }
+        if ($request->secondDate < $request->firstDate) {
+            $temp = $request->secondDate;
+            $request->secondDate = $request->firstDate;
+            $request->firstDate = $temp;
+        }
+        if ($customer != -1 && $customer != null) {
+            $invoices = invoice_customer::where('customer_id',$customer)->whereDate('created_at','>=', $request->firstDate)->whereDate('created_at','<=',$request->secondDate)->get();
+            return view('customer_invoice.index', compact('invoices', 'customer'));
+
+        } else {
+
+            $invoices = invoice_customer::where('com_code', $this->getAuthData('com_code'))->whereDate('created_at','>=', $request->firstDate)->whereDate('created_at','<=',$request->secondDate)->get();
+
+            return view('customer_invoice.index', compact('invoices'));
+        }
+
 
     }
 
