@@ -17,7 +17,7 @@ class invoice_customer extends Model
     }
     public function inventory()
     {
-        return $this->belongsToMany(inventory::class,'order_customers')->withTrashed()->withPivot('invoice_customer_id','inventory_id','price_before_discount','quantity','discount','price_after_discount');
+        return $this->belongsToMany(inventory::class,'order_customers')->withTrashed()->withPivot('id','invoice_customer_id','inventory_id','price_before_discount','quantity','discount','price_after_discount');
     }
 
     public function order()

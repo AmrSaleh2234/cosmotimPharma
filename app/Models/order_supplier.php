@@ -9,9 +9,9 @@ class order_supplier extends Model
 {
     use HasFactory;
     protected $fillable=['id','invoice_supplier_id','inventory_id','quantity','pricePerOne','total'];
-    public function supplier()
+    public function invoice_supplier()
     {
-        return $this->belongsTo(invoice_supplier::class);
+        return $this->belongsTo(invoice_supplier::class,'invoice_supplier_id');
     }
     public function inventory()
     {
