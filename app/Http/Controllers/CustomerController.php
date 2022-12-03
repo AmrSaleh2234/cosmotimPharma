@@ -187,15 +187,13 @@ class CustomerController extends Controller
     {
         $customer = customer::find($request->id);
         if (count($customer->invoice_customer) > 0) {
-           return $this->error(' المورد له فواتير لا يمكن مسحه  ');
+           return $this->error(' العميل  له فواتير لا يمكن مسحه  ');
         }
 
-        if ($customer->balance!=0) {
-           return $this->error(' العميل حصل من الحساب القديم لا يمكن الحذف  ');
+        if ($customer->balance!=$customer->start_balence) {
+           return $this->error(' تم التحصيل من هذا العميل  ');
         }
-        if ($customer->start_balence!=0) {
-           return $this->error('لا يمكن حذف عيل لدية رصيد اول المدة  ');
-        }
+
         $customer->delete();
         return $this->success('تم الحذف بنجاح');
     }

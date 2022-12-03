@@ -58,7 +58,7 @@
                                                 <span>مدين (عليه)</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                                            <label class="rdiobox"><input name="balance_status" disabled  type="radio" value="2">
+                                            <label class="rdiobox"><input name="balance_status"   type="radio" value="2">
                                                 <span>متزن</span></label>
                                         </div>
                                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
@@ -95,22 +95,22 @@
 @section('js')
     <script>
 
-        // $(document).ready(function () {
-        //     $('input[name="balance_status"]').on('change',function ()
-        //     {
-        //         if($(this).val()!=2)
-        //         {
-        //             $('#balance').css('display','block')
-        //
-        //
-        //         }
-        //         else
-        //         {
-        //             $('#balance').css('display','none')
-        //         }
-        //
-        //     })
-        // });
+        $(document).ready(function () {
+            $('input[name="balance_status"]').on('change',function ()
+            {
+                if($(this).val()!=2)
+                {
+                    $('#balance').css('display','block')
+
+
+                }
+                else
+                {
+                    $('#balance').css('display','none')
+                }
+
+            })
+        });
 
     </script>
 @endsection

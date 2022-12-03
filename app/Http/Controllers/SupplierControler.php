@@ -53,12 +53,15 @@ class SupplierControler extends Controller
             'balance_status.required' => 'ادخل حاله الحساب',
             'balance.required' => 'ادخل رصيد الحساب',
         ]);
-        if ($request->balance_status != 2 && ($request->balance < 0 || $request->balance == null)) {
-            return redirect()->back()->with('error', 'لابد من ادخال قيمة الرصيد ');
+        if ($request->balance_status!=2 && ($request->balance<=0 || $request->balance==null))
+        {
+            return redirect()->back()->with('error','لابد من ادخال قيمة الرصيد ');
         }
-        if ($request->balance_status == 2) {
-            $request->balance = 0;
+        if($request->balance_status==2)
+        {
+            $request->balance=0;
         }
+
 
 
         supplier::create([
@@ -174,8 +177,8 @@ class SupplierControler extends Controller
         if (count($supllier->invoice_supplier) > 0) {
             $this->error(' المورد له فواتير لا يمكن مسحه  ');
         }
-        if ($supllier->balance!=0) {
-            $this->error(' المورد له مستحقات  ');
+        if ($supllier->balance!=$supllier->start_balence) {
+            return $this->error(' تم التحصيل من هذا العميل  ');
         }
         $supllier->delete();
         return $this->success('تم الحذف بنجاح');
