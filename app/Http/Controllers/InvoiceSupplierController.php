@@ -17,9 +17,14 @@ class InvoiceSupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(supplier $supplier = null)
     {
         $invoices = invoice_supplier::where('com_code', $this->getAuthData('com_code'))->get();//com code required
+        if ($supplier != null) {
+            $invoices = $supplier->invoice_supplier;
+            return view('supplier_invoice.index', compact('invoices', 'supplier'));
+
+        }
         return view('supplier_invoice.index', compact('invoices'));
     }
 
@@ -300,5 +305,32 @@ class InvoiceSupplierController extends Controller
     public function print(invoice_supplier $invoice)
     {
         return view('supplier_invoice.invoice',compact('invoice'));
+    }
+
+    public function searchDate($supplier = null, Request $request)
+    {
+        if ($request->firstDate == null && $request->secondDate == null) {
+            return  redirect()->route('invoice_customer.index');
+        }
+        elseif ($request->firstDate == null || $request->secondDate == null) {
+            return $this->error('لابد من ادخال التارخين معا اعد المحاوله ');
+        }
+        if ($request->secondDate < $request->firstDate) {
+            $temp = $request->secondDate;
+            $request->secondDate = $request->firstDate;
+            $request->firstDate = $temp;
+        }
+        if ($supplier != -1 && $supplier != null) {
+            $invoices = invoice_supplier::where('supplier_id',$supplier)->whereDate('created_at','>=', $request->firstDate)->whereDate('created_at','<=',$request->secondDate)->get();
+            return view('supplier_invoice.index', compact('invoices', 'supplier'));
+
+        } else {
+
+            $invoices = invoice_supplier::where('com_code', $this->getAuthData('com_code'))->whereDate('created_at','>=', $request->firstDate)->whereDate('created_at','<=',$request->secondDate)->get();
+
+            return view('supplier_invoice.index', compact('invoices'));
+        }
+
+
     }
 }

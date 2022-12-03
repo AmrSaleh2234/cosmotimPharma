@@ -6,6 +6,14 @@
     <link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+
+    <link href="{{URL::asset('assets/plugins/amazeui-datetimepicker/css/amazeui.datetimepicker.css')}}"
+          rel="stylesheet">
+    <link href="{{URL::asset('assets/plugins/jquery-simple-datetimepicker/jquery.simple-dtpicker.css')}}"
+          rel="stylesheet">
+    <link href="{{URL::asset('assets/plugins/pickerjs/picker.min.css')}}" rel="stylesheet">
+    <!-- Internal Spectrum-colorpicker css -->
+    <link href="{{URL::asset('assets/plugins/spectrum-colorpicker/spectrum.css')}}" rel="stylesheet">
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
@@ -20,6 +28,17 @@
     <!-- breadcrumb -->
 @endsection
 @section('content')
+    @php
+        $s=-1;
+        if(isset($supplier))
+            {
+                 $s=$supplier;
+            }
+    @endphp
+    @if(isset($supplier))
+        <a class="btn btn-primary" href="{{route('customer.invoicesInTable',$supplier)}}">رؤية عامة للعميل </a>
+
+    @endif
     <!-- row -->
     <div class="row d-flex flex-wrap">
         <div class="col-lg-8 col-sm-12">
@@ -30,6 +49,37 @@
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
                     <div class="card-body">
+                        <form action="{{route('invoice_supplier.searchDate',['supplier'=>$s])}}" method="get" class="mb-3">
+                            @csrf
+                            <div class="row">
+                                <div class="input-group col-5 ">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="typcn typcn-calendar-outline tx-24 lh--9 op-6"></i>
+                                        </div>
+                                    </div>
+                                    <input autocomplete="off" class="form-control fc-datepicker" placeholder="YYYY/MM/DD" type="text" name="firstDate">
+                                </div>
+                                <div class="input-group col-5 ">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="typcn typcn-calendar-outline tx-24 lh--9 op-6"></i>
+                                        </div>
+                                    </div>
+                                    <input autocomplete="off" class="form-control fc-datepicker" placeholder="YYYY/MM/DD" type="text" name="secondDate">
+                                </div>
+
+                                <div class="col-2" >
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="ion-ionic  ion ion-md-search tx-24 lh--9 op-6 "></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+
+                        </form>
+
                         <div class="table-responsive">
                             <table id="example" class="table key-buttons text-md-nowrap">
                                 <thead>
@@ -54,7 +104,7 @@
                                         <td class="">{{ $item->total }}</td>
                                         <td class="@if($item->payed==$item->total)text-success @else text-pink @endif ">{{ $item->payed }}</td>
 
-                                        <td class="text-nowrap">{{ $item->created_at->format(' H:i d-m-Y') }}</td>
+                                        <td class="text-nowrap">{{ $item->created_at->format(' H:i Y-m-d') }}</td>
                                         <td class="text-nowrap">
                                             <a class="btn btn-danger-gradient ml-2 btn-fixed" data-id="{{$item->id}}"
                                                data-not_payed="{{$item->total- $item->payed}}"
@@ -193,6 +243,31 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
+
+    <script src="{{URL::asset('assets/plugins/jquery-ui/ui/widgets/datepicker.js')}}"></script>
+    <!--Internal  jquery.maskedinput js -->
+    <script src="{{URL::asset('assets/plugins/jquery.maskedinput/jquery.maskedinput.js')}}"></script>
+    <!--Internal  spectrum-colorpicker js -->
+    <script src="{{URL::asset('assets/plugins/spectrum-colorpicker/spectrum.js')}}"></script>
+    <!-- Internal Select2.min js -->
+    <script src="{{URL::asset('assets/plugins/select2/js/select2.min.js')}}"></script>
+    <!--Internal Ion.rangeSlider.min js -->
+    <script src="{{URL::asset('assets/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
+    <!--Internal  jquery-simple-datetimepicker js -->
+    <script src="{{URL::asset('assets/plugins/amazeui-datetimepicker/js/amazeui.datetimepicker.min.js')}}"></script>
+    <!-- Ionicons js -->
+    <script src="{{URL::asset('assets/plugins/jquery-simple-datetimepicker/jquery.simple-dtpicker.js')}}"></script>
+    <!--Internal  pickerjs js -->
+    <script src="{{URL::asset('assets/plugins/pickerjs/picker.min.js')}}"></script>
+    <!-- Internal form-elements js -->
+    <script>
+        $('.fc-datepicker').datepicker({
+            dateFormat: 'yy-mm-dd',
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            autoclose: true
+        });
+    </script>
     <!--Internal  Datatable js -->
     <script>
         $(function (e) {

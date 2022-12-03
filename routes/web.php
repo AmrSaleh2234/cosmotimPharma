@@ -136,7 +136,9 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     //start supplier invoice
     Route::post('supplier_invoice/pay', [\App\Http\Controllers\InvoiceSupplierController::class, 'pay'])->name('invoice_supplier.pay');
     Route::get('supplier_invoice/print/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'print'])->name('invoice_supplier.print');
-    Route::get('supplier_invoice/', [\App\Http\Controllers\InvoiceSupplierController::class, 'index'])->name('invoice_supplier.index');
+    Route::get('supplier_invoice/searchbydate/{supplier?}', [\App\Http\Controllers\InvoiceSupplierController::class, 'searchDate'])->name('invoice_supplier.searchDate');
+
+    Route::get('supplier_invoice/{supplier?}', [\App\Http\Controllers\InvoiceSupplierController::class, 'index'])->name('invoice_supplier.index');
     Route::get('supplier_invoice/details/{invoice}', [\App\Http\Controllers\InvoiceSupplierController::class, 'orderDetails'])->name('invoice_supplier.orderDetails');
     Route::get('supplier_invoice/create/{account}', [\App\Http\Controllers\InvoiceSupplierController::class, 'create'])->name('invoice_supplier.create');
     Route::post('supplier_invoice/store/{account}', [\App\Http\Controllers\InvoiceSupplierController::class, 'store'])->name('invoice_supplier.store');

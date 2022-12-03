@@ -54,7 +54,7 @@
                                 <th class=" border-bottom-0">رقم الهاتف</th>
                                 <th class=" border-bottom-0">العنوان</th>
                                 <th class=" border-bottom-0">  حاله الحساب الكليه </th>
-                                <th class=" border-bottom-0">  حاله الحساب اول المدة </th>
+{{--                                <th class=" border-bottom-0">  حاله الحساب اول المدة </th>--}}
                                 <th>عرض</th>
                                 <th class=" border-bottom-0">تحصيل النقديه اول الحساب</th>
                                 <th class="border-bottom-0" style="width: 69px">العمليات</th>
@@ -84,15 +84,15 @@
                                     @elseif($item->balance_status == 2)
                                         <td> متزن</td>
                                     @endif
-                                    @if ($item->start_balance_status == 1 )
-                                        <td><span> مدين وعليه مبلغ {{ $item->start_balance  }}</span>
-                                        </td>
-                                    @elseif($item->start_balance_status == 3 )
-                                        <td><span> دائن ويستحق له مبلغ
-                                                    {{ $item->start_balance  }}</span></td>
-                                    @elseif($item->start_balance_status == 2)
-                                        <td> متزن</td>
-                                    @endif
+{{--                                    @if ($item->start_balance_status == 1 )--}}
+{{--                                        <td><span> مدين وعليه مبلغ {{ $item->start_balance  }}</span>--}}
+{{--                                        </td>--}}
+{{--                                    @elseif($item->start_balance_status == 3 )--}}
+{{--                                        <td><span> دائن ويستحق له مبلغ--}}
+{{--                                                    {{ $item->start_balance  }}</span></td>--}}
+{{--                                    @elseif($item->start_balance_status == 2)--}}
+{{--                                        <td> متزن</td>--}}
+{{--                                    @endif--}}
                                     <td class="text-center">
                                         <a class="btn btn-primary ml-2 btn-fixed btn-view" href="{{route('invoice_customer.index',$item)}}"><i
                                                 class="typcn typcn-eye-outline tx-20 "></i></a>
