@@ -38,7 +38,12 @@ Route::post('/admin/register', [RegisterController::class, 'createAdmin'])->name
 
 
 Route::group(['middleware' => 'auth:admin'], function () {
-    Route::get('/admin/dashboard',[\App\Http\Controllers\HomeController::class,'adminDashboard'] )->name('admin.dashboard')->middleware('auth:admin');
+    Route::get('/admin/dashboard',[\App\Http\Controllers\HomeController::class,'adminDashboard'] )->name('admin.dashboard');
+
+
+
+    Route::get('/users/list',[\App\Http\Controllers\HomeController::class,'usersList'] )->name('users.list');
+
 
     Route::get('inventory', [\App\Http\Controllers\InventoryController::class, 'index'])->name('inventory.index');
     Route::post('inventory/store', [\App\Http\Controllers\InventoryController::class, 'store'])->name('inventory.store');
