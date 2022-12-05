@@ -19,6 +19,7 @@ class EmployeeController extends Controller
     public function index()
     {
         $account = employee::where('com_code', auth()->user()->com_code)->get();
+
         return view('employee.index', compact('account'));
     }
 
@@ -58,6 +59,8 @@ class EmployeeController extends Controller
             'salary_day.min' => ' ادخل  يوم من 1 ال 30 ',
             'salary_day.max' => ' ادخل  يوم من 1 ال 30 ',
         ]);
+        $date = Carbon::createFromFormat('Y-m-d', strval(Carbon::now()->format('Y-m')) . '-' . $request->salary_day);
+
         employee::create([
             'name' => $request->name,
             'salary' => $request->salary,
@@ -122,6 +125,8 @@ class EmployeeController extends Controller
             'salary_day.min' => ' ادخل  يوم من 1 ال 30 ',
             'salary_day.max' => ' ادخل  يوم من 1 ال 30 ',
         ]);
+        $date = Carbon::createFromFormat('Y-m-d', strval(Carbon::now()->format('Y-m')) . '-' . $request->salary_day);
+
         $employee->update([
             'name' => $request->name,
             'salary' => $request->salary,
@@ -162,16 +167,16 @@ class EmployeeController extends Controller
     //created function*****************************************************************
 
     //take absent
-    public function absent(employee $employee)
+    public function absent(employee $employee,Request $request)
     {
         $salaryDay = $employee->salary / 30;
         if ($employee->com_code != $this->getAuthData('com_code')) {
             return $this->error('غير مسموح بالتحكم بهذا الموظف');
         }
-        if (count($employee->employee_datails()->whereDate('created_at', Carbon::now()->format('Y-m-d'))->where('type', 1)->get()) > 0) {
+        if (count($employee->employee_datails()->whereDate('created_at',$request->absent_date)->where('type', 1)->get()) > 0) {
             return $this->error('لقد تم تسجيل الغياب بالفعل ');
         }
-        $employee->employee_datails()->create(['type' => 1, 'done' => 0, 'amount' => $salaryDay, 'created_by' => $this->getAuthData('name')]);
+        $employee->employee_datails()->create(['type' => 1, 'done' => 0, 'amount' => $salaryDay, 'created_by' => $this->getAuthData('name'),'created_at'=>$request->absent_date]);
         $employee->update(['balance' => $employee->balance - $salaryDay]);
         return $this->success('تم تسجيل الغياب');
     }
@@ -202,17 +207,15 @@ class EmployeeController extends Controller
         $employee = employee::find($request->id);
 
         if ($employee->com_code != $this->getAuthData('com_code')) {
-            return $this->error('لا يمكن التعديل علي هذة اللفاتورة للمستخدم ');
+            return $this->error('لا يمكن التعديل علي هذا الموظف للمستخدم ');
         }
 
 
-        $date1 = Carbon::createFromFormat('Y-m-d', strval(Carbon::now()->format('Y-m')) . '-' . $employee->salary_day);
         $date2 = Carbon::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
 
-        if (!$date2->gte($date1)) {
-            return $this->error('لم يأتي معاد المرتب بعد ');
-        }
+
         $balance = $employee->salary;
+
         foreach ($employee->employee_datails()->where('done','0')->get() as $datail) {
             if($datail->type==1)
             {

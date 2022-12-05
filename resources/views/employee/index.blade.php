@@ -68,9 +68,7 @@
                                 <th class="  border-bottom-0">اسم الحساب</th>
                                 <th class=" border-bottom-0">رقم الهاتف</th>
                                 <th class=" border-bottom-0" style="width: 15%!important;">العنوان</th>
-                                <th class="  border-bottom-0">الحساب</th>
                                 <th class=" border-bottom-0"> عرض</th>
-                                <th class=" border-bottom-0"> غياب</th>
                                 <th class=" text-center border-bottom-0 ">العمليات</th>
                                 <th class=" border-bottom-0"> المنشئ</th>
                             </tr>
@@ -93,15 +91,7 @@
                                             </div>
                                         </td>
 
-                                        @if ($item->balance < 0)
-                                            <td><span>مخصوم : {{ $item->balance }}</span>
-                                            </td>
-                                        @elseif($item->balance > 0)
-                                            <td><span> مستحق
-                                                    {{ $item->balance }}</span></td>
-                                        @elseif($item->balance == 0)
-                                            <td> 0</td>
-                                        @endif
+
                                         <td class="text-center">
                                             <a class="btn btn-primary ml-2 btn-fixed btn-view" href="{{route('employee.show',$item)}}"
                                                ><i
@@ -109,24 +99,7 @@
                                         </td>
 
 
-                                        <td class="text-center">
-                                            @if($item->employee_datails()->whereDate('created_at', \Illuminate\Support\Carbon::now()->format('Y-m-d'))->where('type',1)->get()->isEmpty())
 
-                                                <a class=" btn btn-danger d-flex justify-content-center  "
-                                                   href="{{route('employee.absent',$item)}}"
-                                                   style="width:10px; cursor:pointer ;">
-                                                    <i class="typcn typcn-user-delete-outline tx-20 "></i>
-                                                </a>
-                                            @else
-
-                                                <a class=" btn btn-success d-flex justify-content-center "
-                                                   href="{{route('employee.attendance',$item)}}"
-                                                   style="width:10px; cursor:pointer;">
-                                                    <i class="typcn typcn-user-add-outline tx-20 "></i>
-                                                </a>
-                                            @endif
-
-                                        </td>
 
 
                                         <td class="d-flex justify-content-center">
@@ -143,6 +116,9 @@
                                                 <a class="dropdown-item text-purple " data-effect="effect-flip-vertical"
                                                    data-toggle="modal" href="#modaldemo1" data-id="{{$item->id}}">اضافة
                                                     مكافأة علي الراتب</a>
+                                                <a class="dropdown-item text-warning " data-effect="effect-flip-vertical"
+                                                   data-toggle="modal" href="#modaldemo5" data-id="{{$item->id}}">اضافة
+                                                    غياب</a>
                                                 <a href="{{ route('employee.edit', $item) }}"
                                                    class="dropdown-item text-primary">تعديل</a>
 
@@ -153,121 +129,162 @@
 
                                             </div><!-- dropdown-menu -->
 
-                                            <div class="modal" id="modaldemo1">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content modal-content-demo">
-                                                        <div class="modal-header">
-                                                            <h6 class="modal-title">ادخل المكافأه</h6>
-                                                            <button aria-label="Close" class="close"
-                                                                    data-dismiss="modal"
-                                                                    type="button">
-                                                                <span aria-hidden="true">&times;</span></button>
-                                                        </div>
 
-                                                        <form action="{{ route('employee.reward',$item) }}"
-                                                              method="post">
-                                                            <div class="modal-body">
-
-                                                                @csrf
-
-                                                                <input name="id" id="id" type="hidden">
-                                                                <div class="form-group">
-                                                                    <label>دخل قيمة المكافأه للموظف </label>
-                                                                    <input name="reward" id="reward_input" type="number"
-                                                                           min="10">
-                                                                </div>
-
-
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button class="btn ripple btn-primary-gradient"
-                                                                        type="submit">
-                                                                    حفظ
-                                                                </button>
-                                                                <button class="btn ripple btn-secondary"
-                                                                        data-dismiss="modal" type="button">
-                                                                    Close
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="modal" id="modaldemo2">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content modal-content-demo">
-                                                        <div class="modal-header">
-                                                            <h6 class="modal-title">حذف الموظف</h6>
-                                                            <button aria-label="Close" class="close"
-                                                                    data-dismiss="modal"
-                                                                    type="button">
-                                                                <span aria-hidden="true">&times;</span></button>
-                                                        </div>
-                                                        <h4>هل انت متأكد من عمليه الحذف</h4>
-                                                        <form action="{{ route('employee.destroy') }}" method="post">
-                                                            <div class="modal-body">
-
-                                                                @csrf
-
-                                                                <input name="id" id="id" type="hidden">
-
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button class="btn ripple btn-danger" type="submit">حذف
-                                                                    المنتج
-                                                                </button>
-                                                                <button class="btn ripple btn-secondary"
-                                                                        data-dismiss="modal" type="button">
-                                                                    Close
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="modal" id="modaldemo3">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content modal-content-demo">
-                                                        <div class="modal-header">
-                                                            <h6 class="modal-title">صرف المرتب</h6>
-                                                            <button aria-label="Close" class="close"
-                                                                    data-dismiss="modal"
-                                                                    type="button">
-                                                                <span aria-hidden="true">&times;</span></button>
-                                                        </div>
-                                                        <h4>هل انت متأكد من عمليه الصرف</h4>
-                                                        <form action="{{ route('employee.pay') }}" method="post">
-                                                            <div class="modal-body">
-
-                                                                @csrf
-
-                                                                <input name="id" id="id" type="hidden">
-
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button class="btn ripple btn-danger" type="submit">صرف
-                                                                    للموظف
-                                                                </button>
-                                                                <button class="btn ripple btn-secondary"
-                                                                        data-dismiss="modal" type="button">
-                                                                    Close
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-
-                                                </div>
-                                            </div>
 
                                         </td>
                                         <td class="text-success">{{ $item->created_by }}</td>
                                     </tr>
                                     @endforeach
 
+                                    <div class="modal" id="modaldemo1">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title">ادخل المكافأه</h6>
+                                                    <button aria-label="Close" class="close"
+                                                            data-dismiss="modal"
+                                                            type="button">
+                                                        <span aria-hidden="true">&times;</span></button>
+                                                </div>
 
+                                                <form action="{{ route('employee.reward',$item) }}"
+                                                      method="post">
+                                                    <div class="modal-body">
+
+                                                        @csrf
+
+                                                        <input name="id" id="id" type="hidden">
+                                                        <div class="form-group">
+                                                            <label>دخل قيمة المكافأه للموظف </label>
+                                                            <input name="reward" id="reward_input" type="number"
+                                                                   min="10">
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn ripple btn-primary-gradient"
+                                                                type="submit">
+                                                            حفظ
+                                                        </button>
+                                                        <button class="btn ripple btn-secondary"
+                                                                data-dismiss="modal" type="button">
+                                                            Close
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal" id="modaldemo5">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title">ادخل تاريخ الغياب</h6>
+                                                    <button aria-label="Close" class="close"
+                                                            data-dismiss="modal"
+                                                            type="button">
+                                                        <span aria-hidden="true">&times;</span></button>
+                                                </div>
+
+                                                <form action="{{ route('employee.absent',$item) }}"
+                                                      method="post">
+                                                    <div class="modal-body">
+
+                                                        @csrf
+
+                                                        <input name="id" id="id-mo5" type="hidden">
+                                                        <div class="form-group">
+                                                            <label>دخل تاريخ الغياب </label>
+                                                            <input name="absent_date" id="absent_input" type="date"
+                                                                   min="10">
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn ripple btn-primary-gradient"
+                                                                type="submit">
+                                                            حفظ
+                                                        </button>
+                                                        <button class="btn ripple btn-secondary"
+                                                                data-dismiss="modal" type="button">
+                                                            Close
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="modal" id="modaldemo2">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title">حذف الموظف</h6>
+                                                    <button aria-label="Close" class="close"
+                                                            data-dismiss="modal"
+                                                            type="button">
+                                                        <span aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <h4>هل انت متأكد من عمليه الحذف</h4>
+                                                <form action="{{ route('employee.destroy') }}" method="post">
+                                                    <div class="modal-body">
+
+                                                        @csrf
+
+                                                        <input name="id" id="id" type="hidden">
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn ripple btn-danger" type="submit">حذف
+                                                            المنتج
+                                                        </button>
+                                                        <button class="btn ripple btn-secondary"
+                                                                data-dismiss="modal" type="button">
+                                                            Close
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal" id="modaldemo3">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title">صرف المرتب</h6>
+                                                    <button aria-label="Close" class="close"
+                                                            data-dismiss="modal"
+                                                            type="button">
+                                                        <span aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <h4>هل انت متأكد من عمليه الصرف</h4>
+                                                <form action="{{ route('employee.pay') }}" method="post">
+                                                    <div class="modal-body">
+
+                                                        @csrf
+
+                                                        <input name="id" id="id" type="hidden">
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn ripple btn-danger" type="submit">صرف
+                                                            للموظف
+                                                        </button>
+                                                        <button class="btn ripple btn-secondary"
+                                                                data-dismiss="modal" type="button">
+                                                            Close
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
                             </tbody>
                         </table>
                     </div>
@@ -322,6 +339,16 @@
 
             var modal = $(this)
             modal.find('.modal-body #id').val(id);
+
+        })
+    </script>
+    <script>
+        $('#modaldemo5').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+
+            var modal = $(this)
+            modal.find('.modal-body #id-mo5').val(id);
 
         })
     </script>
