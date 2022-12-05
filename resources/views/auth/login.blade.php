@@ -1,7 +1,7 @@
 @extends('layouts.master2')
 
 @section('title')
-    تسجيل الدخول - مورا سوفت للادارة القانونية
+    تسجيل الدخول - speed pharma
 @stop
 
 
