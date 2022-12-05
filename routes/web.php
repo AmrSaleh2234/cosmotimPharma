@@ -48,10 +48,7 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     Route::post('product/activate', [\App\Http\Controllers\ProdcutController::class, 'activate'])->name('product.activate');
     //end product
     //start inventory
-    Route::get('inventory', [\App\Http\Controllers\InventoryController::class, 'index'])->name('inventory.index');
-    Route::post('inventory/store', [\App\Http\Controllers\InventoryController::class, 'store'])->name('inventory.store');
-    Route::post('inventory/edit', [\App\Http\Controllers\InventoryController::class, 'edit'])->name('inventory.edit');
-    Route::post('inventory/destroy', [\App\Http\Controllers\InventoryController::class, 'destroy'])->name('inventory.destroy');
+
     //end inventory
     //start customer
     Route::get('customer/invoicesInTable/{customer}', [\App\Http\Controllers\CustomerController::class, 'invoicesTable'])->name('customer.invoicesInTable');
@@ -152,5 +149,10 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     Route::get('report/exchange/index',[\App\Http\Controllers\exchange::class,'index'])->name('exchange.index');
     //end reports
 });
-
+Route::group(['middleware' => 'auth:web'], function () {
+    Route::get('inventory', [\App\Http\Controllers\InventoryController::class, 'index'])->name('inventory.index');
+    Route::post('inventory/store', [\App\Http\Controllers\InventoryController::class, 'store'])->name('inventory.store');
+    Route::post('inventory/edit', [\App\Http\Controllers\InventoryController::class, 'edit'])->name('inventory.edit');
+    Route::post('inventory/destroy', [\App\Http\Controllers\InventoryController::class, 'destroy'])->name('inventory.destroy');
+});
 Route::get('/{page}', [\App\Http\Controllers\AdminController::class, 'index'])->middleware('auth:admin,web');
