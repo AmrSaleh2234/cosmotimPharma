@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('admin.dashboard');
+    return redirect()->route('login');
 });
 
 
@@ -32,13 +32,14 @@ Route::post('/admin', [LoginController::class, 'adminLogin'])->name('admin.login
 Route::get('/admin/register', [RegisterController::class, 'showAdminRegisterForm'])->name('admin.register-view');
 Route::post('/admin/register', [RegisterController::class, 'createAdmin'])->name('admin.register');
 
-Route::get('/admin/dashboard',[\App\Http\Controllers\HomeController::class,'adminDashboard'] )->name('admin.dashboard')->middleware('auth:admin');
 
 //    return view('admin.admin');
 
 
 
 Route::group(['middleware' => 'auth:admin'], function () {
+    Route::get('/admin/dashboard',[\App\Http\Controllers\HomeController::class,'adminDashboard'] )->name('admin.dashboard')->middleware('auth:admin');
+
     Route::get('inventory', [\App\Http\Controllers\InventoryController::class, 'index'])->name('inventory.index');
     Route::post('inventory/store', [\App\Http\Controllers\InventoryController::class, 'store'])->name('inventory.store');
     Route::post('inventory/edit', [\App\Http\Controllers\InventoryController::class, 'edit'])->name('inventory.edit');
