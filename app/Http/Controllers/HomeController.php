@@ -43,15 +43,15 @@ class HomeController extends Controller
         $invoicesCurrentMonth = \App\Models\invoice_customer::whereBetween('created_at', [$startCurrentMonth, $endCurrentMonth])->where('com_code',$this->getAuthData('com_code'))->get();
         $invoicesLastMonth = \App\Models\invoice_customer::whereBetween('created_at', [$startLastMonth, $endLastMonth])->where('com_code',$this->getAuthData('com_code'))->get();
         $total_after = \App\Models\invoice_customer::selectRaw('year(created_at) year, month(created_at) month, sum(total_after) total, com_code ')
-            ->groupBy('year', 'month')->whereYear('created_at', date('Y'))->where('com_code',$this->getAuthData('com_code'))
+            ->groupBy('year', 'month','com_code')->whereYear('created_at', date('Y'))->where('com_code',$this->getAuthData('com_code'))
             ->orderBy('year', 'desc')
             ->get();
         $profit = \App\Models\invoice_customer::selectRaw('year(created_at) year, month(created_at) month, sum(profit) total, com_code ')
-            ->groupBy('year', 'month')->whereYear('created_at', date('Y'))->where('com_code',$this->getAuthData('com_code'))
+            ->groupBy('year', 'month','com_code')->whereYear('created_at', date('Y'))->where('com_code',$this->getAuthData('com_code'))
             ->orderBy('year', 'desc')
             ->get();
         $topCustomer = \App\Models\invoice_customer::selectRaw('customer_id id ,  sum(total_after) total , sum(payed) total_payed, com_code ')
-            ->groupBy('customer_id')->whereYear('created_at', date('Y'))->where('com_code',$this->getAuthData('com_code'))
+            ->groupBy('customer_id','com_code')->whereYear('created_at', date('Y'))->where('com_code',$this->getAuthData('com_code'))
             ->orderBy('total', 'desc')
             ->get();
         $customer = [];
