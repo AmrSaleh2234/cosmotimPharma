@@ -61,6 +61,8 @@ class HomeController extends Controller
             $temp->total_payed = $item->total_payed;
             array_push($customer, $temp);
         }
+
+
         return view('admin.admin', compact('invoicesCurrentWeek',
             'invoicesLastWeek'
             ,'invoicesCurrentMonth'
@@ -70,6 +72,9 @@ class HomeController extends Controller
             ,'customer'
 
         ));
+
+
+
 //        return $startLastWeek;
     }
 
