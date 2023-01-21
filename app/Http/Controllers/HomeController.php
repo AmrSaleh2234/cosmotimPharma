@@ -31,7 +31,7 @@ class HomeController extends Controller
     {
         $currentDate = \Carbon\Carbon::now();
         $startLastWeek = \Carbon\Carbon::now()->subDays($currentDate->dayOfWeek + 1)->subWeek();//start of last week
-        $startCurrentWeek = \Carbon\Carbon::now()->subDays($currentDate->dayOfWeek + 1);//start of current week
+        $startCurrentWeek = \Carbon\Carbon::now()->startOfWeek(\Illuminate\Support\Carbon::SATURDAY);//start of current week
         $endLastWeek = \Carbon\Carbon::now()->endOfWeek(\Illuminate\Support\Carbon::FRIDAY)->subWeek();// end of the
         $endCurrentWeek = \Carbon\Carbon::now()->endOfWeek(\Illuminate\Support\Carbon::FRIDAY);// end of the current week
         $invoicesCurrentWeek = \App\Models\invoice_customer::where('created_at', '>=',$startCurrentWeek)->where('created_at','<=',$endCurrentWeek)->where('com_code',$this->getAuthData('com_code'))->get();
