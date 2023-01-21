@@ -30,9 +30,9 @@ class HomeController extends Controller
     public function adminDashboard()
     {
         $currentDate = \Carbon\Carbon::now();
-        $startLastWeek = \Carbon\Carbon::now()->subDays($currentDate->dayOfWeek + 1)->subWeek();//start of last week
+        $startLastWeek = \Carbon\Carbon::now()->startOfWeek(\Illuminate\Support\Carbon::SATURDAY)->subWeek()->format('Y-m-d');//start of last week
         $startCurrentWeek = \Carbon\Carbon::now()->startOfWeek(\Illuminate\Support\Carbon::SATURDAY)->format('Y-m-d');//start of current week
-        $endLastWeek = \Carbon\Carbon::now()->endOfWeek(\Illuminate\Support\Carbon::FRIDAY)->subWeek();// end of the
+        $endLastWeek = \Carbon\Carbon::now()->endOfWeek(\Illuminate\Support\Carbon::FRIDAY)->subWeek()->format('Y-m-d');// end of the
         $endCurrentWeek = \Carbon\Carbon::now()->endOfWeek(\Illuminate\Support\Carbon::FRIDAY)->format('Y-m-d');// end of the current week
         $invoicesCurrentWeek = \App\Models\invoice_customer::where('created_at', '>=',$startCurrentWeek)->where('created_at','<=',$endCurrentWeek)->where('com_code',$this->getAuthData('com_code'))->get();
         $invoicesLastWeek = \App\Models\invoice_customer::whereBetween('created_at', [$startLastWeek, $endLastWeek])->where('com_code',$this->getAuthData('com_code'))->get();
@@ -70,7 +70,7 @@ class HomeController extends Controller
 //            ,'customer'
 //
 //        ));
-        return $invoicesCurrentWeek;
+        return $startCurrentWeek;
     }
 
     public function usersList()
