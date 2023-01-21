@@ -70,7 +70,7 @@ class HomeController extends Controller
 //            ,'customer'
 //
 //        ));
-        return $startCurrentWeek ." ". $endCurrentWeek;
+        return $currentDate->dayOfWeek ." ". $endCurrentWeek;
     }
 
     public function usersList()
