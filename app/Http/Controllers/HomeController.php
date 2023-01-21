@@ -70,7 +70,7 @@ class HomeController extends Controller
 //            ,'customer'
 //
 //        ));
-        return $startCurrentWeek;
+        return $startLastWeek;
     }
 
     public function usersList()
