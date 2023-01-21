@@ -96,7 +96,7 @@
                                     <tbody id="tbody">
 
                                         @foreach ($invoice->inventory as $item)
-                                            
+
                                             <tr>
                                                 <td>{{ $item->product->name }}</td>
                                                 <td class="quantity">
@@ -108,7 +108,7 @@
                                                         min="1" style="width: 60px">
                                                 </td>
                                                 <td class="discount">
-                                                    <input type="number" min="0" max="100" style="width: 49px"
+                                                    <input type="number" min="0" max="100" step="any" style="width: 49px"
                                                         value="{{ $item->pivot->discount }}" class="discount_input"
                                                         name="discount[]">
 
@@ -177,7 +177,7 @@
                     '<input class="input-sm quantity_input" value="1" data-price="' + price +
                     '" type="number" min ="1"  name="quantities[]" data-price ="' + price +
                     '"style="width:60px">' +
-                    '</td><td class="discount"><input type ="number" min="0" max="100" style="width:49px" value ="{{ $invoice->customer->discount }}" class="discount_input" name="discount[]" ></td><td class="product_price" >' +
+                    '</td><td class="discount"><input type ="number" min="0" max="100" step="any" style="width:49px" value ="{{ $invoice->customer->discount }}" class="discount_input" name="discount[]" ></td><td class="product_price" >' +
                     price +
                     '</td><td><button class="btn btn-danger btn-icon btn-delete-product" data-id = "' + id +
                     '"><i class="typcn typcn-document-delete "></i></button></td> </tr>';
