@@ -61,16 +61,16 @@ class HomeController extends Controller
             $temp->total_payed = $item->total_payed;
             array_push($customer, $temp);
         }
-        return view('admin.admin', compact('invoicesCurrentWeek',
-            'invoicesLastWeek'
-            ,'invoicesCurrentMonth'
-            , 'invoicesLastMonth'
-            , 'total_after'
-            , 'profit'
-            ,'customer'
-
-        ));
-
+//        return view('admin.admin', compact('invoicesCurrentWeek',
+//            'invoicesLastWeek'
+//            ,'invoicesCurrentMonth'
+//            , 'invoicesLastMonth'
+//            , 'total_after'
+//            , 'profit'
+//            ,'customer'
+//
+//        ));
+        return $invoicesCurrentWeek;
     }
 
     public function usersList()
