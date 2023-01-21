@@ -144,7 +144,7 @@ class InvoiceCustomerController extends Controller
             $i++;
         }
         $total_after -= ($request->invoice_discount / 100) * $total_after;
-        invoice_customer::create(['customer_id' => $account->id, 'discount' => $request->invoice_discount
+        invoice_customer::create(['id'=>$id_invoice,'customer_id' => $account->id, 'discount' => $request->invoice_discount
             , 'total_before' => $total_before, 'total_after' => $total_after, 'created_by' => auth()->user()->name,
             'profit' => $profit,
             'payed' => 0, 'com_code' => $this->getAuthData('com_code')
