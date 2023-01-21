@@ -34,7 +34,7 @@ class HomeController extends Controller
         $startCurrentWeek = \Carbon\Carbon::now()->subDays($currentDate->dayOfWeek + 1);//start of current week
         $endLastWeek = \Carbon\Carbon::now()->endOfWeek(\Illuminate\Support\Carbon::FRIDAY)->subWeek();// end of the
         $endCurrentWeek = \Carbon\Carbon::now()->endOfWeek(\Illuminate\Support\Carbon::FRIDAY);// end of the current week
-        $invoicesCurrentWeek = \App\Models\invoice_customer::whereBetween('created_at', [$startCurrentWeek, $endCurrentWeek])->where('com_code',$this->getAuthData('com_code'))->get();
+        $invoicesCurrentWeek = \App\Models\invoice_customer::where('created_at', '>=',$startCurrentWeek)->where('created_at','<=',$endCurrentWeek)->where('com_code',$this->getAuthData('com_code'))->get();
         $invoicesLastWeek = \App\Models\invoice_customer::whereBetween('created_at', [$startLastWeek, $endLastWeek])->where('com_code',$this->getAuthData('com_code'))->get();
         $startLastMonth = \Carbon\Carbon::now()->startOfMonth()->subMonth()->format('Y-m-d H:i');//start of last week
         $startCurrentMonth = \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d H:i');//start of current week
