@@ -135,9 +135,9 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     Route::get('employee/edit/{employee}', [\App\Http\Controllers\EmployeeController::class, 'edit'])->name('employee.edit');
     Route::post('employee/update/{employee}', [\App\Http\Controllers\EmployeeController::class, 'update'])->name('employee.update');
     Route::post('employee/destroy', [\App\Http\Controllers\EmployeeController::class, 'destroy'])->name('employee.destroy');
-    Route::post('employee/absent/{employee}',[\App\Http\Controllers\EmployeeController::class,'absent'])->name('employee.absent');
+    Route::post('employee/absent',[\App\Http\Controllers\EmployeeController::class,'absent'])->name('employee.absent');
     Route::get('employee/attendance/{employee}',[\App\Http\Controllers\EmployeeController::class,'attendance'])->name('employee.attendance');
-    Route::post('employee/reward/{employee}',[\App\Http\Controllers\EmployeeController::class,'reward'])->name('employee.reward');
+    Route::post('employee/reward',[\App\Http\Controllers\EmployeeController::class,'reward'])->name('employee.reward');
     Route::get('employee/show/{employee}',[\App\Http\Controllers\EmployeeController::class,'show'])->name('employee.show');
 //    Route::post('employee/expenses/{employee}',[\App\Http\Controllers\EmployeeController::class,'expenses'])->name('employee.expenses');
     //end employee

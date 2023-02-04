@@ -147,7 +147,7 @@
                                                         <span aria-hidden="true">&times;</span></button>
                                                 </div>
 
-                                                <form action="{{ route('employee.reward',$item) }}"
+                                                <form action="{{ route('employee.reward') }}"
                                                       method="post">
                                                     <div class="modal-body">
 
@@ -188,7 +188,7 @@
                                                         <span aria-hidden="true">&times;</span></button>
                                                 </div>
 
-                                                <form action="{{ route('employee.absent',$item) }}"
+                                                <form action="{{ route('employee.absent') }}"
                                                       method="post">
                                                     <div class="modal-body">
 
