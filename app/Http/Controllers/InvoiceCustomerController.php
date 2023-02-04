@@ -255,7 +255,7 @@ class InvoiceCustomerController extends Controller
 
         $profit = 0;
 
-        foreach ($request->products_id as $id) {
+        foreach ($request->products_id as $id) {//O(n*m)
             $product = product::find($id);
             $quantity = $request->quantities[$i];
             $total_before += $product->price_after * $quantity;
