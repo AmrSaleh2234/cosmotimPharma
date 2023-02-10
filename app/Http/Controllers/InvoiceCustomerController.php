@@ -268,9 +268,9 @@ class InvoiceCustomerController extends Controller
 
                     $price_after_discount = ($product->price_after * ($quantity * -1)) - ($product->price_after * ($quantity * -1) * ($request->discount[$i] / 100));
                     $profit += $price_after_discount - ($inv->price_before * ($quantity * -1));
-                    if ($price_after_discount - ($inv->price_before * ($quantity * -1)) < 0) {
-                        return redirect()->back()->with('error', 'نسبة الخصم المكتوبة في المنتج تجعلك تخسر ');
-                    }
+//                    if ($price_after_discount - ($inv->price_before * ($quantity * -1)) < 0) {
+//                        return redirect()->back()->with('error', 'نسبة الخصم المكتوبة في المنتج تجعلك تخسر ');
+//                    }
                     if ($val == 0) {
                         $inv->update(['quantity' => $val]);
                         $inv->delete();
@@ -292,10 +292,10 @@ class InvoiceCustomerController extends Controller
                 } else {// inv not quantity sastify
                     $price_after_discount = ($product->price_after * ((-1 * $quantity) + $val)) - ($product->price_after * ((-1 * $quantity) + $val) * ($request->discount[$i] / 100));
                     $profit += $price_after_discount - ($inv->price_before * ((-1 * $quantity) + $val));
-                    if ($price_after_discount - ($inv->price_before * ((-1 * $quantity) + $val)) < 0) {
-                        return redirect()->back()->with(['error', 'نسبة الخصم المكتوبة في المنتج تجعلك تخسر ']);
-
-                    }
+//                    if ($price_after_discount - ($inv->price_before * ((-1 * $quantity) + $val)) < 0) {
+//                        return redirect()->back()->with(['error', 'نسبة الخصم المكتوبة في المنتج تجعلك تخسر ']);
+//
+//                    }
                     order_customer::create([
                         'invoice_customer_id' => $id_invoice,
                         'inventory_id' => $inv->id,
