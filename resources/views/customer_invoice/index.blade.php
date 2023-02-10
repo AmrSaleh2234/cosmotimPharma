@@ -282,35 +282,9 @@
         });
     </script>
     <!--Internal  Datatable js -->
-    <script>
-        $(function (e) {
-            //file export datatable
-            var table = $('#example').DataTable({
-                lengthChange: false,
-                buttons: ['copy', 'excel', 'colvis'],
-                responsive: true,
-                language: {
-                    searchPlaceholder: 'Search...',
-                    sSearch: '',
-                }
+    <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/modal.js') }}"></script>
 
-
-            });
-
-
-            table.buttons().container()
-                .appendTo('#example_wrapper .col-md-6:eq(0)');
-            $('#example_filter input').on('change', function () {
-                var search = $(this);
-                table
-                    .column(0)
-                    .search(search.val())
-                    .draw();
-
-            });
-        })
-
-    </script>
 
     <script>
         function order(identfier) {

@@ -167,8 +167,10 @@ class EmployeeController extends Controller
     //created function*****************************************************************
 
     //take absent
-    public function absent(employee $employee,Request $request)
+    public function absent(Request $request)
     {
+        $employee=employee::find($request->id);
+
         $salaryDay = $employee->salary / 30;
         if ($employee->com_code != $this->getAuthData('com_code')) {
             return $this->error('غير مسموح بالتحكم بهذا الموظف');
@@ -192,8 +194,9 @@ class EmployeeController extends Controller
         return $this->success('تم تعديل الغياب لحضور');
     }
 
-    public function reward(Request $request, employee $employee)
+    public function reward(Request $request)
     {
+        $employee=employee::find($request->id);
         $employee->update([
             'balance' => $employee->balance + $request->reward
         ]);
