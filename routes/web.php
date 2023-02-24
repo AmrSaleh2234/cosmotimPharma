@@ -158,6 +158,7 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     //end supplier invoice
     //start reports
     Route::get('report/exchange/index',[\App\Http\Controllers\exchange::class,'index'])->name('exchange.index');
+    Route::get('report/products/index',[\App\Http\Controllers\exchange::class,'products'])->name('products.index');
     //end reports
 });
 
