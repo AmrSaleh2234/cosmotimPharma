@@ -158,7 +158,8 @@ Route::group(['middleware' => 'auth:admin,web'], function () {
     //end supplier invoice
     //start reports
     Route::get('report/exchange/index',[\App\Http\Controllers\exchange::class,'index'])->name('exchange.index');
-    Route::get('report/products/index',[\App\Http\Controllers\exchange::class,'products'])->name('products.index');
+    Route::get('report/products/index',[\App\Http\Controllers\exchange::class,'products'])->name('products.report');
+    Route::post('report/products/searchByDate',[\App\Http\Controllers\exchange::class,'productsSearchByDate'])->name('products.report.searchByDate');
     //end reports
 });
 

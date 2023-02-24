@@ -124,7 +124,7 @@
                     <span class="side-menu__label">التقارير</span><i class="angle fe fe-chevron-down"></i></a>
                 <ul class="slide-menu">
                     <li><a class="slide-item" href="{{ route('exchange.index')}}">تقارير عمليات الخزينه</a></li>
-                    <li><a class="slide-item" href="{{ url('/' . $page='darggablecards') }}">تقارير العملاء</a></li>
+                    <li><a class="slide-item" href="{{ route('products.report')}}">تقارير المنتجات </a></li>
 
                 </ul>
             </li>

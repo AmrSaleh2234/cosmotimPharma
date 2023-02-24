@@ -23,10 +23,36 @@ class exchange extends Controller
 
         )
             ->join('inventories', 'order_customers.inventory_id', '=', 'inventories.id')
-
-            ->groupBy('product_id','name')
+            ->groupBy('product_id', 'name')
             ->join('products', 'product_id', '=', 'products.id')
             ->get();
-        return view('reports.products',compact('products'));
+        return view('reports.products', compact('products'));
+    }
+
+    public function productsSearchByDate(Request $request)
+    {
+        $request->validate([
+            "firstDate" => "required",
+            "secondDate" => "required",
+        ]);
+        if ($request->firstDate > $request->second) {
+            $temp = $request->firstDate;
+            $request->firstDate = $request->secondDate;
+            $request->seccondDate = $temp;
+        }
+
+        $products = order_customer::
+        selectRaw(
+            ' sum(order_customers.quantity) quantity , products.name name ,inventories.product_id product_id  ')
+            ->join('inventories', 'order_customers.inventory_id', '=', 'inventories.id')
+            ->join('products', 'inventories.product_id', '=', 'products.id')->
+            join('invoice_customers', 'order_customers.invoice_customer_id', '=', 'invoice_customers.id')->
+            whereDate("invoice_customers.created_at", ">=", $request->firstDate)
+            ->whereDate("invoice_customers.created_at", "<=", $request->secondDate)
+            ->groupBy( 'product_id',"name")
+            ->get();
+        return view('reports.products', compact('products'));
+
+
     }
 }
