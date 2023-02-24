@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class invoice_customer extends Model
 {
     use HasFactory;
-    protected $fillable=['id', 'customer_id','discount','total_before','total_after','created_by','updated_by','profit','payed','com_code'];
+    protected $fillable=['id', 'customer_id','discount','total_before','total_after','created_by','updated_by','profit','payed','com_code','created_at'];
 
     public function customer()
     {
@@ -28,6 +28,8 @@ class invoice_customer extends Model
     {
         return $this->hasMany(exchangeRevenue::class,'fk')->where('type', '=', '4');
     }
+    public $timestamps=false;
+    protected $dates = ['created_at'];
 
 
 }

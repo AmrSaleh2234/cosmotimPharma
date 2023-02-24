@@ -79,6 +79,14 @@
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
                     <form action="{{ route('invoice_customer.update', $invoice) }}" method="post">
+                        <div class="row d-flex flex-wrap">
+                            <div class="col-6">
+                                <input type="number" name="invoice_number" placeholder=" رقم الفاتورة غير ألزامي ">
+                            </div>
+                            <div class="col-6">
+                                <input type="date" name="invoice_date" >
+                            </div>
+                        </div>
                         @csrf
                         <div class="card-body">
                             <div class="table-responsive">

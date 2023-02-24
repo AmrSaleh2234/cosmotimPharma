@@ -18,6 +18,7 @@
 @endsection
 @section('content')
     <!-- row -->
+
     <div class="row d-flex flex-wrap">
         <div class="col-lg-6 col-sm-12">
             <div class="card" style="border-top:3px solid cadetblue">
@@ -80,6 +81,14 @@
                     </div>
                     <form action="{{route('invoice_customer.store',$account)}}" method="post" >
                         @csrf
+                        <div class="row d-flex flex-wrap">
+                            <div class="col-6">
+                                <input type="number" name="invoice_number" placeholder=" رقم الفاتورة غير ألزامي ">
+                            </div>
+                            <div class="col-6">
+                                <input type="date" name="invoice_date" >
+                            </div>
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table mg-b-0 text-md-nowrap">

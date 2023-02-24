@@ -9,6 +9,7 @@ use App\Models\invoice_customer;
 use App\Models\order_customer;
 use App\Models\product;
 use App\Models\safe;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class InvoiceCustomerController extends Controller
@@ -86,6 +87,9 @@ class InvoiceCustomerController extends Controller
         if (invoice_customer::all()->last()) {
             $id_invoice = invoice_customer::all()->last()->id + 1;
         }
+        if ($request->invoice_number && !(invoice_customer::find($request->invoice_number)))
+            $id_invoice = $request->invoice_number;
+
         foreach ($request->products_id as $id) {
             $product = product::find($id);
             $quantity = $request->quantities[$i];
@@ -144,10 +148,11 @@ class InvoiceCustomerController extends Controller
             $i++;
         }
         $total_after -= ($request->invoice_discount / 100) * $total_after;
-        invoice_customer::create(['id'=>$id_invoice,'customer_id' => $account->id, 'discount' => $request->invoice_discount
+        invoice_customer::create(['id' => $id_invoice, 'customer_id' => $account->id, 'discount' => $request->invoice_discount
             , 'total_before' => $total_before, 'total_after' => $total_after, 'created_by' => auth()->user()->name,
             'profit' => $profit,
-            'payed' => 0, 'com_code' => $this->getAuthData('com_code')
+            'payed' => 0, 'com_code' => $this->getAuthData('com_code'),
+            "created_at" => $request->invoice_date!=null ?$request->invoice_date:Carbon::now()
         ]);
         $status = 2;
         if ($account->balance + $total_after > 0) {
@@ -227,10 +232,12 @@ class InvoiceCustomerController extends Controller
         $id_invoice = $invoice->id;
         $account_id = $invoice->customer->id;
         $totalBeforDelete = $invoice->total_after;
+        if ($request->invoice_number && !(invoice_customer::find($request->invoice_number)))
+            $id_invoice = $request->invoice_number;
 
-        if ($invoice->payed > 0) {
-            return $this->error('لقد تم تحصيل جذء من الفاتورة ');
-        }
+            if ($invoice->payed > 0) {
+                return $this->error('لقد تم تحصيل جذء من الفاتورة ');
+            }
         foreach ($invoice->inventory as $order) {
             if ($order->deleted_at != null) {
                 $order->update(['deleted_at' => null]);
@@ -319,7 +326,9 @@ class InvoiceCustomerController extends Controller
         invoice_customer::create(['id' => $id_invoice, 'customer_id' => $account_id, 'discount' => $request->invoice_discount
             , 'total_before' => $total_before, 'total_after' => $total_after, 'created_by' => $invoice->created_by, 'updated_by' => auth()->user()->name,
             'profit' => $profit,
-            'payed' => 0, 'com_code' => $this->getAuthData('com_code')
+            'payed' => 0, 'com_code' => $this->getAuthData('com_code'),
+            "created_at" => $request->invoice_date!=null ?$request->invoice_date:Carbon::now()
+
         ]);
 
         $status = 2;
@@ -331,7 +340,7 @@ class InvoiceCustomerController extends Controller
         $invoice->customer->update(['balance' => $invoice->customer->balance + $total_after, 'balance_status' => $status]);
 
 
-        return redirect()->back()->with(['success' => 'تم نعديل الفاتورة بنجاح']);
+        return redirect()->route("invoice_customer.index")->with(['success' => 'تم نعديل الفاتورة بنجاح']);
 
     }
 
@@ -418,10 +427,9 @@ class InvoiceCustomerController extends Controller
             ]);
             $i++;
         }
-        if ($flag)
-        {
+        if ($flag) {
             $invoice->delete();
-            return redirect()->route('invoice_customer.index')->with(['success','تم حذف الفاتورة بنجاح ']);
+            return redirect()->route('invoice_customer.index')->with(['success', 'تم حذف الفاتورة بنجاح ']);
         }
         return $this->success('تم الارجاع بنجاح ');
     }
