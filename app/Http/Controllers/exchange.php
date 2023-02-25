@@ -51,7 +51,8 @@ class exchange extends Controller
 //            ->whereDate("invoice_customers.created_at", "<=", $request->secondDate)
 //            ->groupBy('product_id', "name")
             ->get();
-        return view('reports.products', compact('products'));
+//        return view('reports.products', compact('products'));
+        return $products;
 
 
     }
