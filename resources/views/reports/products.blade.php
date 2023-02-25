@@ -86,6 +86,7 @@
                                 <th class=" border-bottom-0  " style="width: 20%">#</th>
                                 <th class=" border-bottom-0 " style="width: 20%">اسم المنتج</th>
                                 <th class=" border-bottom-0 " style="width: 20%">الكمية </th>
+                                <th class=" border-bottom-0 " style="width: 20%">المبيعات </th>
                                 <th></th>
 
 
@@ -99,6 +100,7 @@
                                     <td>{{++$i}}</td>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->order_quantity}}</td>
+                                    <td>{{$product->price}}</td>
                                     <td></td>
 
                                 </tr>
