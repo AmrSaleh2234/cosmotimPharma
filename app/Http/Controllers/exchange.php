@@ -23,7 +23,7 @@ class exchange extends Controller
 
         )
             ->join('inventories', 'order_customers.inventory_id', '=', 'inventories.id')
-            ->groupBy('product_id', 'name')
+            ->groupBy('product_id', 'name','com_code')
             ->join('products', 'product_id', '=', 'products.id')
             ->where("invoice_customers.com_code","=" ,$this->getAuthData('com_code'))
             ->get();
