@@ -19,11 +19,11 @@ class exchange extends Controller
     public function products()
     {
         $products = order_customer::selectRaw(
-            'sum(order_customers.quantity)  order_quantity ,inventories.product_id  product_id ,products.name name',
+            'sum(order_customers.quantity)  order_quantity ,inventories.product_id  product_id ,products.name name ,sum(order_customers.price_after_discount) price'
 
         )
             ->join('inventories', 'order_customers.inventory_id', '=', 'inventories.id')
-            ->groupBy('product_id', 'name')
+            ->groupBy('product_id', 'name','price')
             ->join('products', 'product_id', '=', 'products.id')
             ->get();
         return view('reports.products', compact('products'));
