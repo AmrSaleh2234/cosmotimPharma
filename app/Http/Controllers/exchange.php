@@ -43,7 +43,7 @@ class exchange extends Controller
 
         $products = order_customer::
         selectRaw(
-            ' sum(order_customers.quantity) order_quantity , products.name name ,inventories.product_id product_id  ')
+            ' order_customers.quantity order_quantity , products.name name ,inventories.product_id product_id  ')
             ->join('inventories', 'order_customers.inventory_id', '=', 'inventories.id')
             ->join('products', 'inventories.product_id', '=', 'products.id')->
             join('invoice_customers', 'order_customers.invoice_customer_id', '=', 'invoice_customers.id')
