@@ -38,7 +38,7 @@
             <div class="card card_top">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <h3 class="card-title mg-b-0">جدول حركة الخزينه </h3>
+                        <h3 class="card-title mg-b-0">جدول قارير المنتجات  </h3>
                         <i class="mdi mdi-dots-horizontal text-gray"></i>
                     </div>
 
