@@ -43,13 +43,13 @@ class exchange extends Controller
 
         $products = order_customer::
         selectRaw(
-            ' sum(order_customers.quantity) order_quantity , products.name name ,inventories.product_id product_id  ')
+            ' order_customers.quantity order_quantity , products.name name ,inventories.product_id product_id ,invoice_customers.created_at created_at  ')
             ->join('inventories', 'order_customers.inventory_id', '=', 'inventories.id')
             ->join('products', 'inventories.product_id', '=', 'products.id')->
             join('invoice_customers', 'order_customers.invoice_customer_id', '=', 'invoice_customers.id')
-//            whereDate("invoice_customers.created_at", ">=", $request->firstDate)
-//            ->whereDate("invoice_customers.created_at", "<=", $request->secondDate)
-            ->groupBy('product_id', "name")
+            whereDate("invoice_customers.created_at", ">=", $request->firstDate)
+            ->whereDate("invoice_customers.created_at", "<=", $request->secondDate)
+//            ->groupBy('product_id', "name")
             ->get();
 //        return view('reports.products', compact('products'));
         return $products;
