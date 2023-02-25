@@ -23,7 +23,7 @@ class exchange extends Controller
 
         )
             ->join('inventories', 'order_customers.inventory_id', '=', 'inventories.id')
-            ->groupBy('product_id', 'name','price')
+            ->groupBy('product_id', 'name')
             ->join('products', 'product_id', '=', 'products.id')
             ->get();
         return view('reports.products', compact('products'));
@@ -49,7 +49,7 @@ class exchange extends Controller
             join('invoice_customers', 'order_customers.invoice_customer_id', '=', 'invoice_customers.id')->
             whereDate("invoice_customers.created_at", ">=", $request->firstDate)
             ->whereDate("invoice_customers.created_at", "<=", $request->secondDate)
-            ->groupBy('product_id', "name","price")
+            ->groupBy('product_id', "name")
             ->get();
         return view('reports.products', compact('products'));
 
